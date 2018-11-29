@@ -1,4 +1,4 @@
-
+library("ggplot2")
 A <- matrix(runif(2500), 50, 50)
 B = A * t(A)
 sum(A>0.5)
@@ -115,13 +115,18 @@ hist(z,xlim=c(0,1),breaks = 40,col="blue")
 hist(z[z>0.001],xlim=c(0,1),breaks = 40,col="blue")
 x
 
-######################## interleaving node
-z={}
-z2={}
-z3={}
-z4={}
-z5={}
+######################## ALL TOGETHER
 z_1c={}
+z={}
+z_rel={}
+z2={}
+z2_rel={}
+z3={}
+z3_rel={}
+z4={}
+z4_rel={}
+z5={}
+z5_rel={}
 noiseCosine2={}
 noiseCosine2_more={}
 noiseCosine3={}
@@ -138,7 +143,7 @@ noise = 5
 node_noise = 5
 alpha = 0.4
 n=50
-trials = 10000
+trials = 3000
 for (i in 1:trials) {
   ### building the graph itself
   print(i)
@@ -253,6 +258,7 @@ hist(z_1c[z_1c>0.001],xlim=c(0,1),breaks = 40,col="blue", main = paste("Histogra
 hist(z,xlim=c(0,1),breaks = 40,col="blue", main = paste("Histogram of values in Sim mat - subgraph of 2 components - ",noise,"",node_noise,"",alpha))
 hist(z[z>0.001],xlim=c(0,1),breaks = 40,col="blue", main = paste("Histogram of values in Sim mat - subgraph of 2 components - zoomed",noise,"",node_noise,"",alpha))
 dat <- data.frame(cond = factor(c(rep("All", each=length(z) ))), value = c(z))
+ggplot(dat, aes(x=value, fill =cond)) + geom_histogram(alpha=0.8, binwidth=0.05, position="identity" )
 ggplot(dat[dat[,"value"]>0 ,], aes(x=value, fill =cond)) + geom_histogram(alpha=0.8, binwidth=0.05, position="identity" )
 
 
@@ -260,7 +266,7 @@ hist(z2,xlim=c(0,1),breaks = 40,col="blue", main = paste("Histogram of values in
 hist(z2[z2>0.001],xlim=c(0,1),breaks = 40,col="blue", main = paste("Histogram of values in Sim mat - subgraph of 2 component + noise (edges) - zoomed",noise,"",node_noise,"",alpha))
 #dat2 <- data.frame(cond = factor(c(rep("All", each=length(z2) ),rep("noise", each=length(noiseCosine2)))), value = c(z2,noiseCosine2))
 #ggplot(dat2[dat2[,"value"]>0 ,], aes(x=value, fill =cond)) + geom_histogram(alpha=0.5, binwidth=0.01, position="identity" )
-dat2 <- data.frame(cond = factor(c(rep("All", each=length(z2) ),rep("noise2", each=length(noiseCosine2_more)),rep("noise", each=length(noiseCosine2)))), value = c(z2,noiseCosine2_more,noiseCosine2))
+dat2 <- data.frame(cond = factor(c(rep("All", each=length(z2) ),rep("noise2", each=length(noiseCosine2)),rep("noise", each=length(noiseCosine2_more)))), value = c(z2,noiseCosine2,noiseCosine2_more))
 ggplot(dat2[dat2[,"value"]>0 ,], aes(x=value, fill =cond)) + geom_histogram(alpha=0.8, binwidth=0.05, position="identity" )
 
 hist(z3,xlim=c(0,1),breaks = 40,col="blue", main = paste("Histogram of values in Sim mat - subgraph of 2 component + noise (nodes)",noise,"",node_noise,"",alpha))
@@ -281,7 +287,7 @@ ggplot(dat4[dat4[,"value"]>0 ,], aes(x=value, fill =cond)) + geom_histogram(alph
 #hist(z5,xlim=c(0,1),breaks = 40,col="blue", main = paste("Histogram of values in Sim mat - subgraph of 2 component + noise (nodes+edges) + NeiNei idea",noise,"",node_noise,"",alpha))
 #hist(z5[z5>0.001],xlim=c(0,1),breaks = 40,col="blue",main = paste("Histogram of values in Sim mat - subgraph of 2 component + noise (nodes+edges) ) + NeiNei idea- zoomed",noise,"",node_noise,"",alpha))
 dat5 <- data.frame(cond = factor(c(rep("All", each=length(z5) ),rep("noise_more", each=length(noiseCosine5_1_more)),rep("noise", each=length(noiseCosine5_1)),rep("interl_Node_more", each=length(noiseCosine5_2_more)),rep("interl_Node", each=length(noiseCosine5_2)))), value = c(z5,noiseCosine5_1_more,noiseCosine5_1,noiseCosine5_2_more,noiseCosine5_2))
-ggplot(dat5[dat5[,"value"]>0 ,], aes(x=value, fill =cond)) + geom_histogram(alpha=0.6, binwidth= 0.05, position="identity" )
+ggplot(dat5[dat5[,"value"]>0 ,], aes(x=value, fill =cond)) + geom_histogram(alpha=0.9, binwidth= 0.05, position="identity" )
 
 
 
