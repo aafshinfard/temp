@@ -149,7 +149,7 @@ noiseCosine5_2={}
 noiseCosine5_2_more={}
 noise = 5
 node_noise = 5
-alpha = 0.3
+alpha = 0.4
 n=50
 trials = 50
 for (i in 1:trials) {
@@ -167,10 +167,10 @@ for (i in 1:trials) {
   x_1c = x
   y_1c=cosine(x)
   z_1c = c(z_1c,y_1c)
-  x_1c_neinei = x_1c
-  for(i in 1:n){
+  x_1c_neinei = x_1c %*% x_1c
+  #for(i in 1:n){
     #x_1c_neinei[i,colSums(x_1c[x_1c[i,]==1,])>1] = 1
-  }
+  #}
   y_1c_neinei=cosine(x_1c_neinei)
   z_1c_neinei = c(z_1c_neinei,y_1c_neinei)
   x_prime = x
@@ -195,7 +195,7 @@ for (i in 1:trials) {
   z2=c(z2,y2)
   
   # check what if we apply neinei
-  x2_neinei = x2
+  x2_neinei = x2 %*% x2
   for(i in 1:n){
     #x2_neinei[i,colSums(x2[x2[i,]==1,])>1] = 1
   }
@@ -232,7 +232,7 @@ for (i in 1:trials) {
   y3=cosine(x3)
   z3=c(z3,y3)
   
-  x3_neinei = x3
+  x3_neinei = x3 %*% x3
   for(i in 1:n){
     #x3_neinei[i,colSums(x3[x3[i,]==1,])>1] = 1
   }
@@ -269,10 +269,10 @@ for (i in 1:trials) {
       noiseCosine4_2_more = c(noiseCosine4_2_more, y4[1:(round(n/2)-1),i] )
   x_prime = x
   ## connect neighbours of the neighbours:
-  x2 = x
-  for(i in 1:n){
-    x2[i,colSums(x[x[i,]==1,])>1] = 1
-  }
+  x2 = x %*% x
+  #for(i in 1:n){
+  #  x2[i,colSums(x[x[i,]==1,])>1] = 1
+  #}
   x = x2
   x5 = x
   y5=cosine(x5)
