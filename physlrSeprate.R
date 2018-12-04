@@ -1,27 +1,29 @@
+dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/AAGCCGCCAGGATCGA.tsv" # 38 HARD!!!
+dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/AATCGTGAGGAGTCTG.tsv" # HARD!!!
+
 dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/AAACCTGCACGCTTTC.tsv" #22  #DONE poorly..!
 dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/AACGGAGTCCTGCACT.tsv" #307 #DONE
 dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/AACTCCCTCTCCTGGT.tsv" #94 #DONE
-dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/AAGCCGCCAGGATCGA.tsv" ## HARD!!!
-dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/AATCGTGAGGAGTCTG.tsv" ## HARD!!!
 dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/AGGAGACTCGAAAGGC.tsv" #90 DONE!
-dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/AGTAGTCGTTCTCTCG-GTTTGTTCAGCGCATC.physlr.tsv" # No graphs available
 dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/ATTACTCAGTCGGGAT.tsv" #151 DONE!
-dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/CAAAGGGAGCACTCAT.tsv" # No file
 dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/CAAGGCCCATGAAGTA.tsv" #101 DONE!
-dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/CAGCTGGCACGGCTGT.tsv" #WHAT?
-
-dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/CATATTCGTTATCACG.tsv" #No graphs available
-dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/CGAATGTTCCACCTTG.tsv" #2? file corrupted?
-dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/GACTGCGCACCATGTA.tsv" #No graphs available
-dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/GAGCTTACAGGATCTT.tsv" #simplDONE but No graphs available
 dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/GCGCGTAGTTTCCGGG.tsv" #103 DONE!
 dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/GGGACAAAGGACAGTC-GTACGTACAAAGGCTG.tsv" #84 #DONE!
 dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/GTTGCAACAACGTCTA.tsv" #184 #DONE
 dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/TCATTACGTCTCTGGG.tsv" #113 #DONE!
+dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/TCGGGCAAGAGCACCA.tsv" #118 Funny face!
+dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/TTTGTGTAGCCTGATT.tsv" #148 Done!
+
+dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/GAGCTTACAGGATCTT.tsv" #simplDONE but No graphs available
+dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/AGTAGTCGTTCTCTCG-GTTTGTTCAGCGCATC.physlr.tsv" # No graphs available
+dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/CAAAGGGAGCACTCAT.tsv" # No files
+dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/CATATTCGTTATCACG.tsv" #No graphs available
+dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/GACTGCGCACCATGTA.tsv" #No graphs available
 dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/TCCGGTTAGTCCCGAC.tsv" #No graphs available
+
 dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/TCGCTACAGGCCTCCA.tsv" #4?Weird file
-dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/TCGGGCAAGAGCACCA.tsv" #
-dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/TTTGTGTAGCCTGATT.tsv" #
+dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/CGAATGTTCCACCTTG.tsv" #2? file corrupted?
+dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/CAGCTGGCACGGCTGT.tsv" #WHAT?
 
 dat
 
@@ -29,7 +31,7 @@ dat
 ########################################
 ### Summary
 a = read.table(dat, header = FALSE, col.names = paste0("V",seq_len(3)),as.is = "V3", fill = TRUE)
-a = a[4:dim(a)[1],]
+a = a[118:dim(a)[1],]
 a[,3] = as.numeric(a[,3])
 gr <- graph.data.frame(a)
 gr = as.undirected(gr)
@@ -45,6 +47,9 @@ if(max(colSums(adj) )== dim(adj)[1]-1 ){
   adj_filt = adj[filt_index,filt_index]
 }
 # remove highly connected 'outlier' node
+sort(colSums(adj_filt))
+length(colSums(adj_filt))
+hist(colSums(adj_filt))
 adj_orig = adj_filt
 roll <- function( x , n ){
   if( n == 0 )
@@ -61,24 +66,35 @@ if(min(rolled)==rolled[length(rolled)]){
     filt_index = c(filt_index,( which.max(colSums(adj_filt)) +1):dim(adj_filt)[1])
   adj_filt = adj_filt[filt_index,filt_index]
 }
+
+#filt_index = c(1:(which(colSums(adj_filt)==28)-1),(which(colSums(adj_filt)==28)+1):34) 
+#adj_filt = adj_filt[filt_index,filt_index]
+#filt_index = c(1:(which(colSums(adj_filt)==25)-1),(which(colSums(adj_filt)==25)+1):33) 
+#adj_filt = adj_filt[filt_index,filt_index]
+sort(colSums(adj_filt))
+length(colSums(adj_filt))
+hist(colSums(adj_filt))
+
 adj_sq = adj_filt%*%adj_filt
 
 cos = cosine(adj_filt)
 cos[cos == "NaN"] = 0
-hist(cos)
+#hist(cos)
+ggplot(as.data.frame(as.vector(cos)), aes(x=as.vector(cos)) ) + geom_histogram( aes(y=..density..), binwidth= 0.05, position="identity" )
 cos2 = cosine(adj_sq)
 cos3 = cos2
 cos3[cos3 == "NaN"] = 0
-hist(cos3,breaks = 40)
+#hist((cos3),breaks = 40)
+ggplot(as.data.frame(as.vector(cos3)), aes(x=as.vector(cos3)) ) + geom_histogram( aes(y=..density..), binwidth= 0.05, position="identity" )
 
 plot(graph_from_adjacency_matrix(adj_orig))
 plot(graph_from_adjacency_matrix(adj_filt))
 plot(graph_from_adjacency_matrix(adj_sq))
 adj_t = adj_filt
 #adj_t[cos[,] < 0.7] = 0
-adj_t[cos3[,] < 0.9] = 0
-sum(cos3[,] < 0.95)/sum((cos3[,] > -1))
-sum(adj_t != adj_filt | adj_t == adj_filt)
+adj_t[cos3[,] < .90] = 0
+sum(cos3[,] < 0.90)/sum((cos3[,] > -1))
+sum(adj_filt != 0)
 sum(adj_t != adj_filt)
 grnew = graph_from_adjacency_matrix(adj_t)
 plot(grnew)
