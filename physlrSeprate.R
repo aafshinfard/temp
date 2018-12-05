@@ -1,3 +1,6 @@
+library("ggplot2")
+library("cowplot")
+
 dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/AAGCCGCCAGGATCGA.tsv" # 38 HARD!!!
 dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/AATCGTGAGGAGTCTG.tsv" # HARD!!!
 
@@ -11,7 +14,7 @@ dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/GCGCGTAGT
 dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/GGGACAAAGGACAGTC-GTACGTACAAAGGCTG.tsv" #84 #DONE!
 dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/GTTGCAACAACGTCTA.tsv" #184 #DONE
 dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/TCATTACGTCTCTGGG.tsv" #113 #DONE!
-dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/TCGGGCAAGAGCACCA.tsv" #118 Funny face!
+dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/TCGGGCAAGAGCACCA.tsv" #118 #Done! #figures: dataSmilesOnUs_nodeDegreeHistogram
 dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/TTTGTGTAGCCTGATT.tsv" #148 Done!
 
 dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/GAGCTTACAGGATCTT.tsv" #simplDONE but No graphs available
@@ -49,7 +52,8 @@ if(max(colSums(adj) )== dim(adj)[1]-1 ){
 # remove highly connected 'outlier' node
 sort(colSums(adj_filt))
 length(colSums(adj_filt))
-hist(colSums(adj_filt))
+#hist(colSums(adj_filt))
+ggplot(as.data.frame(colSums(adj_filt)), aes(x=colSums(adj_filt)) ) + geom_histogram( aes(y=..density..), binwidth= 2, position="identity" )
 adj_orig = adj_filt
 roll <- function( x , n ){
   if( n == 0 )
@@ -73,9 +77,12 @@ if(min(rolled)==rolled[length(rolled)]){
 #adj_filt = adj_filt[filt_index,filt_index]
 sort(colSums(adj_filt))
 length(colSums(adj_filt))
-hist(colSums(adj_filt))
+#hist(colSums(adj_filt))
+ggplot(as.data.frame(colSums(adj_filt)), aes(x=colSums(adj_filt)) ) + geom_histogram( aes(y=..density..), binwidth= 2, position="identity" )
 
 adj_sq = adj_filt%*%adj_filt
+ggplot(as.data.frame(as.vector(adj_sq)), aes(x=as.vector(adj_sq)) ) + geom_histogram( aes(y=..density..), position="identity" )
+ggplot(as.data.frame(colSums(adj_sq)), aes(x=colSums(adj_sq)) ) + geom_histogram( aes(y=..density..), position="identity" )
 
 cos = cosine(adj_filt)
 cos[cos == "NaN"] = 0
@@ -91,14 +98,57 @@ plot(graph_from_adjacency_matrix(adj_orig))
 plot(graph_from_adjacency_matrix(adj_filt))
 plot(graph_from_adjacency_matrix(adj_sq))
 adj_t = adj_filt
-#adj_t[cos[,] < 0.7] = 0
-adj_t[cos3[,] < .90] = 0
-sum(cos3[,] < 0.90)/sum((cos3[,] > -1))
+#adj_t[cos[,] < 0.94] = 0
+adj_t[cos3[,] < .7] = 0
+sum(cos3[,] < 0.99)/sum((cos3[,] > -1))
 sum(adj_filt != 0)
 sum(adj_t != adj_filt)
 grnew = graph_from_adjacency_matrix(adj_t)
 plot(grnew)
 
+remStat = as.data.frame({})
+j = 1
+adj_t = adj_filt
+for(i in 0:100){
+  print(i)
+  adj_t[cos3[,] < i/100] = 0
+  remStat[j,1] = sum(adj_t != adj_filt)
+  remStat[j,2] = i/100
+  grnew = graph_from_adjacency_matrix(adj_t)
+  comps = components(grnew)
+  remStat[j,3] = sum(comps$csize > 1)
+  remStat[j,4] = sum(comps$csize > 0)
+  if( j>1 ){
+    if(remStat[j,4] == remStat[j-1,4] & remStat[j,3] == remStat[j-1,3])
+    remStat[j,5] = ""
+    else
+      remStat[j,5] = paste(as.character(remStat[j,3]),"-",as.character(remStat[j,4]),sep = "")
+  }else
+    remStat[j,5] = paste(as.character(remStat[j,3]),"-",as.character(remStat[j,4]),sep = "")
+  j=j+1
+}
+
+names(remStat) <-c("V1","V2","ConComps","ConComps2","mixLabel")
+head(remStat)
+p1 <- ggplot(remStat, aes(x=V2,y=V1,label=mixLabel) ) + geom_col() + 
+  geom_text(aes(label=mixLabel),hjust=0, col="red", vjust=0.5, angle = 90) +
+  ggtitle("Threshold's effect on edge removal") +
+  labs(x= "Threshold",y= "Number of edges removed") + 
+  theme(text = element_text(size=14),
+        axis.text.x = element_text(angle=0, hjust=1)) + xlim(0.6,1.01) + ylim(0,max(remStat[,1])+(max(remStat[,1])/10) )
+p1
+#p1 <- ggplot(remStat, aes(x=V2,y=V1) ) + geom_col() + ggtitle("Threshold's effect on edge removal") +
+#  labs(x= "Threshold",y= "Number of edges removed") + 
+#  theme(text = element_text(size=14),
+#       axis.text.x = element_text(angle=0, hjust=1)) + xlim(0.5,1.01)
+  #ylim( 0,rem[(dim(rem)[1]-1),1]*2 )
+#remStatM = melt(remStat[,2:4], id.vars="V2")
+#p2 <- ggplot(remStatM, aes(V2,value, col=variable)) + geom_col(position = "dodge") + ggtitle("Threshold's effect on edge removal") +
+#  labs(x= "Threshold",y= "Number of edges removed") + 
+#  theme(text = element_text(size=14),
+#        axis.text.x = element_text(angle=0, hjust=1)) + xlim(0.5,1.01)
+#legend <- get_legend(p2)
+#grid.arrange(p1, p2, legend, ncol = 1, heights = c(1, 1))
 ########################################
 ##### FULL
 
@@ -183,7 +233,7 @@ plot(graph_from_adjacency_matrix(adj_filt))
 plot(graph_from_adjacency_matrix(adj_sq))
 adj_t = adj_filt
 #adj_t[cos[,] < 0.7] = 0
-adj_t[cos3[,] < 0.7 ] = 0
+adj_t[cos3[,] < 0.97 ] = 0
 sum(adj_t != adj_filt | adj_t == adj_filt)
 sum(adj_t != adj_filt)
 grnew = graph_from_adjacency_matrix(adj_t)
@@ -191,3 +241,15 @@ plot(grnew)
 
 comps = components(grnew)
 comps
+
+
+##### extra codes:
+library(FinCal)
+library(reshape2)
+
+dat <- get.ohlc.yahoo('AAPL', '2015-12-01', '2015-12-31')
+#dat$date <- strptime(dat$date, "%Y-%m-%d")
+dat$date <- as.Date(dat$date, "%Y-%m-%d")
+dat$times <- seq(nrow(dat))
+mm <- melt(subset(dat, select=c(times,adjusted, volume)), id.var="times")
+
