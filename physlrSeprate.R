@@ -98,7 +98,7 @@ plot(graph_from_adjacency_matrix(adj_orig))
 plot(graph_from_adjacency_matrix(adj_filt))
 plot(graph_from_adjacency_matrix(adj_sq))
 adj_t = adj_filt
-#adj_t[cos[,] < 0.94] = 0
+adj_t[cos[,] < 0.5] = 0
 adj_t[cos3[,] < .7] = 0
 sum(cos3[,] < 0.99)/sum((cos3[,] > -1))
 sum(adj_filt != 0)
@@ -106,12 +106,13 @@ sum(adj_t != adj_filt)
 grnew = graph_from_adjacency_matrix(adj_t)
 plot(grnew)
 
+ ### using cos
 remStat = as.data.frame({})
 j = 1
 adj_t = adj_filt
 for(i in 0:100){
   print(i)
-  adj_t[cos3[,] < i/100] = 0
+  adj_t[cos[,] < i/100] = 0
   remStat[j,1] = sum(adj_t != adj_filt)
   remStat[j,2] = i/100
   grnew = graph_from_adjacency_matrix(adj_t)
@@ -120,7 +121,7 @@ for(i in 0:100){
   remStat[j,4] = sum(comps$csize > 0)
   if( j>1 ){
     if(remStat[j,4] == remStat[j-1,4] & remStat[j,3] == remStat[j-1,3])
-    remStat[j,5] = ""
+      remStat[j,5] = ""
     else
       remStat[j,5] = paste(as.character(remStat[j,3]),"-",as.character(remStat[j,4]),sep = "")
   }else
@@ -135,7 +136,41 @@ p1 <- ggplot(remStat, aes(x=V2,y=V1,label=mixLabel) ) + geom_col() +
   ggtitle("Threshold's effect on edge removal") +
   labs(x= "Threshold",y= "Number of edges removed") + 
   theme(text = element_text(size=14),
-        axis.text.x = element_text(angle=0, hjust=1)) + xlim(0.6,1.01) + ylim(0,max(remStat[,1])+(max(remStat[,1])/10) )
+        axis.text.x = element_text(angle=0, hjust=1)) + xlim(0.4,1.01) + ylim(0,max(remStat[,1])+(max(remStat[,1])/10) )
+p1
+
+
+### Using cos3
+remStat3 = as.data.frame({})
+j = 1
+adj_t = adj_filt
+for(i in 0:100){
+  print(i)
+  adj_t[cos3[,] < i/100] = 0
+  remStat3[j,1] = sum(adj_t != adj_filt)
+  remStat3[j,2] = i/100
+  grnew = graph_from_adjacency_matrix(adj_t)
+  comps = components(grnew)
+  remStat3[j,3] = sum(comps$csize > 1)
+  remStat3[j,4] = sum(comps$csize > 0)
+  if( j>1 ){
+    if(remStat3[j,4] == remStat3[j-1,4] & remStat3[j,3] == remStat3[j-1,3])
+    remStat3[j,5] = ""
+    else
+      remStat3[j,5] = paste(as.character(remStat3[j,3]),"-",as.character(remStat3[j,4]),sep = "")
+  }else
+    remStat3[j,5] = paste(as.character(remStat3[j,3]),"-",as.character(remStat3[j,4]),sep = "")
+  j=j+1
+}
+
+names(remStat3) <-c("V1","V2","ConComps","ConComps2","mixLabel")
+head(remStat3)
+p1 <- ggplot(remStat3, aes(x=V2,y=V1,label=mixLabel) ) + geom_col() + 
+  geom_text(aes(label=mixLabel),hjust=0, col="red", vjust=0.5, angle = 90) +
+  ggtitle("Threshold's effect on edge removal") +
+  labs(x= "Threshold",y= "Number of edges removed") + 
+  theme(text = element_text(size=14),
+        axis.text.x = element_text(angle=0, hjust=1)) + xlim(0.6,1.01) + ylim(0,max(remStat3[,1])+(max(remStat3[,1])/10) )
 p1
 #p1 <- ggplot(remStat, aes(x=V2,y=V1) ) + geom_col() + ggtitle("Threshold's effect on edge removal") +
 #  labs(x= "Threshold",y= "Number of edges removed") + 
