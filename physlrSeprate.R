@@ -34,7 +34,7 @@ dat
 ########################################
 ### Summary
 a = read.table(dat, header = FALSE, col.names = paste0("V",seq_len(3)),as.is = "V3", fill = TRUE)
-a = a[118:dim(a)[1],]
+a = a[38:dim(a)[1],]
 a[,3] = as.numeric(a[,3])
 gr <- graph.data.frame(a)
 gr = as.undirected(gr)
@@ -53,7 +53,7 @@ if(max(colSums(adj) )== dim(adj)[1]-1 ){
 sort(colSums(adj_filt))
 length(colSums(adj_filt))
 #hist(colSums(adj_filt))
-ggplot(as.data.frame(colSums(adj_filt)), aes(x=colSums(adj_filt)) ) + geom_histogram( aes(y=..density..), binwidth= 2, position="identity" )
+ggplot(as.data.frame(colSums(adj_filt)), aes(x=colSums(adj_filt)) ) + geom_histogram( binwidth= 2, position="identity" )
 adj_orig = adj_filt
 roll <- function( x , n ){
   if( n == 0 )
