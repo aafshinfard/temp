@@ -78,7 +78,7 @@ if(min(rolled)==rolled[length(rolled)]){
 sort(colSums(adj_filt))
 length(colSums(adj_filt))
 #hist(colSums(adj_filt))
-ggplot(as.data.frame(colSums(adj_filt)), aes(x=colSums(adj_filt)) ) + geom_histogram( aes(y=..density..), binwidth= 2, position="identity" )
+ggplot(as.data.frame(colSums(adj_filt)), aes(x=colSums(adj_filt)) ) + geom_histogram(  binwidth= 1, position="identity" )
 
 adj_sq = adj_filt%*%adj_filt
 ggplot(as.data.frame(as.vector(adj_sq)), aes(x=as.vector(adj_sq)) ) + geom_histogram( aes(y=..density..), position="identity" )
@@ -99,14 +99,14 @@ plot(graph_from_adjacency_matrix(adj_filt))
 plot(graph_from_adjacency_matrix(adj_sq))
 adj_t = adj_filt
 adj_t[cos[,] < 0.5] = 0
-adj_t[cos3[,] < .7] = 0
+adj_t[cos3[,] < .92] = 0
 sum(cos3[,] < 0.99)/sum((cos3[,] > -1))
 sum(adj_filt != 0)
 sum(adj_t != adj_filt)
 grnew = graph_from_adjacency_matrix(adj_t)
 plot(grnew)
 
- ### using cos
+### using cos
 remStat = as.data.frame({})
 j = 1
 adj_t = adj_filt
