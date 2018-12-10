@@ -6,7 +6,13 @@ library(ggplot2)
 addnodeg = "/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/prevRuns/run1/f1chr4.physlr.overlap.neighbor.stat.tsv"
 addnodeg = "/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/prevRuns/run5/f1chr4.physlr.overlap.n50.mol.tsv"
 addnodeg = "/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/f1chr4.physlr.overlap.neighbor.stat.tsv"
-addnodeg = "/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/prevRuns/simMat/f1chr4.physlr.overlap.neighbor.noFilter_simMat_Histo.tsv"
+addnodeg = "/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr-old/prevRuns/simMat/f1chr4.physlr.overlap.neighbor.noFilter_simMat_Histo.tsv"
+
+### If it's Histogram of cosine sim:
+# go to the end of this code
+
+
+### If it's |E| vs |V| :
 nodeg = 
   read.table(addnodeg, sep = "\t", header = FALSE)
 nodeg
@@ -103,6 +109,8 @@ add = "/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/prevRuns/s
 add = "/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/prevRuns/simMat/f1chr4.physlr.overlap.neighbor.n50_simMat_Histo_diagSet1.tsv"
 add = "/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/prevRuns/simMat/f1chr4.physlr.overlap.neighbor.n50_simMat_Histo.tsv"
 add = "/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/prevRuns/simMat/f1chr4.physlr.overlap.neighbor.n20_simMat_Histo.tsv"
+add = "/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr-old/prevRuns/simMat/f1chr4.physlr.overlap.neighbor.squared_Histo.tsv"
+
 vv = read.table(add, sep = "\t", header = FALSE)
 vv_plot = ggplot(vv)
-vv_plot+geom_step(directon="hv",aes(x=1:dim(vv)[1], y=as.vector(t(vv))))+xlim(c(0,120))+ylim(c(0,3000000))
+vv_plot+geom_step(directon="hv",aes(x=1:dim(vv)[1], y=as.vector(t(vv))))+xlim(c(0,120))+ylim(c(0,300000000))
