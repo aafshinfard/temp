@@ -113,4 +113,8 @@ add = "/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr-old/prevRu
 
 vv = read.table(add, sep = "\t", header = FALSE)
 vv_plot = ggplot(vv)
-vv_plot+geom_step(directon="hv",aes(x=1:dim(vv)[1], y=as.vector(t(vv))))+xlim(c(0,120))+ylim(c(0,300000000))
+vv_plot+geom_step(directon="hv",aes(x=1:dim(vv)[1], y=as.vector(t(vv))))+xlim(c(0,120))+ylim(c(0,120000000))+
+  ggtitle("Threshold's effect on edge removal - over all subgraphs") +
+  labs(x= "Threshold X 100",y= "Number of edges removed") + 
+  theme(text = element_text(size=14),
+        axis.text.x = element_text(angle=0, hjust=1)) 

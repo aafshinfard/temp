@@ -1,21 +1,21 @@
 library("ggplot2")
 library("cowplot")
 
-dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/AAGCCGCCAGGATCGA.tsv" # 38 HARD!!!
+dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr-old/eg/AAGCCGCCAGGATCGA.tsv" # 38 HARD!!!
 dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/AATCGTGAGGAGTCTG.tsv" # HARD!!!
 
-dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/AAACCTGCACGCTTTC.tsv" #22  #DONE poorly..!
-dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/AACGGAGTCCTGCACT.tsv" #307 #DONE
-dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/AACTCCCTCTCCTGGT.tsv" #94 #DONE
-dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/AGGAGACTCGAAAGGC.tsv" #90 DONE!
-dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/ATTACTCAGTCGGGAT.tsv" #151 DONE!
-dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/CAAGGCCCATGAAGTA.tsv" #101 DONE!
-dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/GCGCGTAGTTTCCGGG.tsv" #103 DONE!
-dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/GGGACAAAGGACAGTC-GTACGTACAAAGGCTG.tsv" #84 #DONE!
-dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/GTTGCAACAACGTCTA.tsv" #184 #DONE
-dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/TCATTACGTCTCTGGG.tsv" #113 #DONE!
-dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/TCGGGCAAGAGCACCA.tsv" #118 #Done! #figures: dataSmilesOnUs_nodeDegreeHistogram
-dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/TTTGTGTAGCCTGATT.tsv" #148 Done!
+dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr-old/eg/AAACCTGCACGCTTTC.tsv" #22  #DONE poorly..!
+dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr-old/eg/AACGGAGTCCTGCACT.tsv" #307 #DONE
+dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr-old/eg/AACTCCCTCTCCTGGT.tsv" #94 #DONE
+dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr-old/eg/AGGAGACTCGAAAGGC.tsv" #90 DONE!
+dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr-old/eg/ATTACTCAGTCGGGAT.tsv" #151 DONE!
+dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr-old/eg/CAAGGCCCATGAAGTA.tsv" #101 DONE!
+dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr-old/eg/GCGCGTAGTTTCCGGG.tsv" #103 DONE!
+dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr-old/eg/GGGACAAAGGACAGTC-GTACGTACAAAGGCTG.tsv" #84 #DONE!
+dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr-old/eg/GTTGCAACAACGTCTA.tsv" #184 #DONE
+dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr-old/eg/TCATTACGTCTCTGGG.tsv" #113 #DONE!
+dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr-old/eg/TCGGGCAAGAGCACCA.tsv" #118 #Done! #figures: dataSmilesOnUs_nodeDegreeHistogram
+dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr-old/eg/TTTGTGTAGCCTGATT.tsv" #148 Done!
 
 dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/GAGCTTACAGGATCTT.tsv" #simplDONE but No graphs available
 dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/AGTAGTCGTTCTCTCG-GTTTGTTCAGCGCATC.physlr.tsv" # No graphs available
@@ -34,7 +34,7 @@ dat
 ########################################
 ### Summary
 a = read.table(dat, header = FALSE, col.names = paste0("V",seq_len(3)),as.is = "V3", fill = TRUE)
-a = a[38:dim(a)[1],]
+a = a[84:dim(a)[1],]
 a[,3] = as.numeric(a[,3])
 gr <- graph.data.frame(a)
 gr = as.undirected(gr)
@@ -53,13 +53,15 @@ if(max(colSums(adj) )== dim(adj)[1]-1 ){
 sort(colSums(adj_filt))
 length(colSums(adj_filt))
 #hist(colSums(adj_filt))
-ggplot(as.data.frame(colSums(adj_filt)), aes(x=colSums(adj_filt)) ) + geom_histogram( binwidth= 2, position="identity" )
+ggplot(as.data.frame(colSums(adj_filt)), aes(x=colSums(adj_filt)) ) + geom_histogram( binwidth= 3, position="identity" )
 adj_orig = adj_filt
 roll <- function( x , n ){
   if( n == 0 )
     return( x )
   c( tail(x,n) , head(x,-n) )
 }
+#which(colSums(adj_filt) == 28)
+#filt_index = c(1:7,9:13,15:34)
 rolled = roll(sort(colSums(adj_filt)),1) - sort(colSums(adj_filt))
 rolled = rolled[2:length(colSums(adj_filt))]
 if(min(rolled)==rolled[length(rolled)]){
@@ -75,10 +77,13 @@ if(min(rolled)==rolled[length(rolled)]){
 #adj_filt = adj_filt[filt_index,filt_index]
 #filt_index = c(1:(which(colSums(adj_filt)==25)-1),(which(colSums(adj_filt)==25)+1):33) 
 #adj_filt = adj_filt[filt_index,filt_index]
+#sort(colSums(adj_filt[filt_index,filt_index]))
+#length(colSums(adj_filt[filt_index,filt_index]))
+
 sort(colSums(adj_filt))
 length(colSums(adj_filt))
 #hist(colSums(adj_filt))
-ggplot(as.data.frame(colSums(adj_filt)), aes(x=colSums(adj_filt)) ) + geom_histogram(  binwidth= 1, position="identity" )
+ggplot(as.data.frame(colSums(adj_filt)), aes(x=colSums(adj_filt)) ) + geom_histogram(  binwidth= 4, position="identity" )
 
 adj_sq = adj_filt%*%adj_filt
 ggplot(as.data.frame(as.vector(adj_sq)), aes(x=as.vector(adj_sq)) ) + geom_histogram( aes(y=..density..), position="identity" )
@@ -100,7 +105,7 @@ plot(graph_from_adjacency_matrix(adj_sq))
 adj_t = adj_filt
 adj_t[cos[,] < 0.5] = 0
 adj_t[cos3[,] < .92] = 0
-sum(cos3[,] < 0.99)/sum((cos3[,] > -1))
+sum(cos3[,] < 0.9)/sum((cos3[,] > -1))
 sum(adj_filt != 0)
 sum(adj_t != adj_filt)
 grnew = graph_from_adjacency_matrix(adj_t)
@@ -170,7 +175,7 @@ p1 <- ggplot(remStat3, aes(x=V2,y=V1,label=mixLabel) ) + geom_col() +
   ggtitle("Threshold's effect on edge removal") +
   labs(x= "Threshold",y= "Number of edges removed") + 
   theme(text = element_text(size=14),
-        axis.text.x = element_text(angle=0, hjust=1)) + xlim(0.6,1.01) + ylim(0,max(remStat3[,1])+(max(remStat3[,1])/10) )
+        axis.text.x = element_text(angle=0, hjust=1)) + xlim(0,1.01) + ylim(0,max(remStat3[,1])+(max(remStat3[,1])/10) )
 p1
 #p1 <- ggplot(remStat, aes(x=V2,y=V1) ) + geom_col() + ggtitle("Threshold's effect on edge removal") +
 #  labs(x= "Threshold",y= "Number of edges removed") + 
