@@ -1,0 +1,6 @@
+head orig\ Physlr2/f1chr4.n100-1000.physlr.overlap.n50.mol.tsv -n 12514 > compare/origPhys2.header.mol.tsv
+cd compare
+awk -F\| '$1 { print substr($1,1,18)}' origPhys2.header.mol.tsv | uniq -c | sort -k 2 > bar2mol_origPhys2.tsv
+diff -y bar2mol_origPhys2.tsv mol2barc_GT.txt > diff_origPhys2
+grep "\-.*\-" diff_origPhys2 | grep '|' | wc -l
+grep "\-.*\-" diff_origPhys2 | wc -l
