@@ -11,16 +11,30 @@ awk {'print $2'} bar2mol_sqCosine+.tsv | grep -f - barc2mol_GoldeTruth > bar2mol
 
 
 
+
+
+
+
+
 1 TTTGTCATCGCTTAGA-1
 3 TTTGTCATCGCTTAGA-1
 
+grep 'TTTGTCATCGCTTAGA' sqCosine+emptyReturnWisely/f1chr4.n100-1000.physlr.overlap.n50.mol.tsv | tail -n +2 | awk '{print substr($1,1,18)"\n"substr($2,1,18)}' | sort | uniq | grep -f - sqCosine+emptyReturnWisely/f1chr4.n100-1000.physlr.overlap.n50.mol.tsv > subgraphs/TTTGTCATCGCTTAGA.tsv
 
 1 TTTGTCACAGGTGTAG-1
 5 TTTGTCACAGGTGTAG-1
 
+
+grep 'TTTGTCACAGGTGTAG' sqCosine+emptyReturnWisely/f1chr4.n100-1000.physlr.overlap.n50.mol.tsv | tail -n +2 | awk '{print substr($1,1,18)"\n"substr($2,1,18)}' | sort | uniq | grep -f - sqCosine+emptyReturnWisely/f1chr4.n100-1000.physlr.overlap.n50.mol.tsv > subgraphs/TTTGTCACAGGTGTAG.tsv
+
 2 AGCTGGCTCGCGCACA-1
 3 AGCTGGCTCGCGCACA-1
 
+grep 'AGCTGGCTCGCGCACA' sqCosine+emptyReturnWisely/f1chr4.n100-1000.physlr.overlap.n50.mol.tsv | tail -n +2 | awk '{print substr($1,1,18)"\n"substr($2,1,18)}' | sort | uniq | grep -f - sqCosine+emptyReturnWisely/f1chr4.n100-1000.physlr.overlap.n50.mol.tsv > subgraphs/AGCTGGCTCGCGCACA.tsv
+
+
 1 TTTGCTATCGAGAGGT-1
 2 TTTGCTATCGAGAGGT-1
+
+grep 'TTTGCTATCGAGAGGT' sqCosine+emptyReturnWisely/f1chr4.n100-1000.physlr.overlap.n50.mol.tsv | tail -n +2 | awk '{print substr($1,1,18)"\n"substr($2,1,18)}' | sort | uniq | grep -f - sqCosine+emptyReturnWisely/f1chr4.n100-1000.physlr.overlap.n50.mol.tsv > subgraphs/TTTGCTATCGAGAGGT.tsv
 

@@ -30,15 +30,33 @@ dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/CAGCTGGCA
 
 dat
 
+#### Troubleshooting 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/TTTGTCATCGCTTAGA-1.tsv" #103
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/TTTGTCATCGCTTAGA-1_all.tsv" #532
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/TTTGTCACAGGTGTAG-1.tsv" # 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/TTTGTCACAGGTGTAG-1_all.tsv" 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/AGCTGGCTCGCGCACA-1.tsv" # 91
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/AGCTGGCTCGCGCACA-1_all.tsv" #615
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/TTTGCTATCGAGAGGT-1.tsv" # 57
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/TTTGCTATCGAGAGGT-1_all.tsv" #416
+
 
 ########################################
 ### Summary
 a = read.table(dat, header = FALSE, col.names = paste0("V",seq_len(3)),as.is = "V3", fill = TRUE)
-a = a[84:dim(a)[1],]
+a = a[615:dim(a)[1],]
+#a[615,]
 a[,3] = as.numeric(a[,3])
 gr <- graph.data.frame(a)
 gr = as.undirected(gr)
 adj = as_adjacency_matrix(gr, type = c("both"), attr = NULL, edges = FALSE, names = FALSE, sparse=FALSE)
+# Remove nodes with no edge to source node
+dim(adj)
+head(adj)
+adj_filt = adj
+sort(colSums(adj_filt))
+length(colSums(adj_filt))
+
 # remove source node  
 adj_filt = adj
 if(max(colSums(adj) )== dim(adj)[1]-1 ){
@@ -97,14 +115,15 @@ cos2 = cosine(adj_sq)
 cos3 = cos2
 cos3[cos3 == "NaN"] = 0
 #hist((cos3),breaks = 40)
-ggplot(as.data.frame(as.vector(cos3)), aes(x=as.vector(cos3)) ) + geom_histogram( aes(y=..density..), binwidth= 0.05, position="identity" )
+ggplot(as.data.frame(as.vector(cos3)), aes(x=as.vector(cos3)) ) + geom_histogram( aes(y=..density..), binwidth= 0.02, position="identity" )
 
+dim(adj_orig)
 plot(graph_from_adjacency_matrix(adj_orig))
 plot(graph_from_adjacency_matrix(adj_filt))
 plot(graph_from_adjacency_matrix(adj_sq))
 adj_t = adj_filt
 adj_t[cos[,] < 0.5] = 0
-adj_t[cos3[,] < .92] = 0
+adj_t[cos3[,] < 0.98] = 0
 sum(cos3[,] < 0.9)/sum((cos3[,] > -1))
 sum(adj_filt != 0)
 sum(adj_t != adj_filt)
@@ -142,6 +161,7 @@ p1 <- ggplot(remStat, aes(x=V2,y=V1,label=mixLabel) ) + geom_col() +
   labs(x= "Threshold",y= "Number of edges removed") + 
   theme(text = element_text(size=14),
         axis.text.x = element_text(angle=0, hjust=1)) + xlim(0.4,1.01) + ylim(0,max(remStat[,1])+(max(remStat[,1])/10) )
+
 p1
 
 
