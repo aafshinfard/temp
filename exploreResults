@@ -1,3 +1,5 @@
+cut -f4 fly/fly.f1.a0.65.d50k.m8.n5.q1.s2000.molecule.bed | uniq -c | sort -k 2  > compare/molCount_GT_x
+
 head sqCosine+emptyReturnWisely/f1chr4.n100-1000.physlr.overlap.n50.mol.tsv -n 8374 > compare/origPhys2.header.mol.tsv
 cd compare
 awk -F\| '$1 { print substr($1,1,18)}' origPhys2.header.mol.tsv | uniq -c | sort -k 2 > bar2mol_origPhys2.tsv
@@ -7,12 +9,6 @@ sort diff_sqCosine+ | wc -l
 
 
 awk {'print $2'} bar2mol_sqCosine+.tsv | grep -f - barc2mol_GoldeTruth > bar2mol_GT_filtered
-
-
-
-
-
-
 
 
 
