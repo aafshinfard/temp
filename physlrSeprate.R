@@ -33,19 +33,42 @@ dat
 #### Troubleshooting 
 dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/TTTGTCATCGCTTAGA-1.tsv" #103
 dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/TTTGTCATCGCTTAGA-1_all.tsv" #532
-dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/TTTGTCACAGGTGTAG-1.tsv" # 
-dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/TTTGTCACAGGTGTAG-1_all.tsv" 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/TTTGTCACAGGTGTAG-1.tsv" # !!
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/TTTGTCACAGGTGTAG-1_all.tsv" #271
 dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/AGCTGGCTCGCGCACA-1.tsv" # 91
 dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/AGCTGGCTCGCGCACA-1_all.tsv" #615
 dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/TTTGCTATCGAGAGGT-1.tsv" # 57
 dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/TTTGCTATCGAGAGGT-1_all.tsv" #416
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACATCTTAGTAGGTCG-1.tsv" #191
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACATCTTAGTAGGTCG-1_all.tsv" #491
 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACATCTTCAAGCGATG-1.tsv" #184 seems to be 1 dominant component
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACATCTTCAAGCGATG-1_all.tsv" #
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACATCTTGTATACACC-1.tsv" # 209
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACATCTTGTATACACC-1_all.tsv" #
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACATGCATCCACAGAT-1.tsv" #23 Seems to be 1 comp only
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACATGCATCCACAGAT-1_all.tsv" #304 strongly 1 comp
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACATCTTGTGGTCAGA-1.tsv" # too smaaaall
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACATCTTGTGGTCAGA-1_all.tsv" #206 strongly 1 comp
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACATGGTCACAACTTG-1.tsv" # 301 seem to be 1
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACATGGTCACAACTTG-1_all.tsv" #
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACATGGTTCTGGTGTA-1.tsv" #108
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACATGGTTCTGGTGTA-1_all.tsv" #
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACATGTGCAATGTAAG-1.tsv" # 97
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACATGTGCAATGTAAG-1_all.tsv" #
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACATGTGCACAGGAGT-1.tsv" #18
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACATGTGCACAGGAGT-1_all.tsv" #263 strongly 1 file
+
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACATGTGTCAAAGTAG-1.tsv" #170
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACATGTGTCAAAGTAG-1_all.tsv" #
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACCAACAAGATCGGGT-1.tsv" #49 seem like a single comp
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACCAACAAGATCGGGT-1_all.tsv" #
 
 ########################################
 ### Summary
 a = read.table(dat, header = FALSE, col.names = paste0("V",seq_len(3)),as.is = "V3", fill = TRUE)
-a = a[615:dim(a)[1],]
-#a[615,]
+a = a[49:dim(a)[1],]
+#a[491,]
 a[,3] = as.numeric(a[,3])
 gr <- graph.data.frame(a)
 gr = as.undirected(gr)
@@ -123,7 +146,7 @@ plot(graph_from_adjacency_matrix(adj_filt))
 plot(graph_from_adjacency_matrix(adj_sq))
 adj_t = adj_filt
 adj_t[cos[,] < 0.5] = 0
-adj_t[cos3[,] < 0.98] = 0
+adj_t[cos3[,] < 0.995] = 0
 sum(cos3[,] < 0.9)/sum((cos3[,] > -1))
 sum(adj_filt != 0)
 sum(adj_t != adj_filt)

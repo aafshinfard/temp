@@ -38,3 +38,48 @@ grep 'AGCTGGCTCGCGCACA' sqCosine+emptyReturnWisely/f1chr4.n100-1000.physlr.overl
 
 grep 'TTTGCTATCGAGAGGT' sqCosine+emptyReturnWisely/f1chr4.n100-1000.physlr.overlap.n50.mol.tsv | tail -n +2 | awk '{print substr($1,1,18)"\n"substr($2,1,18)}' | sort | uniq | grep -f - sqCosine+emptyReturnWisely/f1chr4.n100-1000.physlr.overlap.n50.mol.tsv > subgraphs/TTTGCTATCGAGAGGT.tsv
 
+
+    1 ACATCTTAGTAGGTCG-1				      
+    2 ACATCTTAGTAGGTCG-1
+  
+    1 ACATCTTCAAGCGATG-1				      
+    2 ACATCTTCAAGCGATG-1
+  
+    1 ACATCTTGTATACACC-1
+    2 ACATCTTGTATACACC-1
+
+    1 ACATCTTGTGGTCAGA-1
+    2 ACATCTTGTGGTCAGA-1
+      
+    1 ACATGCATCCACAGAT-1	
+    2 ACATGCATCCACAGAT-1
+
+    1 ACATGGTCACAACTTG-1
+    2 ACATGGTCACAACTTG-1
+
+    1 ACATGGTTCTGGTGTA-1
+    2 ACATGGTTCTGGTGTA-1
+
+
+      1 ACATGTGCAATGTAAG-1				      |	      2 ACATGTGCAATGTAAG-1
+
+      1 ACATGTGCACAGGAGT-1				      |	      2 ACATGTGCACAGGAGT-1
+
+      1 ACATGTGTCAAAGTAG-1				      |	      2 ACATGTGTCAAAGTAG-1
+
+      1 ACCAACAAGATCGGGT-1				      |	      2 ACCAACAAGATCGGGT-1
+
+
+
+
+    1 ACATGGTGTCACAGAG-1
+    3 ACATGGTGTCACAGAG-1
+
+    1 ACATGGTGTTCCAGCG-1
+    4 ACATGGTGTTCCAGCG-1
+
+    1 ACATGGTTCATCGCGG-1
+    6 ACATGGTTCATCGCGG-1
+
+      1 ACATGTGAGCAGGCTA-1				      |	      3 ACATGTGAGCAGGCTA-1
+
