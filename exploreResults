@@ -1,9 +1,18 @@
+grep "NC_004353.4" fly/fly.f1.a0.65.d50k.m8.n5.q1.s2000.molecule.bed > fly/fly.chr4.f1.a0.65.d50k.m8.n5.q1.s2000.molecule.bed 
+cut -f4 fly/fly.chr4.f1.a0.65.d50k.m8.n5.q1.s2000.molecule.bed | uniq -c | sort -k 2  > compare/molCount_GT_chr4
+... ## make molCount_sqCos using the code above
+awk {'print $2'} molCount_sqCos+ | grep -f - molCount_GT_chr4 > molCount_GT_chr4_filtered
+diff -y molCount_sqCos+ molCount_GT_chr4_filtered | grep "\-.*\-" > diff_sqCosine+_chr4
+sort diff_sqCosine+_chr4 | grep '|' | wc -l
+sort diff_sqCosine+_chr4 | wc -l
+
+##########
 cut -f4 fly/fly.f1.a0.65.d50k.m8.n5.q1.s2000.molecule.bed | uniq -c | sort -k 2  > compare/molCount_GT_x
 
 
-head sqCosine+emptyReturnWisely/f1chr4.n100-1000.physlr.overlap.n50.mol.tsv -n 8374 > compare/origPhys2.header.mol.tsv
+head sqCosine+emptyReturnWisely/f1chr4.n100-1000.physlr.overlap.n50.mol.tsv -n 8374 > compare/sqCosine+.header.mol.tsv
 cd compare
-awk -F\| '$1 { print substr($1,1,18)}' origPhys2.header.mol.tsv | uniq -c | sort -k 2 > molCount_sqCos+
+awk -F\| '$1 { print substr($1,1,18)}' sqCosine+.header.mol.tsv | uniq -c | sort -k 2 > molCount_sqCos+
 awk {'print $2'} molCount_sqCos+ | grep -f - molCount_GT_2 > molCount_GT_2_filtered
 
 diff -y molCount_sqCos+ molCount_GT_2_filtered | grep "\-.*\-" > diff_sqCosine+
@@ -14,39 +23,56 @@ sort diff_sqCosine+ | wc -l
 awk {'print $2'} bar2mol_sqCosine+.tsv | grep -f - barc2mol_GoldeTruth > bar2mol_GT_filtered
 
 
+## 
 
-1 TTTGTCATCGCTTAGA-1
-3 TTTGTCATCGCTTAGA-1
+head original\ physlr/f1chr4.n100-1000.physlr.overlap.n50.mol.tsv -n 9312 > compare/origPhyslr.header.mol.tsv
+cd compare
+awk -F\| '$1 { print substr($1,1,18)}' origPhyslr.header.mol.tsv | uniq -c | sort -k 2 > molCount_origPhyslr
+awk {'print $2'} molCount_origPhyslr | grep -f - molCount_GT_2 > molCount_GT_2_filteredbyorig
 
-grep 'TTTGTCATCGCTTAGA' sqCosine+emptyReturnWisely/f1chr4.n100-1000.physlr.overlap.n50.mol.tsv | tail -n +2 | awk '{print substr($1,1,18)"\n"substr($2,1,18)}' | sort | uniq | grep -f - sqCosine+emptyReturnWisely/f1chr4.n100-1000.physlr.overlap.n50.mol.tsv > subgraphs/TTTGTCATCGCTTAGA.tsv
+diff -y molCount_origPhyslr molCount_GT_2_filteredbyorig | grep "\-.*\-" > diff_origPhyslr
+sort diff_origPhyslr | grep '|' | wc -l
+sort diff_origPhyslr | wc -l
 
-1 TTTGTCACAGGTGTAG-1
-5 TTTGTCACAGGTGTAG-1
+###############################################
+New lane of comparisons:
+######
+pack1: (run subgraphMaker.sh)
 
-
-grep 'TTTGTCACAGGTGTAG' sqCosine+emptyReturnWisely/f1chr4.n100-1000.physlr.overlap.n50.mol.tsv | tail -n +2 | awk '{print substr($1,1,18)"\n"substr($2,1,18)}' | sort | uniq | grep -f - sqCosine+emptyReturnWisely/f1chr4.n100-1000.physlr.overlap.n50.mol.tsv > subgraphs/TTTGTCACAGGTGTAG.tsv
-
-2 AGCTGGCTCGCGCACA-1
-3 AGCTGGCTCGCGCACA-1
-
-grep 'AGCTGGCTCGCGCACA' sqCosine+emptyReturnWisely/f1chr4.n100-1000.physlr.overlap.n50.mol.tsv | tail -n +2 | awk '{print substr($1,1,18)"\n"substr($2,1,18)}' | sort | uniq | grep -f - sqCosine+emptyReturnWisely/f1chr4.n100-1000.physlr.overlap.n50.mol.tsv > subgraphs/AGCTGGCTCGCGCACA.tsv
-
-
-1 TTTGCTATCGAGAGGT-1
-2 TTTGCTATCGAGAGGT-1
-
-grep 'TTTGCTATCGAGAGGT' sqCosine+emptyReturnWisely/f1chr4.n100-1000.physlr.overlap.n50.mol.tsv | tail -n +2 | awk '{print substr($1,1,18)"\n"substr($2,1,18)}' | sort | uniq | grep -f - sqCosine+emptyReturnWisely/f1chr4.n100-1000.physlr.overlap.n50.mol.tsv > subgraphs/TTTGCTATCGAGAGGT.tsv
-
-      1 AACATGCCACTAGGCC-1				      |	      2 AACATGCCACTAGGCC-1
-      1 AACATGCCATACAGCT-1				      |	      2 AACATGCCATACAGCT-1
-      1 AACATGCGTGTTGTGT-1				      |	      2 AACATGCGTGTTGTGT-1
-
-      1 TTTCCTCAGCCACTAT-1				      |	      2 TTTCCTCAGCCACTAT-1
-      1 TTTCCTCCACACATGT-1				      |	      2 TTTCCTCCACACATGT-1
-      1 TTTCCTCCATACGTTG-1				      |	      2 TTTCCTCCATACGTTG-1
-      1 TTTCCTCCATGCCTCT-1				      |	      2 TTTCCTCCATGCCTCT-1
-      1 TTTCCTCGTAGGAGTC-1				      |	      2 TTTCCTCGTAGGAGTC-1
-      1 TTTCCTCGTTAGTCAC-1				      |	      2 TTTCCTCGTTAGTCAC-1
-      1 TTTCCTCGTTATAAGG-1				      |	      2 TTTCCTCGTTATAAGG-1
-	
-
+      1 AATCCAGAGGTTGTAA-1				      |	      2 AATCCAGAGGTTGTAA-1
+      1 ACAGTGTAGCTAGTCT-1				      |	      2 ACAGTGTAGCTAGTCT-1
+      1 ACATCTTAGAGACTAT-1				      |	      2 ACATCTTAGAGACTAT-1
+      1 ACGTCAATCTGCGTAA-1				      |	      2 ACGTCAATCTGCGTAA-1
+      1 ACTGAGTAGCAGCCCT-1				      |	      2 ACTGAGTAGCAGCCCT-1
+      1 AGTTGGTTCAAGCCGC-1				      |	      2 AGTTGGTTCAGCATGT-1
+      1 ATAGTGCTCCTGTGGG-1				      |	      2 ATAGTGCTCCTGTGGG-1
+      1 ATATCGGTCGAATGTC-1				      |	      2 ATATCGGTCGAATGTC-1
+      1 ATATGCGAGACCCATT-1				      |	      2 ATATGCGAGCCCAAAG-1
+      1 CAACTTTCAACCAGAG-1				      |	      2 CAACTTTCAACCAGAG-1
+      1 CACTTTATCAAACCGT-1				      |	      2 CACTTTATCAAACCGT-1
+      1 CGATCAAAGGTAGACC-1				      |	      3 CGATCAAAGGTAGACC-1
+      1 CGGATTAGTGCCACCA-1				      |	      2 CGGATTAGTGCCACCA-1
+      1 CGTTCCATCTCAAGTG-1				      |	      2 CGTTCCATCTCAAGTG-1
+      1 CTACACCTCGCTGATA-1				      |	      2 CTACACCTCGCTGATA-1
+      1 CTGATCCGTAGGACTG-1				      |	      2 CTGATCCGTCGATTGT-1
+      1 CTGTGCTCAGTGCGTC-1				      |	      3 CTGTGCTCAGTGCGTC-1
+      1 GAGTGAGAGAGACTTA-1				      |	      2 GAGTGAGAGAGACTTA-1
+      1 GCAACCGGTTTAGGAA-1				      |	      2 GCAACCGGTTTAGGAA-1
+      1 GCGTGTGCAAACAACA-1				      |	      2 GCGTGTGCAAACAACA-1
+      1 GCTATAGTCTATCCTA-1				      |	      2 GCTATAGTCTATCCTA-1
+      1 GGCTTAAGTGTGCCTG-1				      |	      2 GGCTTAAGTGTGCCTG-1
+      1 GTACGGCTCTCAAGTG-1				      |	      2 GTACGGCTCTCAAGTG-1
+      1 GTTGCAACAACGTCTA-1				      |	      2 GTTGCAACAACGTCTA-1
+      1 TAAGGCTCACCAGTGC-1				      |	      2 TAAGGCTCACCAGTGC-1
+      1 TAGAAGAGTTGACATC-1				      |	      2 TAGAAGAGTTGACATC-1
+      1 TAGACACCAACCAGAG-1				      |	      2 TAGACACCAACCAGAG-1
+      1 TCAACGACAAGGACTG-1				      |	      2 TCAACGACAAGGACTG-1
+      1 TTAGGACTCAGTGTGT-1				      |	      2 TTAGGACTCAGTGTGT-1
+      1 TTCCCAGGTGTCCCTT-1				      |	      2 TTCCCAGGTGTCCCTT-1
+      1 TTCGAAGCACGTCGGT-1				      |	      2 TTCGAAGCACGTCGGT-1
+      1 TTCTCAACAGAGCCAA-1				      |	      2 TTCTCAACAGAGCCAA-1
+      1 TTGTTTGTCCCAAGAT-1				      |	      2 TTGTTTGTCCCAAGAT-1
+      2 ACCATCCAGGCTAGGT-1				      |	      1 ACCATCCAGGCTAGGT-1
+      2 CTTAATCTCTTGTAGG-1				      |	      1 CTTAATCTCTTGTAGG-1
+      2 TACTTCAAGGAATCCG-1				      |	      1 TACTTCAAGGAATCCG-1
+      2 TCACGAAAGTGTCCGC-1				      |	      1 TCACGAAAGTGTCCGC-1

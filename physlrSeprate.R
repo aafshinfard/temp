@@ -64,11 +64,55 @@ dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACATGTGTCAAAGT
 dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACCAACAAGATCGGGT-1.tsv" #49 seem like a single comp
 dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACCAACAAGATCGGGT-1_all.tsv" #
 
+######
+#new lane of troubleshooting:
+
+#sqCosine+:1 Tigmint:2 #Stronlgy seem to be 1 component!
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/AAACACCTCTCTGCTG-1.tsv" # 40
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/AAACACCTCTCTGCTG-1_all.tsv" #474 
+#sqCosine+:1 Tigmint:2 #Stronlgy seem to be 1 component!
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/AAACACCAGTGGACGT-1.tsv" # 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/AAACACCAGTGGACGT-1_all.tsv" # 277
+
+# sqCosine+:1 Tigmint:4
+# NC_004354.4	15676986	15748255	AAACACCCAGCTATTG-1	204
+# NT_037436.4	17640086	17674610	AAACACCCAGCTATTG-1	82
+# NT_033777.3	30079806	30187837	AAACACCCAGCTATTG-1	294
+# NC_004353.4	968505	1026671	AAACACCCAGCTATTG-1	144
+#Stronlgy seem to be 1 component!
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/AAACACCCAGCTATTG-1.tsv" # no such file
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/AAACACCCAGCTATTG-1_all.tsv" # 525
+
+# sqCosine+:1 Tigmint:2
+#NT_033779.5	13665321	13730955	ACATCTTCAAGCGATG-1	174
+#NC_004353.4	176878	230807	ACATCTTCAAGCGATG-1	173
+#Stronlgy seem to be 1 component!
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACATCTTCAAGCGATG-1.tsv" # 184
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACATCTTCAAGCGATG-1_all.tsv" # 493
+
+
+## new lane of comparison - after filtering to chromosome 4 and 99.54% consistency acheiving
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/ACCATCCAGGCTAGGT-1.tsv" # 9
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/ACCATCCAGGCTAGGT-1_all.tsv" # 608
+
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/CTTAATCTCTTGTAGG-1.tsv" # 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/CTTAATCTCTTGTAGG-1_all.tsv" # 
+
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/TACTTCAAGGAATCCG-1.tsv" # 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/TACTTCAAGGAATCCG-1_all.tsv" # 
+
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/TCACGAAAGTGTCCGC-1.tsv" # 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/TCACGAAAGTGTCCGC-1_all.tsv" # 
+
+
+
+
+
 ########################################
 ### Summary
 a = read.table(dat, header = FALSE, col.names = paste0("V",seq_len(3)),as.is = "V3", fill = TRUE)
-a = a[49:dim(a)[1],]
-#a[491,]
+a = a[608:dim(a)[1],]
+a[607,]
 a[,3] = as.numeric(a[,3])
 gr <- graph.data.frame(a)
 gr = as.undirected(gr)
@@ -145,12 +189,13 @@ plot(graph_from_adjacency_matrix(adj_orig))
 plot(graph_from_adjacency_matrix(adj_filt))
 plot(graph_from_adjacency_matrix(adj_sq))
 adj_t = adj_filt
-adj_t[cos[,] < 0.5] = 0
+adj_t[cos[,] < 0.82] = 0
 adj_t[cos3[,] < 0.995] = 0
 sum(cos3[,] < 0.9)/sum((cos3[,] > -1))
 sum(adj_filt != 0)
 sum(adj_t != adj_filt)
 grnew = graph_from_adjacency_matrix(adj_t)
+comps = components(grnew)
 plot(grnew)
 
 ### using cos
