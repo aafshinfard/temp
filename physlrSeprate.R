@@ -90,29 +90,96 @@ dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/AAACACCCAGCTAT
 dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACATCTTCAAGCGATG-1.tsv" # 184
 dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACATCTTCAAGCGATG-1_all.tsv" # 493
 
-
+###################################################################################
 ## new lane of comparison - after filtering to chromosome 4 and 99.54% consistency acheiving
+
+##oversplitting:
+
+#incon cuz of filtering resulting in a small poorly connected subgraph
 dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/ACCATCCAGGCTAGGT-1.tsv" # 9
+#consistent! 
 dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/ACCATCCAGGCTAGGT-1_all.tsv" # 608
 
-dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/CTTAATCTCTTGTAGG-1.tsv" # 
-dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/CTTAATCTCTTGTAGG-1_all.tsv" # 
+#incon cuz of filtering resulting in a small poorly connected subgraph
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/CTTAATCTCTTGTAGG-1.tsv" # 13
+#consistent! 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/CTTAATCTCTTGTAGG-1_all.tsv" # 918
 
-dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/TACTTCAAGGAATCCG-1.tsv" # 
-dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/TACTTCAAGGAATCCG-1_all.tsv" # 
+#incon cuz of filtering resulting in a small poorly connected subgraph
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/TACTTCAAGGAATCCG-1.tsv" # 10
+#consistent! 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/TACTTCAAGGAATCCG-1_all.tsv" # 402
 
-dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/TCACGAAAGTGTCCGC-1.tsv" # 
-dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/TCACGAAAGTGTCCGC-1_all.tsv" # 
+#incon cuz of filtering resulting in a small poorly connected subgraph
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/TCACGAAAGTGTCCGC-1.tsv" # 25 
+#consistent! 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/TCACGAAAGTGTCCGC-1_all.tsv" # 159
 
+## undersplitting:
 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/AATCCAGAGGTTGTAA-1.tsv" # 78
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/AATCCAGAGGTTGTAA-1_all.tsv" # 404
 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/ACAGTGTAGCTAGTCT-1.tsv" # 87
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/ACAGTGTAGCTAGTCT-1_all.tsv" # 778
 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/ACATCTTAGAGACTAT-1.tsv" # 151
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/ACATCTTAGAGACTAT-1_all.tsv" # 835
+
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/ACGTCAATCTGCGTAA-1.tsv" # 128
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/ACGTCAATCTGCGTAA-1_all.tsv" # 782
+
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/ACTGAGTAGCAGCCCT-1.tsv" # 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/ACTGAGTAGCAGCCCT-1_all.tsv" # 
+
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/AGTTGGTTCAAGCCGC-1.tsv" # 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/AGTTGGTTCAAGCCGC-1_all.tsv" # 
+
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/ATAGTGCTCCTGTGGG-1.tsv" # 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/ATAGTGCTCCTGTGGG-1_all.tsv" # 
+
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/ATATCGGTCGAATGTC-1.tsv" # 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/ATATCGGTCGAATGTC-1_all.tsv" # 
+
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/ATATGCGAGACCCATT-1.tsv" # 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/ATATGCGAGACCCATT-1_all.tsv" # 
+
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/CAACTTTCAACCAGAG-1.tsv" # 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/CAACTTTCAACCAGAG-1_all.tsv" # 
+
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/CACTTTATCAAACCGT-1.tsv" # 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/CACTTTATCAAACCGT-1_all.tsv" # 
+
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/CGATCAAAGGTAGACC-1.tsv" # 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/CGATCAAAGGTAGACC-1_all.tsv" # 
+
+1 CGGATTAGTGCCACCA-1
+1 CGTTCCATCTCAAGTG-1
+1 CTACACCTCGCTGATA-1
+1 CTGATCCGTAGGACTG-1
+1 CTGTGCTCAGTGCGTC-1
+1 GAGTGAGAGAGACTTA-1
+1 GCAACCGGTTTAGGAA-1
+1 GCGTGTGCAAACAACA-1
+1 GCTATAGTCTATCCTA-1
+1 GGCTTAAGTGTGCCTG-1
+1 GTACGGCTCTCAAGTG-1
+1 GTTGCAACAACGTCTA-1
+1 TAAGGCTCACCAGTGC-1
+1 TAGAAGAGTTGACATC-1
+1 TAGACACCAACCAGAG-1
+1 TCAACGACAAGGACTG-1
+1 TTAGGACTCAGTGTGT-1
+1 TTCCCAGGTGTCCCTT-1
+1 TTCGAAGCACGTCGGT-1
+1 TTCTCAACAGAGCCAA-1
+1 TTGTTTGTCCCAAGAT-1
 
 ########################################
 ### Summary
 a = read.table(dat, header = FALSE, col.names = paste0("V",seq_len(3)),as.is = "V3", fill = TRUE)
-a = a[608:dim(a)[1],]
-a[607,]
+a = a[782:dim(a)[1],]
+a[781,]
 a[,3] = as.numeric(a[,3])
 gr <- graph.data.frame(a)
 gr = as.undirected(gr)
@@ -162,7 +229,7 @@ if(min(rolled)==rolled[length(rolled)]){
 #adj_filt = adj_filt[filt_index,filt_index]
 #filt_index = c(1:(which(colSums(adj_filt)==25)-1),(which(colSums(adj_filt)==25)+1):33) 
 #adj_filt = adj_filt[filt_index,filt_index]
-#sort(colSums(adj_filt[filt_index,filt_index]))
+#sort(colSums(adj_filt[filt_index,filt_index]))
 #length(colSums(adj_filt[filt_index,filt_index]))
 
 sort(colSums(adj_filt))
@@ -189,8 +256,8 @@ plot(graph_from_adjacency_matrix(adj_orig))
 plot(graph_from_adjacency_matrix(adj_filt))
 plot(graph_from_adjacency_matrix(adj_sq))
 adj_t = adj_filt
-adj_t[cos[,] < 0.82] = 0
-adj_t[cos3[,] < 0.995] = 0
+adj_t[cos[,] < 0.84] = 0
+adj_t[cos3[,] < 0.88] = 0
 sum(cos3[,] < 0.9)/sum((cos3[,] > -1))
 sum(adj_filt != 0)
 sum(adj_t != adj_filt)
