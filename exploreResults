@@ -1,3 +1,46 @@
+##########################################################################################  
+##### Fly whole data: f1.* | directory: f1.sqCos | strategy: sqCos+
+head f1.sqCos/f1.n*.mol.tsv -n 523407 > compare/f1.sqCosine+.header.mol.tsv
+cd compare
+awk -F\| '$1 { print substr($1,1,18)}' f1.sqCosine+.header.mol.tsv | uniq -c | sort -k 2 > molCount_f1.sqCos+
+#awk {'print $2'} molCount_f1.sqCos+ | grep -f - molCount_GT_2 > molCount_GT_2_f1.filtered
+awk 'NR==FNR{seen[$2]; next} $2 in seen' molCount_f1.sqCos+ molCount_GT_2 > molCount_GT_2_f1.filtered 
+awk 'NR==FNR{seen[$2]; next} $2 in seen' molCount_GT_2_f1.filtered molCount_f1.sqCos+ > molCount_f1.sqCos+_filt
+diff -y molCount_f1.sqCos+_filt molCount_GT_2_f1.filtered | grep "\-.*\-" > diff_f1.sqCos+
+sort diff_f1.sqCos+ | grep '|' | wc -l
+sort diff_f1.sqCos+ | wc -l
+grep "|" diff_f1.sqCos+ | awk {'print $1-$4'} | sort -g | uniq -c > spdiff_f1.sqCos+
+
+##########################################################################################  
+##### Fly whole data: f1.* | directory: f1.physlrOrig.Shaun | strategy: physlr's simple graph splitting
+# file: /home/sjackman/work/physlr/data/f1.n100-2000.physlr.overlap.n118.mol.tsv
+cat f1.physlrOrig.Shaun/f1.n100-2000.physlr.overlap.n118.mol.tsv | awk '{if(gsub(/\t/,"")<2) print gsub(/\t/,"")}' | wc -l
+head f1.physlrOrig.Shaun/f1.n100-2000.physlr.overlap.n118.mol.tsv -n 490747 > compare/f1.physlrOrigByShaun.header.mol.tsv
+cd compare
+awk -F\| '$1 { print substr($1,1,18)}' f1.physlrOrigByShaun.header.mol.tsv | uniq -c | sort -k 2 > molCount_f1.physlrOrigByShaun
+#awk {'print $2'} molCount_f1.sqCos+ | grep -f - molCount_GT_2 > molCount_GT_2_f1.filtered
+awk 'NR==FNR{seen[$2]; next} $2 in seen' molCount_f1.physlrOrigByShaun molCount_GT_2 > molCount_GT_2_f1physlrOrigByShaun.filt 
+awk 'NR==FNR{seen[$2]; next} $2 in seen' molCount_GT_2_f1.filtered molCount_f1.physlrOrigByShaun > molCount_f1.physlrOrigByShaun_filt
+diff -y molCount_f1.physlrOrigByShaun_filt molCount_GT_2_f1physlrOrigByShaun.filt  | grep "\-.*\-" > diff_f1.physlrOrigByShaun
+sort diff_f1.physlrOrigByShaun | grep '|' | wc -l
+sort diff_f1.physlrOrigByShaun | wc -l
+grep "|" diff_f1.physlrOrigByShaun | awk {'print $1-$4'} | sort -g | uniq -c > spdiff_f1.physlrOrigByShaun
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 grep "NC_004353.4" fly/fly.f1.a0.65.d50k.m8.n5.q1.s2000.molecule.bed > fly/fly.chr4.f1.a0.65.d50k.m8.n5.q1.s2000.molecule.bed 
 cut -f4 fly/fly.chr4.f1.a0.65.d50k.m8.n5.q1.s2000.molecule.bed | uniq -c | sort -k 2  > compare/molCount_GT_chr4
 ... ## make molCount_sqCos using the code above
