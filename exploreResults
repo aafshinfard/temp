@@ -1,5 +1,50 @@
+################################################################
+################################ NEW LANE OF TESTS:
+################################################################
+##### Ground truth:
+..
+..
+# number of undersplittings"
+grep "|" diff_GT2_GT_f1 | awk {'print $1-$4'} | sort -g | uniq -c | awk {'if($2<0) print $1'} | awk '{s+=$1} END {print s}'
+# number of oversplittings"
+grep "|" diff_GT2_GT_f1 | awk {'print $1-$4'} | sort -g | uniq -c | awk {'if($2>0) print $1'} | awk '{s+=$1} END {print s}'
+grep "|" diff_GT2_GT_f1 | awk {'if($4>1) print'} | awk {'print $1-$4'} | sort -g | uniq -c | awk {'if($2>0) print $1'} | awk '{s+=$1} END {print s}'
+grep "|" diff_GT2_GT_f1 | awk {'if($4>1) print'} | awk {'print $1-$4'} | sort -g | uniq -c | awk {'if($2<0) print $1'} | awk '{s+=$1} END {print s}'
+..
+
+#################### Fly dataset: f1.* | strategy: sqCos with threshold 90
+# run log:
+ls 1_f1_sqCos_t90_makeTest.log
+# resulting file:
+f1_sqCos_t90.n100-2000.n100.mol.tsv
+#
+cat f1_sqCos_t90.n100-2000.n100.mol.tsv | awk '{if(gsub(/\t/,"")<2) print gsub(/\t/,"")}' | wc -l
+head f1_sqCos_t90.n100-2000.n100.mol.tsv -n 454363 > compare/f1_sqCos_t90.header.mol.tsv
+cd compare
+awk -F\| '$1 { print substr($1,1,18)}' f1_sqCos_t90.header.mol.tsv | uniq -c | sort -k 2 > molCount_f1_sqCos_t90
+awk 'NR==FNR{seen[$2]; next} $2 in seen' molCount_f1_sqCos_t90 molCount_GT_2 > molCount_GT_2_filt.sqCos_t90 
+awk 'NR==FNR{seen[$2]; next} $2 in seen' molCount_GT_2_filt.sqCos_t90 molCount_f1_sqCos_t90 > molCount_f1_sqCos_t90_filt.GT_2
+diff -y molCount_f1_sqCos_t90_filt.GT_2 molCount_GT_2_filt.sqCos_t90  | grep "\-.*\-" > diff_f1_sqCos_t90_vs_GT_2
+grep "|" diff_f1_sqCos_t90_vs_GT_2 |  wc -l
+grep -v "|" diff_f1_sqCos_t90_vs_GT_2 | wc -l
+wc -l diff_f1_sqCos_t90_vs_GT_2
+grep "|" diff_f1_sqCos_t90_vs_GT_2 | awk {'print $1-$4'} | sort -g | uniq -c > spdiff_f1_sqCos_t90_vs_GT_2
+grep "|" diff_f1_sqCos_t90_vs_GT_2 | awk {'if($4>1) print'} | awk {'print $1-$4'} | sort -g | uniq -c > spdiff_f1_sqCos_t90_vs_GT_2_multicompsTig
+grep -v "|" diff_f1_sqCos_t90_vs_GT_2 | awk {'if($3>1) print'} | wc -l
+# number of undersplittings"
+grep "|" diff_f1_sqCos_t90_vs_GT_2 | awk {'print $1-$4'} | sort -g | uniq -c | awk {'if($2<0) print $1'} | awk '{s+=$1} END {print s}'
+# number of oversplittings"
+grep "|" diff_f1_sqCos_t90_vs_GT_2 | awk {'print $1-$4'} | sort -g | uniq -c | awk {'if($2>0) print $1'} | awk '{s+=$1} END {print s}'
+
+
+
+
+
+
+
+
 ##########################################################################################  
-##### Fly whole data: f1.* | directory: f1.sqCos | strategy: sqCos+
+##### Fly whole data: f1.* | directory: f1.sqCos | strategy: naive splitting (wrongly assumed to be sqCos+)
 head f1.sqCos/f1.n*.mol.tsv -n 523407 > compare/f1.sqCosine+.header.mol.tsv
 cd compare
 awk -F\| '$1 { print substr($1,1,18)}' f1.sqCosine+.header.mol.tsv | uniq -c | sort -k 2 > molCount_f1.sqCos+
@@ -29,15 +74,36 @@ grep "|" diff_f1.physlrOrigByShaun | awk {'print $1-$4'} | sort -g | uniq -c > s
 
 
 
+##########################################################################################  
+##### Fly whole data: f1.* | directory: f1.sqCos2_real | strategy: sqCos+
+cat f1_*.mol.tsv | awk '{if(gsub(/\t/,"")<2) print gsub(/\t/,"")}' | wc -l
+head f1_*.mol.tsv -n 454363 > compare/f1.sqCosine+.header.mol.tsv
+cd compare
+awk -F\| '$1 { print substr($1,1,18)}' f1.sqCosine+.header.mol.tsv | uniq -c | sort -k 2 > molCount_f1.sqCos+
+#awk {'print $2'} molCount_f1.sqCos+ | grep -f - molCount_GT_2 > molCount_GT_2_f1.filtered
+awk 'NR==FNR{seen[$2]; next} $2 in seen' molCount_f1.sqCos+ molCount_GT_2 > molCount_GT_2_f1.filtered 
+awk 'NR==FNR{seen[$2]; next} $2 in seen' molCount_GT_2_f1.filtered molCount_f1.sqCos+ > molCount_f1.sqCos+_filt
+diff -y molCount_f1.sqCos+_filt molCount_GT_2_f1.filtered | grep "\-.*\-" > diff_f1.sqCos+
+
+grep "|" diff_f1.sqCos+ |  wc -l
+grep -v "|" diff_f1.sqCos+ | wc -l
+wc -l diff_f1.sqCos+
+
+grep "|" diff_f1.sqCos+ | awk {'print $1-$4'} | sort -g | uniq -c > spdiff_f1.sqCos+
+grep "|" diff_f1.sqCos+ | awk {'if($4>1) print'} | awk {'print $1-$4'} | sort -g | uniq -c > spdiff_f1.sqCos+_multicompsTig
+grep -v "|" diff_f1.sqCos+ | awk {'if($3>1) print'} | wc -l
+# number of undersplittings"
+grep "|" diff_GT2_GT_f1 | awk {'print $1-$4'} | sort -g | uniq -c | awk {'if($2<0) print $1'} | awk '{s+=$1} END {print s}'
+# number of oversplittings"
+grep "|" diff_GT2_GT_f1 | awk {'print $1-$4'} | sort -g | uniq -c | awk {'if($2>0) print $1'} | awk '{s+=$1} END {print s}'
 
 
-
-
-
-
-
-
-
+##########################################################################################  
+## comparing GT and GT_2
+wc -l molCount_GT
+	906150 molCount_GT
+wc -l molCount_GT_2 
+	893983 molCount_GT_2
 
 
 
