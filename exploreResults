@@ -2,6 +2,15 @@
 ################################ NEW LANE OF TESTS:
 ################################################################
 ##### Ground truth:
+cut -f4 fly/fly.f1.a0.65.d10000.n5.q1.s2000.molecule.bed | uniq -c | sort -k 2  > compare/molCount_GT_m4d10k
+
+cut -f4 fly/fly.f1.a0.65.d100k.m8.n5.q1.s2000.molecule.bed | uniq -c | sort -k 2  > compare/molCount_GT_m8d100k
+cut -f4 fly/fly.f1.a0.65.d100k.m30.n5.q1.s2000.molecule.bed | uniq -c | sort -k 2  > compare/molCount_GT_m30d100k
+cut -f4 fly/fly.f1.a0.65.d200k.m8.n5.q1.s2000.molecule.bed | uniq -c | sort -k 2  > compare/molCount_GT_m8d200k
+cut -f4 fly/fly.f1.a0.65.d200k.m30.n5.q1.s2000.molecule.bed | uniq -c | sort -k 2  > compare/molCount_GT_m30d200k
+cut -f4 fly/fly.f1.a0.65.d50k.m8.n5.q1.s2000.molecule.bed | uniq -c | sort -k 2  > compare/molCount_GT_m8d50k
+
+
 ..
 ..
 # number of undersplittings"
