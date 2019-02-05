@@ -1,5 +1,7 @@
 ################################################################
-################################ NEW LANE OF TESTS:
+################################[ NEW LANE OF TESTS:
+################################################################
+
 ################################################################
 ##### Ground truth:
 cut -f4 fly/fly.f1.a0.65.d10000.n5.q1.s2000.molecule.bed | uniq -c | sort -k 2  > compare/molCount_GT_m4d10k
@@ -10,17 +12,34 @@ cut -f4 fly/fly.f1.a0.65.d200k.m8.n5.q1.s2000.molecule.bed | uniq -c | sort -k 2
 cut -f4 fly/fly.f1.a0.65.d200k.m30.n5.q1.s2000.molecule.bed | uniq -c | sort -k 2  > compare/molCount_GT_m30d200k
 cut -f4 fly/fly.f1.a0.65.d50k.m8.n5.q1.s2000.molecule.bed | uniq -c | sort -k 2  > compare/molCount_GT_m8d50k
 
+######
+## comparing m8d200k with m4d10k:
+toCheck=m8d200k
+ref=m410k
+awk 'NR==FNR{seen[$2]; next} $2 in seen' molCount_GT_${toCheck} molCount_GT_${ref} > molCount_GT_${toCheck}_filt${ref}
+awk 'NR==FNR{seen[$2]; next} $2 in seen' molCount_GT_${ref} molCount_GT_${toCheck} > molCount_GT_${ref}_filt${toCheck} 
+diff -y molCount_GT_${toCheck}_filt${ref}  molCount_GT_${ref}_filt${toCheck}   | grep "\-.*\-" > diff_f1_${toCheck}_${ref}
+grep "|" diff_f1_${toCheck}_${ref} |  wc -l
+wc -l diff_f1_${toCheck}_${ref}
+grep -v "|" diff_f1_${toCheck}_${ref} | wc -l
+grep "|" diff_f1_${toCheck}_${ref} | awk {'print $1-$4'} | sort -g | uniq -c > spdiff_f1_${toCheck}_${ref}
 
-..
-..
 # number of undersplittings"
-grep "|" diff_GT2_GT_f1 | awk {'print $1-$4'} | sort -g | uniq -c | awk {'if($2<0) print $1'} | awk '{s+=$1} END {print s}'
+grep "|" diff_f1_${toCheck}_${ref} | awk {'print $1-$4'} | sort -g | uniq -c | awk {'if($2<0) print $1'} | awk '{s+=$1} END {print s}'
 # number of oversplittings"
-grep "|" diff_GT2_GT_f1 | awk {'print $1-$4'} | sort -g | uniq -c | awk {'if($2>0) print $1'} | awk '{s+=$1} END {print s}'
-grep "|" diff_GT2_GT_f1 | awk {'if($4>1) print'} | awk {'print $1-$4'} | sort -g | uniq -c | awk {'if($2>0) print $1'} | awk '{s+=$1} END {print s}'
-grep "|" diff_GT2_GT_f1 | awk {'if($4>1) print'} | awk {'print $1-$4'} | sort -g | uniq -c | awk {'if($2<0) print $1'} | awk '{s+=$1} END {print s}'
-..
+grep "|" diff_f1_${toCheck}_${ref} | awk {'print $1-$4'} | sort -g | uniq -c | awk {'if($2>0) print $1'} | awk '{s+=$1} END {print s}'
+## Multicomp
+grep -v "|" diff_f1_${toCheck}_${ref} | awk {'if($3>1) print'} | wc -l
+grep "|" diff_f1_${toCheck}_${ref} | awk {'if($4>1) print'} | awk {'print $1-$4'} | sort -g | uniq -c | awk {'if($2>0) print $1'} | awk '{s+=$1} END {print s}'
+grep "|" diff_f1_${toCheck}_${ref} | awk {'if($4>1) print'} | awk {'print $1-$4'} | sort -g | uniq -c | awk {'if($2<0) print $1'} | awk '{s+=$1} END {print s}'
 
+
+################################################################
+################################ NEW LANE OF TESTS ENDS HERE   ]
+################################################################
+
+################################################################
+################################################################
 #################### Fly dataset: f1.* | strategy: sqCos with threshold 90
 # run log:
 ls 1_f1_sqCos_t90_makeTest.log
