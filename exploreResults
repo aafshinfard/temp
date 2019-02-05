@@ -1,3 +1,47 @@
+################################################################ Shell scripts to do the comparison:
+#!/usr/bin/bash
+
+toCheck=gitMaster
+#toCheck=GT_m8d200k
+ref=GT_m8d50k
+
+######################### [start: These lines are for comparing our results to Tigmints, if you are comparing Tigmint with Tigmint comment these
+header=$(cat ../f1_${toCheck}.mol.tsv | awk '{if(gsub(/\t/,"")<2) print gsub(/\t/,"")}' | wc -l)
+headerLenght=$(($header-1))
+echo "$header"
+echo "$headerLenght"
+head ../f1_${toCheck}.mol.tsv -n $headerLenght > f1_${toCheck}.header.mol.tsv
+awk -F\| '$1 { print substr($1,1,18)}' f1_${toCheck}.header.mol.tsv | uniq -c | sort -k 2 > molCount_${toCheck}
+######################### end]
+
+awk 'NR==FNR{seen[$2]; next} $2 in seen' molCount_${toCheck} molCount_${ref} > molCount_${ref}_filt${toCheck} 
+awk 'NR==FNR{seen[$2]; next} $2 in seen' molCount_${ref} molCount_${toCheck} > molCount_${toCheck}_filt${ref}
+diff -y molCount_${toCheck}_filt${ref}  molCount_${ref}_filt${toCheck}   | grep "\-.*\-" > diff_f1_${toCheck}_${ref}
+rm molCount_${toCheck}_filt${ref}
+rm molCount_${ref}_filt${toCheck} 
+
+echo "number of barcodes:"
+wc -l diff_f1_${toCheck}_${ref}
+echo "number of inconsistents:"
+grep "|" diff_f1_${toCheck}_${ref} |  wc -l
+echo "number of consistents:"
+grep -v "|" diff_f1_${toCheck}_${ref} | wc -l
+#grep "|" diff_f1_${toCheck}_${ref} | awk {'print $1-$4'} | sort -g | uniq -c > spdiff_f1_${toCheck}_${ref}
+
+echo "number of undersplittings:"
+grep "|" diff_f1_${toCheck}_${ref} | awk {'print $1-$4'} | sort -g | uniq -c | awk {'if($2<0) print $1'} | awk '{s+=$1} END {print s}'
+echo "number of oversplittings:"
+grep "|" diff_f1_${toCheck}_${ref} | awk {'print $1-$4'} | sort -g | uniq -c | awk {'if($2>0) print $1'} | awk '{s+=$1} END {print s}'
+
+echo "number of consistent (with #mol > 1):"
+grep -v "|" diff_f1_${toCheck}_${ref} | awk {'if($3>1) print'} | wc -l
+echo "number of undersplittings (with #mol > 1):"
+grep "|" diff_f1_${toCheck}_${ref} | awk {'if($4>1) print'} | awk {'print $1-$4'} | sort -g | uniq -c | awk {'if($2<0) print $1'} | awk '{s+=$1} END {print s}'
+echo "number of oversplittings (with #mol > 1):"
+grep "|" diff_f1_${toCheck}_${ref} | awk {'if($4>1) print'} | awk {'print $1-$4'} | sort -g | uniq -c | awk {'if($2>0) print $1'} | awk '{s+=$1} END {print s}'
+
+
+
 ################################################################
 ################################[ NEW LANE OF TESTS:
 ################################################################
