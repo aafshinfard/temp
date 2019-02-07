@@ -1,5 +1,8 @@
 library("ggplot2")
 library("cowplot")
+library("igraph")
+library("lsa")
+
 
 dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr-old/eg/AAGCCGCCAGGATCGA.tsv" # 38 HARD!!!
 dat="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/eg/AATCGTGAGGAGTCTG.tsv" # HARD!!!
@@ -178,7 +181,7 @@ dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/CGATCAAA
 ########################################
 ### Summary
 a = read.table(dat, header = FALSE, col.names = paste0("V",seq_len(3)),as.is = "V3", fill = TRUE)
-a = a[782:dim(a)[1],]
+a = a[118:dim(a)[1],]
 a[781,]
 a[,3] = as.numeric(a[,3])
 gr <- graph.data.frame(a)
