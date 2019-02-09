@@ -71,9 +71,10 @@ set(g.neighbors(u)).union(set([u]))
             cut_vertices = set(nx.articulation_points(sub_graph))
             components = list(nx.connected_components(g.subgraph(set(g.neighbors(u)) - cut_vertices)))
             components.sort(key=len, reverse=True)
-            multicomp_1 = [i for i in components if len(i) > 1]
+            multicomp = [i for i in components if len(i) > 1]
             # current end ]
-	    for sc in multicomp_1:
+	    comul_multisubcomps =[]
+	    for sc in multicomp:
 	        subcomp = sub_graph.subgraph(set(sc))
 	        print(nx.adjacency_matrix(subcomp).toarray())
                 adj_array = nx.adjacency_matrix(subcomp).toarray()
@@ -84,10 +85,9 @@ set(g.neighbors(u)).union(set([u]))
                 subcomp2 = nx.freeze(subcomp2)
                 cos_components = list(nx.connected_components(subcomp2))
                 cos_components.sort(key=len, reverse=True)
-                multi_node_components = [i for i in cos_components if len(i) > 1]
-                if len(multi_node_components_temp) == len(multi_node_components):
-                    global globalNum
-                    globalNum = globalNum + 1
-                return u, {v: i for i, vs in enumerate(multi_node_components) for v in vs}
+                multisubcomp = [i for i in cos_components if len(i) > 1]
+	        comul_multisubcomps = comul_multisubcomps + multisubcomp
+
+            return u, {v: i for i, vs in enumerate(comul_multisubcomps) for v in vs}
 
 
