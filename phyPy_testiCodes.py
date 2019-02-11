@@ -23,7 +23,8 @@ G = nx.from_numpy_matrix(adj_numpy)
 g = G
 sub_graph = g.subgraph(g.neighbors(7))
 adj_array = nx.adjacency_matrix(sub_graph).toarray()
-edges_to_remove = np.argwhere(cosine_similarity(sp.linalg.blas.sgemm(1.0, adj_array, adj_array)) <= egRem_threshold)
+cos = cosine_similarity(sp.linalg.blas.sgemm(1.0, adj_array, adj_array))
+edges_to_remove = np.argwhere(cos <= egRem_threshold)
 sub_graph = nx.Graph(sub_graph)
 sub_graph.remove_edges_from(edges_to_remove)
 sub_graph = nx.freeze(sub_graph)
@@ -90,4 +91,70 @@ set(g.neighbors(u)).union(set([u]))
 
             return u, {v: i for i, vs in enumerate(comul_multisubcomps) for v in vs}
 
+### updated:
+            sub_graph = g.subgraph(g.neighbors(u))
+            nodes_count = len(sub_graph)
+            # edges_count = sub_graph.number_of_edges()
+            if nodes_count == 0:  # or edges_count == 0:
+                #components = list(nx.connected_components(g.subgraph(set(g.neighbors(u)).union(set([u])))))
+                components = list(nx.connected_components(g.subgraph(set(g.neighbors(u)) )))
+                return u, {v: i for i, vs in enumerate(components) for v in vs if v != u}
+            # adj_array = nx.adjacency_matrix(sub_graph).toarray()
+            # sq_cos = cosine_similarity(sp.linalg.blas.sgemm(1.0, adj_array, adj_array))
+            # edges_to_remove = np.argwhere(sq_cos < threshold)
+            
+            adj_array = nx.adjacency_matrix(sub_graph).toarray()
+            adj2 = adj_array
+            adj2[np.argwhere(cosine_similarity(sp.linalg.blas.sgemm(1.0, adj_array, adj_array)) < threshold)] = 0
+            edges_to_remove = np.argwhere(adj2 != adj_array)
+            edges_to_remove2 = [(list(sub_graph.nodes)[x], list(sub_graph.nodes)[y]) for x, y in edges_to_remove]
+            sub_graph2 = nx.Graph(sub_graph)
+            sub_graph2.remove_edges_from(edges_to_remove2)
 
+
+
+            adj_array = nx.adjacency_matrix(sub_graph).toarray()
+            adj2 = nx.adjacency_matrix(sub_graph).toarray()
+            adj2[np.argwhere(cosine_similarity(sp.linalg.blas.sgemm(1.0, adj_array, adj_array)) < threshold)] = 0
+            edges_to_remove = np.argwhere(adj2 != adj_array)
+            edges_to_remove2 = [(list(sub_graph.nodes)[x], list(sub_graph.nodes)[y]) for x, y in edges_to_remove]
+            sub_graph2 = nx.Graph(sub_graph)
+            sub_graph2.remove_edges_from(edges_to_remove2)
+            
+            adj_array = nx.adjacency_matrix(sub_graph).toarray()
+            cos = cosine_similarity(sp.linalg.blas.sgemm(1.0, adj_array, adj_array))
+            row_names = list(x.nodes)
+            column_names = list(x.nodes)
+            cos_df = pd.DataFrame(cos, columns=column_names, index=row_names)
+            edges_to_remove = cos_df[cos_df < threshold].stack().index.tolist()
+
+
+	    # sub_graph2 = nx.freeze(sub_graph2)
+            # removed = np.argwhere(nx.adjacency_matrix(sub_graph2).toarray() != adj.toarray())
+            cos_components = list(nx.connected_components(sub_graph2))
+            cos_components.sort(key=len, reverse=True)
+            multi_node_components = [i for i in cos_components if len(i) > 1]
+            #print(
+            #    int(timeit.default_timer() - t0),
+            #    "\nWorking", "with the one","with # comps equal to:", multi_node_components.__len__(),
+            #    "\n with comps equal to:", multi_node_components,
+            #    "\n and edges to remove:", edges_to_remove,
+            #    "\n and # edges to remove:", edges_to_remove.__len__(),
+            #    "\n and edges removed then:", removed,
+            #    "\n cosine of squared:", cosine_similarity(np.dot(adj, adj)), "\nthreshold:", threshold,
+            #    "\n and nodes list:", list(sub_graph2.nodes),
+            #    file=sys.stderr)
+            return u, {v: i for i, vs in enumerate(multi_node_components) for v in vs}
+
+
+
+
+            adj_array = nx.adjacency_matrix(sub_graph).toarray()
+            new_adj = np.multiply(cosine_similarity(sp.linalg.blas.sgemm(1.0, adj_array, adj_array)) >= threshold , adj_array)
+            row_names = list(sub_graph.nodes)
+            column_names = row_names
+            new_adj_df = pd.DataFrame(new_adj!=adj_array, columns=column_names, index=row_names)
+            edges_to_remove2 = new_adj_df[new_adj_df == True].stack().index.tolist()
+
+
+new_adj = np.multiply((cos > 0.8), adj.toarray())
