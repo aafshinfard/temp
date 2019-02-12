@@ -196,12 +196,12 @@ gr = as.undirected(gr)
 adj = as_adjacency_matrix(gr, type = c("both"), attr = NULL, edges = FALSE, names = FALSE, sparse=FALSE)
 plot(gr,vertex.label=NA)
 
-dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/physlr/AAACACCAGTCACGCC.all.neigh.subgraph" #
-dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/physlr/AAACACCCAACACCTA.all.neigh.subgraph" # 
-dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/physlr/AAACACCCAATCCTTT.all.neigh.subgraph" # 
-dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/physlr/AAACACCCAATGGTAA.all.neigh.subgraph" # 
-dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/physlr/AAACACCCACAATGGG.all.neigh.subgraph" #
-dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/physlr/AAACACCCACATTCGA.all.neigh.subgraph" # 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/physlr/AAACACCAGTCACGCC.n70.neigh.subgraph" #
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/physlr/AAACACCCAACACCTA.n70.neigh.subgraph" # 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/physlr/AAACACCCAATCCTTT.n70.neigh.subgraph" # 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/physlr/AAACACCCAATGGTAA.n70.neigh.subgraph" # 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/physlr/AAACACCCACAATGGG.n70.neigh.subgraph" #
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/physlr/AAACACCCACATTCGA.n70.neigh.subgraph" # 
 a = read.table(dat, header = FALSE, col.names = paste0("V",seq_len(3)),as.is = "V3", fill = TRUE)
 a[,3] = as.numeric(a[,3])
 gr <- graph.data.frame(a)

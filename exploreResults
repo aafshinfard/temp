@@ -1,7 +1,41 @@
 #### extracting subgraphs from a mixed file from physlr:
 
 
+## from n70 file
+barcode="AAACACCAGTCACGCC"
+grep $barcode f1.n100-2000.physlr.overlap.n70.subgraph.tsv | tail -n+2 | awk {'print $1 "\n" $2'} | sort | uniq > subgraphs/physlr/$barcode.n70.neigh
+awk 'NR==FNR{seen[$1]; next} $1 in seen' subgraphs/physlr/$barcode.n70.neigh f1.n100-2000.physlr.overlap.n70.subgraph.tsv > subgraphs/physlr/$barcode.n70.neigh.f1
+awk 'NR==FNR{seen[$1]; next} $2 in seen' subgraphs/physlr/$barcode.n70.neigh subgraphs/physlr/$barcode.n70.neigh.f1 > subgraphs/physlr/$barcode.n70.neigh.f1.f2
+grep -v $barcode subgraphs/physlr/$barcode.n70.neigh.f1.f2 > subgraphs/physlr/$barcode.n70.neigh.subgraph
 
+barcode="AAACACCCAACACCTA"
+grep $barcode f1.n100-2000.physlr.overlap.n70.subgraph.tsv | tail -n+2 | awk {'print $1 "\n" $2'} | sort | uniq > subgraphs/physlr/$barcode.n70.neigh
+awk 'NR==FNR{seen[$1]; next} $1 in seen' subgraphs/physlr/$barcode.n70.neigh f1.n100-2000.physlr.overlap.n70.subgraph.tsv > subgraphs/physlr/$barcode.n70.neigh.f1
+awk 'NR==FNR{seen[$1]; next} $2 in seen' subgraphs/physlr/$barcode.n70.neigh subgraphs/physlr/$barcode.n70.neigh.f1 > subgraphs/physlr/$barcode.n70.neigh.f1.f2
+grep -v $barcode subgraphs/physlr/$barcode.n70.neigh.f1.f2 > subgraphs/physlr/$barcode.n70.neigh.subgraph
+
+barcode="AAACACCCAATCCTTT"
+grep $barcode f1.n100-2000.physlr.overlap.n70.subgraph.tsv | tail -n+2 | awk {'print $1 "\n" $2'} | sort | uniq > subgraphs/physlr/$barcode.n70.neigh
+awk 'NR==FNR{seen[$1]; next} $1 in seen' subgraphs/physlr/$barcode.n70.neigh f1.n100-2000.physlr.overlap.n70.subgraph.tsv > subgraphs/physlr/$barcode.n70.neigh.f1
+awk 'NR==FNR{seen[$1]; next} $2 in seen' subgraphs/physlr/$barcode.n70.neigh subgraphs/physlr/$barcode.n70.neigh.f1 > subgraphs/physlr/$barcode.n70.neigh.f1.f2
+grep -v $barcode subgraphs/physlr/$barcode.n70.neigh.f1.f2 > subgraphs/physlr/$barcode.n70.neigh.subgraph
+barcode="AAACACCCAATGGTAA"
+grep $barcode f1.n100-2000.physlr.overlap.n70.subgraph.tsv | tail -n+2 | awk {'print $1 "\n" $2'} | sort | uniq > subgraphs/physlr/$barcode.n70.neigh
+awk 'NR==FNR{seen[$1]; next} $1 in seen' subgraphs/physlr/$barcode.n70.neigh f1.n100-2000.physlr.overlap.n70.subgraph.tsv > subgraphs/physlr/$barcode.n70.neigh.f1
+awk 'NR==FNR{seen[$1]; next} $2 in seen' subgraphs/physlr/$barcode.n70.neigh subgraphs/physlr/$barcode.n70.neigh.f1 > subgraphs/physlr/$barcode.n70.neigh.f1.f2
+grep -v $barcode subgraphs/physlr/$barcode.n70.neigh.f1.f2 > subgraphs/physlr/$barcode.n70.neigh.subgraph
+barcode="AAACACCCACAATGGG"
+grep $barcode f1.n100-2000.physlr.overlap.n70.subgraph.tsv | tail -n+2 | awk {'print $1 "\n" $2'} | sort | uniq > subgraphs/physlr/$barcode.n70.neigh
+awk 'NR==FNR{seen[$1]; next} $1 in seen' subgraphs/physlr/$barcode.n70.neigh f1.n100-2000.physlr.overlap.n70.subgraph.tsv > subgraphs/physlr/$barcode.n70.neigh.f1
+awk 'NR==FNR{seen[$1]; next} $2 in seen' subgraphs/physlr/$barcode.n70.neigh subgraphs/physlr/$barcode.n70.neigh.f1 > subgraphs/physlr/$barcode.n70.neigh.f1.f2
+grep -v $barcode subgraphs/physlr/$barcode.n70.neigh.f1.f2 > subgraphs/physlr/$barcode.n70.neigh.subgraph
+
+
+barcode="AAACACCCACATTCGA"
+grep $barcode f1.n100-2000.physlr.overlap.n70.subgraph.tsv | tail -n+2 | awk {'print $1 "\n" $2'} | sort | uniq > subgraphs/physlr/$barcode.n70.neigh
+awk 'NR==FNR{seen[$1]; next} $1 in seen' subgraphs/physlr/$barcode.n70.neigh f1.n100-2000.physlr.overlap.n70.subgraph.tsv > subgraphs/physlr/$barcode.n70.neigh.f1
+awk 'NR==FNR{seen[$1]; next} $2 in seen' subgraphs/physlr/$barcode.n70.neigh subgraphs/physlr/$barcode.n70.neigh.f1 > subgraphs/physlr/$barcode.n70.neigh.f1.f2
+grep -v $barcode subgraphs/physlr/$barcode.n70.neigh.f1.f2 > subgraphs/physlr/$barcode.n70.neigh.subgraph
 
 ## from non filtered by n100 file
 
