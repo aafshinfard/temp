@@ -1,3 +1,73 @@
+#### extracting subgraphs from a mixed file from physlr:
+
+
+
+
+## from non filtered by n100 file
+
+barcode="AAACACCAGTCACGCC"
+grep $barcode f1.n100-2000.physlr.overlap.subgraph.tsv | tail -n+2 | awk {'print $1 "\n" $2'} | sort | uniq > subgraphs/physlr/$barcode.all.neigh
+awk 'NR==FNR{seen[$1]; next} $1 in seen' subgraphs/physlr/$barcode.all.neigh f1.n100-2000.physlr.overlap.subgraph.tsv > subgraphs/physlr/$barcode.all.neigh.f1
+awk 'NR==FNR{seen[$1]; next} $2 in seen' subgraphs/physlr/$barcode.all.neigh subgraphs/physlr/$barcode.all.neigh.f1 > subgraphs/physlr/$barcode.all.neigh.f1.f2
+grep -v $barcode subgraphs/physlr/$barcode.all.neigh.f1.f2 > subgraphs/physlr/$barcode.all.neigh.subgraph
+
+barcode="AAACACCCAACACCTA"
+grep $barcode f1.n100-2000.physlr.overlap.subgraph.tsv | tail -n+2 | awk {'print $1 "\n" $2'} | sort | uniq > subgraphs/physlr/$barcode.all.neigh
+awk 'NR==FNR{seen[$1]; next} $1 in seen' subgraphs/physlr/$barcode.all.neigh f1.n100-2000.physlr.overlap.subgraph.tsv > subgraphs/physlr/$barcode.all.neigh.f1
+awk 'NR==FNR{seen[$1]; next} $2 in seen' subgraphs/physlr/$barcode.all.neigh subgraphs/physlr/$barcode.all.neigh.f1 > subgraphs/physlr/$barcode.all.neigh.f1.f2
+grep -v $barcode subgraphs/physlr/$barcode.all.neigh.f1.f2 > subgraphs/physlr/$barcode.all.neigh.subgraph
+
+barcode="AAACACCCAATCCTTT"
+grep $barcode f1.n100-2000.physlr.overlap.subgraph.tsv | tail -n+2 | awk {'print $1 "\n" $2'} | sort | uniq > subgraphs/physlr/$barcode.all.neigh
+awk 'NR==FNR{seen[$1]; next} $1 in seen' subgraphs/physlr/$barcode.all.neigh f1.n100-2000.physlr.overlap.subgraph.tsv > subgraphs/physlr/$barcode.all.neigh.f1
+awk 'NR==FNR{seen[$1]; next} $2 in seen' subgraphs/physlr/$barcode.all.neigh subgraphs/physlr/$barcode.all.neigh.f1 > subgraphs/physlr/$barcode.all.neigh.f1.f2
+grep -v $barcode subgraphs/physlr/$barcode.all.neigh.f1.f2 > subgraphs/physlr/$barcode.all.neigh.subgraph
+barcode="AAACACCCAATGGTAA"
+grep $barcode f1.n100-2000.physlr.overlap.subgraph.tsv | tail -n+2 | awk {'print $1 "\n" $2'} | sort | uniq > subgraphs/physlr/$barcode.all.neigh
+awk 'NR==FNR{seen[$1]; next} $1 in seen' subgraphs/physlr/$barcode.all.neigh f1.n100-2000.physlr.overlap.subgraph.tsv > subgraphs/physlr/$barcode.all.neigh.f1
+awk 'NR==FNR{seen[$1]; next} $2 in seen' subgraphs/physlr/$barcode.all.neigh subgraphs/physlr/$barcode.all.neigh.f1 > subgraphs/physlr/$barcode.all.neigh.f1.f2
+grep -v $barcode subgraphs/physlr/$barcode.all.neigh.f1.f2 > subgraphs/physlr/$barcode.all.neigh.subgraph
+barcode="AAACACCCACAATGGG"
+grep $barcode f1.n100-2000.physlr.overlap.subgraph.tsv | tail -n+2 | awk {'print $1 "\n" $2'} | sort | uniq > subgraphs/physlr/$barcode.all.neigh
+awk 'NR==FNR{seen[$1]; next} $1 in seen' subgraphs/physlr/$barcode.all.neigh f1.n100-2000.physlr.overlap.subgraph.tsv > subgraphs/physlr/$barcode.all.neigh.f1
+awk 'NR==FNR{seen[$1]; next} $2 in seen' subgraphs/physlr/$barcode.all.neigh subgraphs/physlr/$barcode.all.neigh.f1 > subgraphs/physlr/$barcode.all.neigh.f1.f2
+grep -v $barcode subgraphs/physlr/$barcode.all.neigh.f1.f2 > subgraphs/physlr/$barcode.all.neigh.subgraph
+
+
+barcode="AAACACCCACATTCGA"
+grep $barcode f1.n100-2000.physlr.overlap.subgraph.tsv | tail -n+2 | awk {'print $1 "\n" $2'} | sort | uniq > subgraphs/physlr/$barcode.all.neigh
+awk 'NR==FNR{seen[$1]; next} $1 in seen' subgraphs/physlr/$barcode.all.neigh f1.n100-2000.physlr.overlap.subgraph.tsv > subgraphs/physlr/$barcode.all.neigh.f1
+awk 'NR==FNR{seen[$1]; next} $2 in seen' subgraphs/physlr/$barcode.all.neigh subgraphs/physlr/$barcode.all.neigh.f1 > subgraphs/physlr/$barcode.all.neigh.f1.f2
+grep -v $barcode subgraphs/physlr/$barcode.all.neigh.f1.f2 > subgraphs/physlr/$barcode.all.neigh.subgraph
+
+
+
+
+
+### Intersection of non-consistent barcodes results:
+
+
+
+grep "|" diff_f1_t55_GT_m30d200k  | awk {'if ($4>$1) print $2'} > incons_t55_m30d200k
+grep "|" diff_f1_t60_GT_m30d200k  | awk {'if ($4>$1) print $2'} > incons_t60_m30d200k
+grep "|" diff_f1_t65_GT_m30d200k  | awk {'if ($4>$1) print $2'} > incons_t65_m30d200k
+grep "|" diff_f1_t70_GT_m30d200k  | awk {'if ($4>$1) print $2'} > incons_t70_m30d200k
+grep "|" diff_f1_t75_GT_m30d200k  | awk {'if ($4>$1) print $2'} > incons_t75_m30d200k
+grep "|" diff_f1_t80_GT_m30d200k  | awk {'if ($4>$1) print $2'} > incons_t80_m30d200k
+grep "|" diff_f1_t85_GT_m30d200k  | awk {'if ($4>$1) print $2'} > incons_t85_m30d200k
+grep "|" diff_f1_t90_GT_m30d200k  | awk {'if ($4>$1) print $2'} > incons_t90_m30d200k
+grep "|" diff_f1_t94_GT_m30d200k  | awk {'if ($4>$1) print $2'} > incons_t94_m30d200k
+
+awk 'NR==FNR{seen[$1]; next} $1 in seen' incons_t60_m30d200k incons_t55_m30d200k > incons_t55_m30d200k_f.60
+awk 'NR==FNR{seen[$1]; next} $1 in seen' incons_t65_m30d200k incons_t55_m30d200k_f.60 > incons_t55_m30d200k_f.60.65
+awk 'NR==FNR{seen[$1]; next} $1 in seen' incons_t70_m30d200k incons_t55_m30d200k_f.60.65 > incons_t55_m30d200k_f.60.65.70
+awk 'NR==FNR{seen[$1]; next} $1 in seen' incons_t75_m30d200k incons_t55_m30d200k_f.60.65.70 > incons_t55_m30d200k_f.60.65.70.75
+awk 'NR==FNR{seen[$1]; next} $1 in seen' incons_t80_m30d200k incons_t55_m30d200k_f.60.65.70.75 > incons_t55_m30d200k_f.60.65.70.75.80
+awk 'NR==FNR{seen[$1]; next} $1 in seen' incons_t85_m30d200k incons_t55_m30d200k_f.60.65.70.75.80 > incons_t55_m30d200k_f.60.65.70.75.80.85
+awk 'NR==FNR{seen[$1]; next} $1 in seen' incons_t90_m30d200k incons_t55_m30d200k_f.60.65.70.75.80.85 > incons_t55_m30d200k_f.60.65.70.75.80.85.90
+awk 'NR==FNR{seen[$1]; next} $1 in seen' incons_t94_m30d200k incons_t55_m30d200k_f.60.65.70.75.80.85.90 > incons_t55_m30d200k_f.60.65.70.75.80.85.90.94
+
+
 ################################################################ Shell scripts to do the comparison:
 #!/usr/bin/bash
 
@@ -197,7 +267,7 @@ wc -l molCount_GT_2
 	893983 molCount_GT_2
 
 
-
+.all.neigh
 grep "NC_004353.4" fly/fly.f1.a0.65.d50k.m8.n5.q1.s2000.molecule.bed > fly/fly.chr4.f1.a0.65.d50k.m8.n5.q1.s2000.molecule.bed 
 cut -f4 fly/fly.chr4.f1.a0.65.d50k.m8.n5.q1.s2000.molecule.bed | uniq -c | sort -k 2  > compare/molCount_GT_chr4
 ... ## make molCount_sqCos using the code above

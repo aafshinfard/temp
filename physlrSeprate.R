@@ -93,6 +93,7 @@ dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/AAACACCCAGCTAT
 dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACATCTTCAAGCGATG-1.tsv" # 184
 dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/ACATCTTCAAGCGATG-1_all.tsv" # 493
 
+
 ###################################################################################
 ## new lane of comparison - after filtering to chromosome 4 and 99.54% consistency acheiving
 
@@ -177,6 +178,37 @@ dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/weird/CGATCAAA
 1 TTCGAAGCACGTCGGT-1
 1 TTCTCAACAGAGCCAA-1
 1 TTGTTTGTCCCAAGAT-1
+
+
+
+########
+###### new case:
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/physlr/AAACACCAGTCACGCC.neigh.subgraph" #
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/physlr/AAACACCCAACACCTA.neigh.subgraph" # 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/physlr/AAACACCCAATCCTTT.neigh.subgraph" # 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/physlr/AAACACCCAATGGTAA.neigh.subgraph" # 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/physlr/AAACACCCACAATGGG.neigh.subgraph" #
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/physlr/AAACACCCACATTCGA.neigh.subgraph" # 
+a = read.table(dat, header = FALSE, col.names = paste0("V",seq_len(3)),as.is = "V3", fill = TRUE)
+a[,3] = as.numeric(a[,3])
+gr <- graph.data.frame(a)
+gr = as.undirected(gr)
+adj = as_adjacency_matrix(gr, type = c("both"), attr = NULL, edges = FALSE, names = FALSE, sparse=FALSE)
+plot(gr,vertex.label=NA)
+
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/physlr/AAACACCAGTCACGCC.all.neigh.subgraph" #
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/physlr/AAACACCCAACACCTA.all.neigh.subgraph" # 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/physlr/AAACACCCAATCCTTT.all.neigh.subgraph" # 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/physlr/AAACACCCAATGGTAA.all.neigh.subgraph" # 
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/physlr/AAACACCCACAATGGG.all.neigh.subgraph" #
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/physlr/AAACACCCACATTCGA.all.neigh.subgraph" # 
+a = read.table(dat, header = FALSE, col.names = paste0("V",seq_len(3)),as.is = "V3", fill = TRUE)
+a[,3] = as.numeric(a[,3])
+gr <- graph.data.frame(a)
+gr = as.undirected(gr)
+adj = as_adjacency_matrix(gr, type = c("both"), attr = NULL, edges = FALSE, names = FALSE, sparse=FALSE)
+plot(gr,vertex.label=NA)
+
 
 ########################################
 ### Summary
