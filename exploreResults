@@ -1,3 +1,21 @@
+### Compare incosistency of two algorithms and check their diff with a ground truth
+toCheck=n70.t85
+ref=n70.st2
+
+awk 'NR==FNR{seen[$2]; next} $2 in seen' molCount_${toCheck} molCount_${ref} > molCount_${ref}_filt${toCheck} 
+awk 'NR==FNR{seen[$2]; next} $2 in seen' molCount_${ref} molCount_${toCheck} > molCount_${toCheck}_filt${ref}
+diff -y molCount_${toCheck}_filt${ref}  molCount_${ref}_filt${toCheck}   | grep "\-.*\-" > diff_f1_${toCheck}_${ref}
+
+grep "|" diff_f1_${toCheck}_${ref} | awk {'print "\t"$1" "$2'} > molCount_${toCheck}_incons_${ref}
+grep "|" diff_f1_${toCheck}_${ref} | awk {'print "\t"$4" "$5'} > molCount_${ref}_incons_${toCheck}
+rm diff_f1_${toCheck}_${ref}
+./compare.sh ${toCheck}_incons_${ref} ${ref}_incons_${toCheck} skip2+
+./compare.sh ${toCheck}_incons_${ref} GT_m8d100k
+./compare.sh ${ref}_incons_${toCheck} GT_m8d100k
+
+rm molCount_${toCheck}_filt${ref}
+rm molCount_${ref}_filt${toCheck} 
+
 #### extracting subgraphs from a mixed file from physlr:
 
 

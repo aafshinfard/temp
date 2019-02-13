@@ -24,7 +24,7 @@ g = G
 sub_graph = g.subgraph(g.neighbors(7))
 adj_array = nx.adjacency_matrix(sub_graph).toarray()
 cos = cosine_similarity(sp.linalg.blas.sgemm(1.0, adj_array, adj_array))
-edges_to_remove = np.argwhere(cos <= egRem_threshold)
+edges_to_remove = np.argwhere(cos <= threshold)
 sub_graph = nx.Graph(sub_graph)
 sub_graph.remove_edges_from(edges_to_remove)
 sub_graph = nx.freeze(sub_graph)
