@@ -4,11 +4,20 @@ ref=n70.st2
 
 awk 'NR==FNR{seen[$2]; next} $2 in seen' molCount_${toCheck} molCount_${ref} > molCount_${ref}_filt${toCheck} 
 awk 'NR==FNR{seen[$2]; next} $2 in seen' molCount_${ref} molCount_${toCheck} > molCount_${toCheck}_filt${ref}
-diff -y molCount_${toCheck}_filt${ref}  molCount_${ref}_filt${toCheck}   | grep "\-.*\-" > diff_f1_${toCheck}_${ref}
+./compare.sh ${ref}_filt${toCheck} GT_m8d100k
+./compare.sh ${toCheck}_filt${ref} GT_m8d100k
 
-grep "|" diff_f1_${toCheck}_${ref} | awk {'print "\t"$1" "$2'} > molCount_${toCheck}_incons_${ref}
-grep "|" diff_f1_${toCheck}_${ref} | awk {'print "\t"$4" "$5'} > molCount_${ref}_incons_${toCheck}
+diff -y molCount_${toCheck}_filt${ref}  molCount_${ref}_filt${toCheck}   | grep "\-.*\-" > diff_f1_${toCheck}_${ref}
+diff -y molCount_${ref}_filt${toCheck}  molCount_${toCheck}_filt${ref}   | grep "\-.*\-" > diff_f1_${ref}_${toCheck}
+
+# grep "|" diff_f1_${toCheck}_${ref} | awk {'print "\t"$1" "$2'} > molCount_${toCheck}_incons_${ref}
+grep "|" diff_f1_${toCheck}_${ref} | awk -F\| '$1 { print substr($1,1,26)}' > molCount_${toCheck}_incons_${ref}
+# grep "|" diff_f1_${ref}_${toCheck} | awk {'print "\t"$1" "$2'} > molCount_${ref}_incons_${toCheck}
+grep "|" diff_f1_${ref}_${toCheck} | awk -F\| '$1 { print substr($1,1,26)}' > molCount_${ref}_incons_${toCheck}
+
 rm diff_f1_${toCheck}_${ref}
+rm diff_f1_${ref}_${toCheck}
+
 ./compare.sh ${toCheck}_incons_${ref} ${ref}_incons_${toCheck} skip2+
 ./compare.sh ${toCheck}_incons_${ref} GT_m8d100k
 ./compare.sh ${ref}_incons_${toCheck} GT_m8d100k
@@ -16,9 +25,28 @@ rm diff_f1_${toCheck}_${ref}
 rm molCount_${toCheck}_filt${ref}
 rm molCount_${ref}_filt${toCheck} 
 
+grep "|" diff_f1_n70.t85_incons_n70.st2_GT_m8d100k | awk {'print $2'} > weFailTheyMightDo.n70
+grep "|" diff_f1_n70.st2_incons_n70.t85_GT_m8d100k | awk {'print $2'} > theyFailWeMightDo.n70
+
+grep -v "|" diff_f1_n70.t85_incons_n70.st2_GT_m8d100k > temp1
+awk 'NR==FNR{seen[$2]; next} $1 in seen' temp1 theyFailWeMightDo.n70 > theyFailWeDo.n70
+rm temp1
+
+
+grep -v "|" diff_f1_n70.st2_incons_n70.t85_GT_m8d100k > temp1
+awk 'NR==FNR{seen[$2]; next} $1 in seen' temp1 weFailTheyMightDo.n70 > weFailTheyDo.n70
+rm temp1
+
+cd ..
+cp f1.n100-2000.physlr.overlap.n70.tsv f1.weFailTheyDo.overlap.n70.tsv
+make v=$(paste -sd, <compare/weFailTheyDo.n70) d=1 f1.weFailTheyDo.overlap.n70.subgraph.tsv
+rm f1.weFailTheyDo.overlap.n70.tsv
+
+cp f1.n100-2000.physlr.overlap.n70.tsv f1.theyFailWeDo.overlap.n70.tsv
+make v=$(paste -sd, <compare/theyFailWeDo.n70) d=1 f1.theyFailWeDo.overlap.n70.subgraph.tsv
+rm f1.theyFailWeDo.overlap.n70.tsv
+
 #### extracting subgraphs from a mixed file from physlr:
-
-
 ## from n70 file
 barcode="AAACACCAGTCACGCC"
 grep $barcode f1.n100-2000.physlr.overlap.n70.subgraph.tsv | tail -n+2 | awk {'print $1 "\n" $2'} | sort | uniq > subgraphs/physlr/$barcode.n70.neigh
