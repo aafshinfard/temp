@@ -209,12 +209,50 @@ gr = as.undirected(gr)
 adj = as_adjacency_matrix(gr, type = c("both"), attr = NULL, edges = FALSE, names = FALSE, sparse=FALSE)
 plot(gr,vertex.label=NA)
 
+### Graphs extracted with physlr_subgraphs
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/physlrSubgraphs/theyFailWeDo/AAACCTGGTACTTAGC-1.tsv" #44 Why do they report it as single?
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/physlrSubgraphs/theyFailWeDo/AAACGGGCACGCCAAC-1.tsv" #91 Why do we report it as single?
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/physlrSubgraphs/theyFailWeDo/AAAGCAAAGTCCTCCT-1.tsv" #20 becuz they remove cut vertices in poorly connecteeds as well
+
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/physlrSubgraphs/weFailTheyDo/AAACACCCAACTGCTA-1.tsv" #248 BUT WE DID IT HERE! becuz of squaring  (we:1 they:2 Tigmint:2)
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/physlrSubgraphs/weFailTheyDo/AAACACCCAATGGTAA-1.tsv" #263 2nd component so small (we:1 they:2 Tigmint:2)
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/physlrSubgraphs/weFailTheyDo/AAACACCCAGCTCGCA-1.tsv" #341 BUT WE DID IT HERE! becuz of squaring  (we:1 they:2 Tigmint:2)
+dat="/projects/btl/aafshinfard/projects/physlr-dev/data/physlrSubgraphs/weFailTheyDo/" #341 (we:1 they:2 Tigmint:2)
+
+a = read.table(dat, header = FALSE, col.names = paste0("V",seq_len(3)),as.is = "V3", fill = TRUE)
+a = a[341:dim(a)[1],]
+a[,3] = as.numeric(a[,3])
+gr <- graph.data.frame(a)
+gr = as.undirected(gr)
+adj = as_adjacency_matrix(gr, type = c("both"), attr = NULL, edges = FALSE, names = FALSE, sparse=FALSE)
+plot(gr,vertex.label=NA)
+adj_filt = adj
+adj_sq = adj_filt%*%adj_filt
+cos = cosine(adj_filt)
+cos[cos == "NaN"] = 0
+#hist(cos)
+ggplot(as.data.frame(as.vector(cos)), aes(x=as.vector(cos)) ) + geom_histogram( aes(y=..density..), binwidth= 0.05, position="identity" )
+cos2 = cosine(adj_sq)
+cos3 = cos2
+cos3[cos3 == "NaN"] = 0
+#hist((cos3),breaks = 40)
+ggplot(as.data.frame(as.vector(cos3)), aes(x=as.vector(cos3)) ) + geom_histogram( aes(y=..density..), binwidth= 0.02, position="identity" )
+
+plot(graph_from_adjacency_matrix(adj_filt))
+adj_t = adj_filt
+adj_t[cos[,] < 0.84] = 0
+adj_t[cos3[,] < 0.85] = 0
+sum(adj_filt != 0)
+sum(adj_t != adj_filt)
+grnew = graph_from_adjacency_matrix(adj_t)
+comps = components(grnew)
+plot(grnew)
 
 ########################################
 ### Summary
 a = read.table(dat, header = FALSE, col.names = paste0("V",seq_len(3)),as.is = "V3", fill = TRUE)
-a = a[118:dim(a)[1],]
-a[781,]
+a = a[44:dim(a)[1],]
+a[340,]
 a[,3] = as.numeric(a[,3])
 gr <- graph.data.frame(a)
 gr = as.undirected(gr)
@@ -264,7 +302,7 @@ if(min(rolled)==rolled[length(rolled)]){
 #adj_filt = adj_filt[filt_index,filt_index]
 #filt_index = c(1:(which(colSums(adj_filt)==25)-1),(which(colSums(adj_filt)==25)+1):33) 
 #adj_filt = adj_filt[filt_index,filt_index]
-#sort(colSums(adj_filt[filt_index,filt_index]))
+#sort(colSums(adj_filt[filt_index,filt_index]))
 #length(colSums(adj_filt[filt_index,filt_index]))
 
 sort(colSums(adj_filt))
@@ -292,7 +330,7 @@ plot(graph_from_adjacency_matrix(adj_filt))
 plot(graph_from_adjacency_matrix(adj_sq))
 adj_t = adj_filt
 adj_t[cos[,] < 0.84] = 0
-adj_t[cos3[,] < 0.88] = 0
+adj_t[cos3[,] < 0.85] = 0
 sum(cos3[,] < 0.9)/sum((cos3[,] > -1))
 sum(adj_filt != 0)
 sum(adj_t != adj_filt)
