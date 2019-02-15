@@ -220,7 +220,7 @@ dat="/projects/btl/aafshinfard/projects/physlr-dev/data/physlrSubgraphs/weFailTh
 dat="/projects/btl/aafshinfard/projects/physlr-dev/data/physlrSubgraphs/weFailTheyDo/" #341 (we:1 they:2 Tigmint:2)
 
 a = read.table(dat, header = FALSE, col.names = paste0("V",seq_len(3)),as.is = "V3", fill = TRUE)
-a = a[341:dim(a)[1],]
+a = a[248:dim(a)[1],]
 a[,3] = as.numeric(a[,3])
 gr <- graph.data.frame(a)
 gr = as.undirected(gr)
