@@ -241,7 +241,7 @@ ggplot(as.data.frame(as.vector(cos3)), aes(x=as.vector(cos3)) ) + geom_histogram
 plot(graph_from_adjacency_matrix(adj_filt))
 adj_t = adj_filt
 adj_t[cos[,] < 0.84] = 0
-adj_t[cos3[,] < 0.85] = 0
+adj_t[cos3[,] <= 0.85] = 0
 sum(adj_filt != 0)
 sum(adj_t != adj_filt)
 grnew = graph_from_adjacency_matrix(adj_t)
