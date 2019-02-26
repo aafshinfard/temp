@@ -3,42 +3,103 @@ library(ggplot2)
 ##############################################################################
 ############# Physlr node edge data 
 
-add_nodeg = "/projects/btl/aafshinfard/projects/physlr-dev/data/f1.n100-2000.physlr.overlap.n100.subgraphs_stats"
-add_nodeg = "/projects/btl/aafshinfard/projects/physlr-dev/data/f1.n100-2000.physlr.overlap.n50.subgraphs_stats"
-add_nodeg = "/projects/btl/aafshinfard/projects/physlr-dev/data/f1.n100-2000.physlr.overlap.n70.subgraphs_stats"
-
+add_nodeg0 = "/projects/btl/aafshinfard/projects/physlr-dev/data/f1.n100-2000.physlr.overlap.subgraphs_stats"
+title="Fly - whole data - n0 - subsampled to 30K subgraphs"
+add_nodeg20 = "/projects/btl/aafshinfard/projects/physlr-dev/data/f1.n100-2000.physlr.overlap.n20.subgraphs_stats"
+title="Fly - whole data - n20 - subsampled to 30K subgraphs"
+add_nodeg50 = "/projects/btl/aafshinfard/projects/physlr-dev/data/f1.n100-2000.physlr.overlap.n50.subgraphs_stats"
+title="Fly - whole data - n50 - subsampled to 30K subgraphs"
+add_nodeg70 = "/projects/btl/aafshinfard/projects/physlr-dev/data/f1.n100-2000.physlr.overlap.n70.subgraphs_stats"
+title="Fly - whole data - n70 - subsampled to 30K subgraphs"
+add_nodeg100 = "/projects/btl/aafshinfard/projects/physlr-dev/data/f1.n100-2000.physlr.overlap.n100.subgraphs_stats"
+title="Fly - whole data - n100 - subsampled to 30K subgraphs"
+add_nodeg200 = "/projects/btl/aafshinfard/projects/physlr-dev/data/f1.n100-2000.physlr.overlap.n200.subgraphs_stats"
+title="Fly - whole data - n200 - subsampled to 30K subgraphs"
 ### If it's Histogram of cosine sim:
 # go to the end of this code
 
 
 ### If it's |E| vs |V| :
-nodeg = 
-  read.table(add_nodeg, sep = "\t", header = FALSE, skip = 1)
+nodeg0 = 
+  read.table(add_nodeg0, sep = "\t", header = FALSE, skip = 1)
+nodeg20 = 
+  read.table(add_nodeg20, sep = "\t", header = FALSE, skip = 1)
+nodeg50 = 
+  read.table(add_nodeg50, sep = "\t", header = FALSE, skip = 1)
+nodeg70 = 
+  read.table(add_nodeg70, sep = "\t", header = FALSE, skip = 1)
+nodeg100 = 
+  read.table(add_nodeg100, sep = "\t", header = FALSE, skip = 1)
+nodeg200 = 
+  read.table(add_nodeg200, sep = "\t", header = FALSE, skip = 1)
+
 #nodeg
-names(nodeg)=c("Barcodes","nodes","edges","alpha")
-head(nodeg)
-tail(nodeg)
+names(nodeg0)=c("Barcodes","nodes","edges","alpha")
+names(nodeg20)=c("Barcodes","nodes","edges","alpha")
+names(nodeg50)=c("Barcodes","nodes","edges","alpha")
+names(nodeg70)=c("Barcodes","nodes","edges","alpha")
+names(nodeg100)=c("Barcodes","nodes","edges","alpha")
+names(nodeg200)=c("Barcodes","nodes","edges","alpha")
+head(nodeg0)
+tail(nodeg0)
 
-head(nodeg[,"nodes","edges"])
-headi = head(nodeg)
-headi[,2:3]
+#head(nodeg[,"nodes","edges"])
+#headi = head(nodeg)
+#headi[,2:3]
 
-nodeg_filt = nodeg[nodeg[,"nodes"]>20,]
-dim(nodeg)[1]
-dim(nodeg_filt)[1]
+a=nodeg_filt0
+th=sort((a[,"nodes"]))[length(a[,"nodes"])/10]
+nodeg_filt0 = nodeg0[nodeg0[,"nodes"]>th,]
 
-head(nodeg_filt)
-nodeg_filt2 = nodeg_filt[1:50000,]
+a=nodeg_filt20
+th=sort((a[,"nodes"]))[length(a[,"nodes"])/10]
+nodeg_filt20 = nodeg20[nodeg20[,"nodes"]>th,]
 
+a=nodeg_filt50
+th=sort((a[,"nodes"]))[length(a[,"nodes"])/10]
+nodeg_filt50 = nodeg50[nodeg50[,"nodes"]>th,]
 
-head(nodeg)
+a=nodeg_filt70
+th=sort((a[,"nodes"]))[length(a[,"nodes"])/10]
+nodeg_filt70 = nodeg70[nodeg70[,"nodes"]>th,]
+
+a=nodeg_filt100
+th=sort((a[,"nodes"]))[length(a[,"nodes"])/10]
+nodeg_filt100 = nodeg100[nodeg100[,"nodes"]>th,]
+
+a=nodeg_filt200
+th=sort((a[,"nodes"]))[length(a[,"nodes"])/10]
+nodeg_filt200 = nodeg200[nodeg200[,"nodes"]>th,]
+
+#dim(nodeg)[1]
+dim(nodeg_filt0)[1]
+
+#head(nodeg_filt)
+maxi = 70000
+nodeg_filt2_0 = nodeg_filt0[1:maxi,]
+nodeg_filt2_20 = nodeg_filt20[1:maxi,]
+nodeg_filt2_50 = nodeg_filt50[1:maxi,]
+nodeg_filt2_70 = nodeg_filt70[1:maxi,]
+nodeg_filt2_100 = nodeg_filt100[1:maxi,]
+nodeg_filt2_200 = nodeg_filt200[1:maxi,]
+
+title="Fly - whole data - n20 - subsampled to 70K subgraphs"
 #ploti = ggplot(nodeg, aes(x=`nodes`, y=`edges`,color=`multip-comp`)) + geom_point()+
-ploti = ggplot(nodeg_filt2, aes(x=`nodes`, y=`edges`)) + geom_point(size=0.3)+
-  ggtitle("Fly chromosome 4") +
-  labs(x= "Number of vertices |V|",y= "Number of edges |E|")# + 
-#  theme(text = element_text(size=14),
-#        axis.text.x = element_text(angle=0, hjust=1))
+ploti = ggplot(nodeg_filt20, aes(x=`nodes`, y=`edges`)) + geom_point(size=0.001)+
+  ggtitle(title) +
+  labs(x= "Number of nodes",y= "Number of edges") + 
+  xlim(0,1300)+
+  ylim(0,2.5*10^5)+
+  theme(text = element_text(size=14),
+        axis.text.x = element_text(angle=0, hjust=1))
 ploti
+
+
+
+a
+a
+a
+
 plot1 = ggplot(nodeg, aes(x=`|V|`, y=`|E|`)) + geom_point(color="#639DD2")+
   ggtitle("Fly chromosome 4") +
   labs(x= "Number of vertices |V|",y= "Number of edges |E|") + 
