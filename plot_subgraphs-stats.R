@@ -104,8 +104,8 @@ ploti
 6
 7
 8
-ploti = ggplot(nodeg_filt20, aes(x=`nodes`, y=`edges`)) +
-  geom_hex(bins=300) +
+ploti = ggplot(nodeg_filt200, aes(x=`nodes`, y=`edges`)) +
+  geom_hex(bins=100) +
   theme_bw()
 ploti
 
