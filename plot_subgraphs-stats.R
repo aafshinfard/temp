@@ -75,7 +75,7 @@ nodeg_filt200 = nodeg200[nodeg200[,"nodes"]>th,]
 dim(nodeg_filt0)[1]
 
 #head(nodeg_filt)
-maxi = 70000
+maxi = 300000
 nodeg_filt2_0 = nodeg_filt0[1:maxi,]
 nodeg_filt2_20 = nodeg_filt20[1:maxi,]
 nodeg_filt2_50 = nodeg_filt50[1:maxi,]
@@ -83,22 +83,57 @@ nodeg_filt2_70 = nodeg_filt70[1:maxi,]
 nodeg_filt2_100 = nodeg_filt100[1:maxi,]
 nodeg_filt2_200 = nodeg_filt200[1:maxi,]
 
-title="Fly - whole data - n20 - subsampled to 70K subgraphs"
+title="Fly - whole data - n200 - subsampled to 70K subgraphs"
 #ploti = ggplot(nodeg, aes(x=`nodes`, y=`edges`,color=`multip-comp`)) + geom_point()+
-ploti = ggplot(nodeg_filt20, aes(x=`nodes`, y=`edges`)) + geom_point(size=0.001)+
+ploti = ggplot(nodeg_filt200, aes(x=`nodes`, y=`edges`)) + geom_point(size=0.001)+
   ggtitle(title) +
   labs(x= "Number of nodes",y= "Number of edges") + 
-  xlim(0,1300)+
-  ylim(0,2.5*10^5)+
+  #xlim(0,1300)+
+  #ylim(0,2.5*10^5)+
   theme(text = element_text(size=14),
         axis.text.x = element_text(angle=0, hjust=1))
 ploti
 
 
 
+1
+2
+3
+4
+5
+6
+7
+8
+ploti = ggplot(nodeg_filt20, aes(x=`nodes`, y=`edges`)) +
+  geom_hex(bins=300) +
+  theme_bw()
+ploti
+
+ploti = ggplot(nodeg_filt0, aes(x=`nodes`, y=`edges`)) +
+  geom_density_2d() +
+  theme_bw()
+ploti
+
+ploti =ggplot(nodeg_filt0, aes(x=`nodes`, y=`edges`)) +
+  stat_density_2d(aes(fill = ..density..), geom = "raster", contour = FALSE) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0)) +
+  theme(
+    legend.position='none'
+  )
+ploti
 a
 a
 a
+
+head(nodeg_filt0[,])
+nodeg0_1d = nodeg_filt0[nodeg_filt0[,"nodes"]<810,]
+nodeg0_1d = nodeg0_1d[nodeg0_1d[,"nodes"]>800,]
+head(nodeg0_1d)
+hist(nodeg0_1d[,"edges"],breaks=30)
+ggplot(as.data.frame(as.vector(nodeg0_1d[,"edges"])), aes(x=as.vector(nodeg0_1d[,"edges"])) ) + geom_histogram( aes(y=..density..), binwidth= 0.05, position="identity" )
+plot1
+
 
 plot1 = ggplot(nodeg, aes(x=`|V|`, y=`|E|`)) + geom_point(color="#639DD2")+
   ggtitle("Fly chromosome 4") +
