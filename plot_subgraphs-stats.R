@@ -122,6 +122,98 @@ ploti =ggplot(nodeg_filt0, aes(x=`nodes`, y=`edges`)) +
     legend.position='none'
   )
 ploti
+########################## Tigmint coloring
+add_nodeg0 = "/projects/btl/aafshinfard/projects/physlr-dev/data/f1.n100-2000.physlr.overlap.subgraphs_stats.molCount"
+title="Fly - whole data - n0 - subsampled to 30K subgraphs"
+add_nodeg20 = "/projects/btl/aafshinfard/projects/physlr-dev/data/f1.n100-2000.physlr.overlap.n20.subgraphs_stats.molCount"
+title="Fly - whole data - n20 - subsampled to 30K subgraphs"
+add_nodeg50 = "/projects/btl/aafshinfard/projects/physlr-dev/data/f1.n100-2000.physlr.overlap.n50.subgraphs_stats.molCount"
+title="Fly - whole data - n50 - subsampled to 30K subgraphs"
+add_nodeg70 = "/projects/btl/aafshinfard/projects/physlr-dev/data/f1.n100-2000.physlr.overlap.n70.subgraphs_stats."
+title="Fly - whole data - n70 - subsampled to 30K subgraphs"
+add_nodeg100 = "/projects/btl/aafshinfard/projects/physlr-dev/data/f1.n100-2000.physlr.overlap.n100.subgraphs_stats.molCount"
+title="Fly - whole data - n100 - subsampled to 30K subgraphs"
+add_nodeg200 = "/projects/btl/aafshinfard/projects/physlr-dev/data/f1.n100-2000.physlr.overlap.n200.subgraphs_stats.molCount"
+title="Fly - whole data - n200 - subsampled to 30K subgraphs"
+### If it's Histogram of cosine sim:
+# go to the end of this code
+
+
+### If it's |E| vs |V| :
+nodeg0 = 
+  read.table(add_nodeg0, sep = " ", header = FALSE, skip = 1)
+nodeg20 = 
+  read.table(add_nodeg20, sep = " ", header = FALSE, skip = 1)
+nodeg50 = 
+  read.table(add_nodeg50, sep = " ", header = FALSE, skip = 1)
+nodeg70 = 
+  read.table(add_nodeg70, sep = " ", header = FALSE, skip = 1)
+nodeg100 = 
+  read.table(add_nodeg100, sep = " ", header = FALSE, skip = 1)
+nodeg200 = 
+  read.table(add_nodeg200, sep = " ", header = FALSE, skip = 1)
+
+#nodeg
+names(nodeg0)=c("Barcodes","nodes","edges","alpha","molCount")
+names(nodeg20)=c("Barcodes","nodes","edges","alpha","molCount")
+names(nodeg50)=c("Barcodes","nodes","edges","alpha","molCount")
+names(nodeg70)=c("Barcodes","nodes","edges","alpha","molCount")
+names(nodeg100)=c("Barcodes","nodes","edges","alpha","molCount")
+names(nodeg200)=c("Barcodes","nodes","edges","alpha","molCount")
+head(nodeg0)
+tail(nodeg0)
+
+#head(nodeg[,"nodes","edges"])
+#headi = head(nodeg)
+#headi[,2:3]
+
+a=nodeg_filt0
+th=sort((a[,"nodes"]))[length(a[,"nodes"])/10]
+nodeg_filt0 = nodeg0[nodeg0[,"nodes"]>th,]
+
+a=nodeg_filt20
+th=sort((a[,"nodes"]))[length(a[,"nodes"])/10]
+nodeg_filt20 = nodeg20[nodeg20[,"nodes"]>th,]
+
+a=nodeg_filt50
+th=sort((a[,"nodes"]))[length(a[,"nodes"])/10]
+nodeg_filt50 = nodeg50[nodeg50[,"nodes"]>th,]
+
+a=nodeg_filt70
+th=sort((a[,"nodes"]))[length(a[,"nodes"])/10]
+nodeg_filt70 = nodeg70[nodeg70[,"nodes"]>th,]
+
+a=nodeg_filt100
+th=sort((a[,"nodes"]))[length(a[,"nodes"])/10]
+nodeg_filt100 = nodeg100[nodeg100[,"nodes"]>th,]
+
+a=nodeg_filt200
+th=sort((a[,"nodes"]))[length(a[,"nodes"])/10]
+nodeg_filt200 = nodeg200[nodeg200[,"nodes"]>th,]
+
+#dim(nodeg)[1]
+dim(nodeg_filt0)[1]
+
+#head(nodeg_filt)
+maxi = 30000
+nodeg_filt2_0 = nodeg_filt0[1:maxi,]
+nodeg_filt2_20 = nodeg_filt20[1:maxi,]
+nodeg_filt2_50 = nodeg_filt50[1:maxi,]
+nodeg_filt2_70 = nodeg_filt70[1:maxi,]
+nodeg_filt2_100 = nodeg_filt100[1:maxi,]
+nodeg_filt2_200 = nodeg_filt200[1:maxi,]
+title="Fly - whole data - n0 - subsampled to 70K subgraphs"
+ploti = ggplot(nodeg_filt0, aes(x=`nodes`, y=`edges`)) + geom_point(colour=nodeg_filt0[,"molCount"],size=0.001)+
+  ggtitle(title) +
+  labs(x= "Number of nodes",y= "Number of edges") + 
+  #xlim(0,1300)+
+  #ylim(0,2.5*10^5)+
+  theme(text = element_text(size=14),
+        axis.text.x = element_text(angle=0, hjust=1))+
+  scale_color_gradientn(colours = rainbow(10))
+ploti
+
+
 a
 a
 a
