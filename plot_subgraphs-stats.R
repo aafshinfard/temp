@@ -220,10 +220,17 @@ nodeg_filt2_50 = nodeg_filt2_50[nodeg_filt2_50[,"molCount"]<9,]
 nodeg_filt2_100 = nodeg_filt2_100[nodeg_filt2_100[,"molCount"]<9,]
 nodeg_filt2_200 = nodeg_filt2_200[nodeg_filt2_200[,"molCount"]<7,]
 
+#ploti = ggplot(nodeg_filt2_0, aes(x=`nodes`, y=`edges`)) +
+#  geom_bin2d(bins = 400) +
+#  theme_bw()
+
+#ploti = ggplot(nodeg_filt2_20, aes(x=`nodes`, y=`edges`)) +
+#  stat_density_2d(aes(fill = ..level..), geom = "polygon")
+#ploti
 
 title="Fly - whole data - n0 - subsampled to 70K subgraphs"
-#ploti = ggplot(nodeg_filt2_0, aes(x=`nodes`, y=`edges`,color=nodeg_filt2_0[,"molCount"])) + geom_point(size=0.001)+
-ploti = ggplot(nodeg_filt2_0, aes(x=`nodes`, y=`edges`)) + geom_point(size=0.001,colour=nodeg_filt2_0[,"molCount"])+
+ploti = ggplot(nodeg_filt2_20, aes(x=`nodes`, y=`edges`,color=nodeg_filt2_20[,"molCount"])) + geom_point(size=0.001)+
+#ploti = ggplot(nodeg_filt2_20, aes(x=`nodes`, y=`edges`)) + geom_point(size=0.001,colour=nodeg_filt2_20[,"molCount"])+
   ggtitle(title) +
   labs(x= "Number of nodes",y= "Number of edges") + 
   #xlim(0,1300)+
