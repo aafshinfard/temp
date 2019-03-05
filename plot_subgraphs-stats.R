@@ -3,6 +3,7 @@ library(ggplot2)
 ##############################################################################
 ############# Physlr node edge data 
 
+#### Fly:
 add_nodeg0 = "/projects/btl/aafshinfard/projects/physlr-dev/data/f1.n100-2000.physlr.overlap.subgraphs_stats"
 title="Fly - whole data - n0 - subsampled to 30K subgraphs"
 add_nodeg20 = "/projects/btl/aafshinfard/projects/physlr-dev/data/f1.n100-2000.physlr.overlap.n20.subgraphs_stats"
@@ -17,6 +18,9 @@ add_nodeg200 = "/projects/btl/aafshinfard/projects/physlr-dev/data/f1.n100-2000.
 title="Fly - whole data - n200 - subsampled to 30K subgraphs"
 ### If it's Histogram of cosine sim:
 # go to the end of this code
+
+### Fish:
+add_nodeg0 = "/projects/btl/aafshinfard/projects/physlr-dev/data/fish.indexlr.n100-5000.c2-x.physlr.overlap.n100.subgraphs_stats"
 
 
 ### If it's |E| vs |V| :
@@ -122,7 +126,9 @@ ploti =ggplot(nodeg_filt0, aes(x=`nodes`, y=`edges`)) +
     legend.position='none'
   )
 ploti
+####################################################
 ########################## Tigmint coloring
+### Fly:
 add_nodeg0 = "/projects/btl/aafshinfard/projects/physlr-dev/data/f1.n100-2000.physlr.overlap.subgraphs_stats.molCount"
 title="Fly - whole data - n0 - subsampled to 30K subgraphs"
 add_nodeg20 = "/projects/btl/aafshinfard/projects/physlr-dev/data/f1.n100-2000.physlr.overlap.n20.subgraphs_stats.molCount"
@@ -137,7 +143,12 @@ add_nodeg200 = "/projects/btl/aafshinfard/projects/physlr-dev/data/f1.n100-2000.
 title="Fly - whole data - n200 - subsampled to 30K subgraphs"
 ### If it's Histogram of cosine sim:
 # go to the end of this code
-
+### Fish:
+add_nodeg0 = "/projects/btl/aafshinfard/projects/physlr-dev/data/fish.indexlr.n100-5000.c2-x.physlr.overlap.subgraphs_stats.molCount"
+add_nodeg20 = "/projects/btl/aafshinfard/projects/physlr-dev/data/fish.indexlr.n100-5000.c2-x.physlr.overlap.n20.subgraphs_stats.molCount"
+add_nodeg50 = "/projects/btl/aafshinfard/projects/physlr-dev/data/fish.indexlr.n100-5000.c2-x.physlr.overlap.n40.subgraphs_stats.molCount"
+add_nodeg100 = "/projects/btl/aafshinfard/projects/physlr-dev/data/fish.indexlr.n100-5000.c2-x.physlr.overlap.n100.subgraphs_stats.molCount"
+add_nodeg200 = "/projects/btl/aafshinfard/projects/physlr-dev/data/fish.indexlr.n100-5000.c2-x.physlr.overlap.n200.subgraphs_stats.molCount"
 
 ### If it's |E| vs |V| :
 nodeg0 = 
@@ -160,8 +171,8 @@ names(nodeg50)=c("Barcodes","nodes","edges","alpha","molCount")
 names(nodeg70)=c("Barcodes","nodes","edges","alpha","molCount")
 names(nodeg100)=c("Barcodes","nodes","edges","alpha","molCount")
 names(nodeg200)=c("Barcodes","nodes","edges","alpha","molCount")
-head(nodeg0)
-tail(nodeg0)
+head(nodeg100)
+tail(nodeg100)
 
 #head(nodeg[,"nodes","edges"])
 #headi = head(nodeg)
@@ -195,22 +206,31 @@ nodeg_filt200 = nodeg200[nodeg200[,"nodes"]>th,]
 dim(nodeg_filt0)[1]
 
 #head(nodeg_filt)
-maxi = 30000
+maxi = 70000
 nodeg_filt2_0 = nodeg_filt0[1:maxi,]
 nodeg_filt2_20 = nodeg_filt20[1:maxi,]
 nodeg_filt2_50 = nodeg_filt50[1:maxi,]
 nodeg_filt2_70 = nodeg_filt70[1:maxi,]
 nodeg_filt2_100 = nodeg_filt100[1:maxi,]
 nodeg_filt2_200 = nodeg_filt200[1:maxi,]
+
+nodeg_filt2_0 = nodeg_filt2_0[nodeg_filt2_0[,"molCount"]<9,]
+nodeg_filt2_20 = nodeg_filt2_20[nodeg_filt2_20[,"molCount"]<9,]
+nodeg_filt2_50 = nodeg_filt2_50[nodeg_filt2_50[,"molCount"]<9,]
+nodeg_filt2_100 = nodeg_filt2_100[nodeg_filt2_100[,"molCount"]<9,]
+nodeg_filt2_200 = nodeg_filt2_200[nodeg_filt2_200[,"molCount"]<7,]
+
+
 title="Fly - whole data - n0 - subsampled to 70K subgraphs"
-ploti = ggplot(nodeg_filt0, aes(x=`nodes`, y=`edges`)) + geom_point(colour=nodeg_filt0[,"molCount"],size=0.001)+
+#ploti = ggplot(nodeg_filt2_0, aes(x=`nodes`, y=`edges`,color=nodeg_filt2_0[,"molCount"])) + geom_point(size=0.001)+
+ploti = ggplot(nodeg_filt2_0, aes(x=`nodes`, y=`edges`)) + geom_point(size=0.001,colour=nodeg_filt2_0[,"molCount"])+
   ggtitle(title) +
   labs(x= "Number of nodes",y= "Number of edges") + 
   #xlim(0,1300)+
   #ylim(0,2.5*10^5)+
   theme(text = element_text(size=14),
         axis.text.x = element_text(angle=0, hjust=1))+
-  scale_color_gradientn(colours = rainbow(10))
+  scale_color_gradientn(colours = rainbow(5))
 ploti
 
 
@@ -236,9 +256,8 @@ plot1 = ggplot(nodeg, aes(x=`|V|`, y=`|E|`)) + geom_point(color="#639DD2")+
 plot1
 
 
-
-
-
+##############################################################################
+##############################################################################
 ################################## OLD CODES:
 #nodeg0 = nodeg[nodeg['V1']==0,]
 #nodeg1 = nodeg[nodeg['V1']==1,]
