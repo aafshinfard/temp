@@ -1,3 +1,10 @@
+
+
+# join command to build stats.molCount
+join -1 1 -2 2 -o 1.1,1.2,1.3,1.4,2.1 <(sort -k1 fish.indexlr.n100-5000.c2-x.physlr.overlap.n23.subgraphs_stats) <(sort -k2 bin/molCount_GT_fish_m4d50ks200) > fish.indexlr.n100-5000.c2-x.physlr.overlap.n23.subgraphs_stats.molCount
+
+
+
 ### Compare incosistency of two algorithms and check their diff with a ground truth
 toCheck=n70.t85
 ref=n70.st2
@@ -358,6 +365,8 @@ sort diff_sqCosine+_chr4 | wc -l
 
 ##########
 cut -f4 fly/fly.f1.a0.65.d50k.m8.n5.q1.s2000.molecule.bed | uniq -c | sort -k 2  > compare/molCount_GT_x
+
+
 
 
 head sqCosine+emptyReturnWisely/f1chr4.n100-1000.physlr.overlap.n50.mol.tsv -n 8374 > compare/sqCosine+.header.mol.tsv
