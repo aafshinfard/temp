@@ -4,7 +4,7 @@ library(ggplot2)
 ############# Physlr node edge data 
 
 #### Fly:
-add_nodeg0 = "/projects/btl/aafshinfard/projects/physlr-dev/data/f1.n100-2000.physlr.overlap.subgraphs_stats"
+add_nodeg0 = "/projects/btl_scratch/aafshinfard/physlr-dev/data/f1.n100-2000.physlr.overlap.subgraphs_stats"
 title="Fly - whole data - n0 - subsampled to 30K subgraphs"
 add_nodeg20 = "/projects/btl/aafshinfard/projects/physlr-dev/data/f1.n100-2000.physlr.overlap.n20.subgraphs_stats"
 title="Fly - whole data - n20 - subsampled to 30K subgraphs"
@@ -20,14 +20,19 @@ title="Fly - whole data - n200 - subsampled to 30K subgraphs"
 # go to the end of this code
 
 ### Fish:
-add_nodeg0 = "/projects/btl/aafshinfard/projects/physlr-dev/data/fish.indexlr.n100-5000.c2-x.physlr.overlap.n100.subgraphs_stats"
+add_nodeg100 = "/projects/btl_scratch/aafshinfard/physlr-dev/data/fish.indexlr.n100-5000.c2-x.physlr.overlap.n100.subgraphs_stats"
 
+
+add_nodeg20 = "/projects/btl_scratch/aafshinfard/phys-dev/physlr/data/fish.indexlr.n100-2000.c2-x.physlr.overlap.n20.subgraphs_stats"
+add_nodeg20_mol = "/projects/btl_scratch/aafshinfard/phys-dev/physlr/data/fish.indexlr.n100-2000.c2-x.physlr.overlap.n20.mol.subgraphs_stats"
 
 ### If it's |E| vs |V| :
 nodeg0 = 
   read.table(add_nodeg0, sep = "\t", header = FALSE, skip = 1)
 nodeg20 = 
   read.table(add_nodeg20, sep = "\t", header = FALSE, skip = 1)
+nodeg20_mol = 
+  read.table(add_nodeg20_mol, sep = "\t", header = FALSE, skip = 1)
 nodeg50 = 
   read.table(add_nodeg50, sep = "\t", header = FALSE, skip = 1)
 nodeg70 = 
@@ -40,6 +45,7 @@ nodeg200 =
 #nodeg
 names(nodeg0)=c("Barcodes","nodes","edges","alpha")
 names(nodeg20)=c("Barcodes","nodes","edges","alpha")
+names(nodeg20_mol)=c("Barcodes","nodes","edges","alpha")
 names(nodeg50)=c("Barcodes","nodes","edges","alpha")
 names(nodeg70)=c("Barcodes","nodes","edges","alpha")
 names(nodeg100)=c("Barcodes","nodes","edges","alpha")
@@ -55,9 +61,14 @@ a=nodeg_filt0
 th=sort((a[,"nodes"]))[length(a[,"nodes"])/10]
 nodeg_filt0 = nodeg0[nodeg0[,"nodes"]>th,]
 
-a=nodeg_filt20
+a=nodeg20
 th=sort((a[,"nodes"]))[length(a[,"nodes"])/10]
 nodeg_filt20 = nodeg20[nodeg20[,"nodes"]>th,]
+
+a=nodeg20_mol
+th=sort((a[,"nodes"]))[length(a[,"nodes"])/10]
+nodeg_filt20_mol = nodeg20_mol[nodeg20_mol[,"nodes"]>th,]
+
 
 a=nodeg_filt50
 th=sort((a[,"nodes"]))[length(a[,"nodes"])/10]
@@ -79,25 +90,34 @@ nodeg_filt200 = nodeg200[nodeg200[,"nodes"]>th,]
 dim(nodeg_filt0)[1]
 
 #head(nodeg_filt)
-maxi = 300000
+maxi = 70000
 nodeg_filt2_0 = nodeg_filt0[1:maxi,]
 nodeg_filt2_20 = nodeg_filt20[1:maxi,]
+nodeg_filt2_20_mol = nodeg_filt20_mol[1:maxi,]
 nodeg_filt2_50 = nodeg_filt50[1:maxi,]
 nodeg_filt2_70 = nodeg_filt70[1:maxi,]
 nodeg_filt2_100 = nodeg_filt100[1:maxi,]
 nodeg_filt2_200 = nodeg_filt200[1:maxi,]
 
-title="Fly - whole data - n200 - subsampled to 70K subgraphs"
+title="Fish - after mol2bar - n20 - subsampled to 70K subgraphs"
 #ploti = ggplot(nodeg, aes(x=`nodes`, y=`edges`,color=`multip-comp`)) + geom_point()+
-ploti = ggplot(nodeg_filt200, aes(x=`nodes`, y=`edges`)) + geom_point(size=0.001)+
+ploti = ggplot(nodeg_filt2_20_mol, aes(x=`nodes`, y=`edges`)) + geom_point(size=0.001)+
   ggtitle(title) +
   labs(x= "Number of nodes",y= "Number of edges") + 
-  #xlim(0,1300)+
-  #ylim(0,2.5*10^5)+
+  xlim(0,300)+
+  ylim(0,8000)+#ylim(0,2.5*10^5)+
   theme(text = element_text(size=14),
         axis.text.x = element_text(angle=0, hjust=1))
 ploti
-
+ploti = ggplot(nodeg_filt2_20, aes(x=`nodes`, y=`edges`)) + geom_point(size=0.001)+
+  ggtitle(title) +
+  labs(x= "Number of nodes",y= "Number of edges") + 
+  xlim(0,300)+
+  ylim(0,8000)+#ylim(0,2.5*10^5)+
+  theme(text = element_text(size=14),
+        axis.text.x = element_text(angle=0, hjust=1))+
+  geom_step(data = nodeg_filt2_20_mol)
+ploti
 
 
 1
@@ -129,7 +149,7 @@ ploti
 ####################################################
 ########################## Tigmint coloring
 ### Fly:
-add_nodeg0 = "/projects/btl/aafshinfard/projects/physlr-dev/data/f1.n100-2000.physlr.overlap.subgraphs_stats.molCount"
+add_nodeg0 = "/projects/btl_scratch/aafshinfard/physlr-dev/data/f1.n100-2000.physlr.overlap.subgraphs_stats.molCount"
 title="Fly - whole data - n0 - subsampled to 30K subgraphs"
 add_nodeg20 = "/projects/btl/aafshinfard/projects/physlr-dev/data/f1.n100-2000.physlr.overlap.n20.subgraphs_stats.molCount"
 title="Fly - whole data - n20 - subsampled to 30K subgraphs"
@@ -144,19 +164,30 @@ title="Fly - whole data - n200 - subsampled to 30K subgraphs"
 ### If it's Histogram of cosine sim:
 # go to the end of this code
 ### Fish:
-add_nodeg0 = "/projects/btl/aafshinfard/projects/physlr-dev/data/fish.indexlr.n100-5000.c2-x.physlr.overlap.subgraphs_stats.molCount"
-add_nodeg20 = "/projects/btl/aafshinfard/projects/physlr-dev/data/fish.indexlr.n100-5000.c2-x.physlr.overlap.n20.subgraphs_stats.molCount"
-add_nodeg50 = "/projects/btl/aafshinfard/projects/physlr-dev/data/fish.indexlr.n100-5000.c2-x.physlr.overlap.n40.subgraphs_stats.molCount"
-add_nodeg100 = "/projects/btl/aafshinfard/projects/physlr-dev/data/fish.indexlr.n100-5000.c2-x.physlr.overlap.n100.subgraphs_stats.molCount"
-add_nodeg200 = "/projects/btl/aafshinfard/projects/physlr-dev/data/fish.indexlr.n100-5000.c2-x.physlr.overlap.n200.subgraphs_stats.molCount"
+add_nodeg0 = "/projects/btl_scratch/aafshinfard/physlr-dev/data/fish.indexlr.n100-5000.c2-x.physlr.overlap.subgraphs_stats.molCount"
+add_nodeg20 = "/projects/btl_scratch/aafshinfard/physlr-dev/data/fish.indexlr.n100-5000.c2-x.physlr.overlap.n20.subgraphs_stats.molCount"
+add_nodeg29 = "/projects/btl_scratch/aafshinfard/physlr-dev/data/fish.indexlr.n100-5000.c2-x.physlr.overlap.n29.subgraphs_stats.molCount"
+add_nodeg50 = "/projects/btl_scratch/aafshinfard/physlr-dev/data/fish.indexlr.n100-5000.c2-x.physlr.overlap.n40.subgraphs_stats.molCount"
+add_nodeg53 = "/projects/btl_scratch/aafshinfard/physlr-dev/data/fish.indexlr.n100-5000.c2-x.physlr.overlap.n53.subgraphs_stats.molCount"
+add_nodeg100 = "/projects/btl_scratch/aafshinfard/physlr-dev/data/fish.indexlr.n100-5000.c2-x.physlr.overlap.n100.subgraphs_stats.molCount"
+add_nodeg200 = "/projects/btl_scratch/aafshinfard/physlr-dev/data/fish.indexlr.n100-5000.c2-x.physlr.overlap.n200.subgraphs_stats.molCount"
 
-### If it's |E| vs |V| :
+add_nodeg0 = "/projects/btl_scratch/aafshinfard/physlr-dev/data/fish.indexlr.n100-5000.c2-x.physlr.overlap.subgraphs_stats.molCount"
+add_nodeg23 = "/projects/btl_scratch/aafshinfard/physlr-dev/data/fish.indexlr.n100-5000.c2-x.physlr.overlap.n23.subgraphs_stats.molCount"
+add_nodeg41 = "/projects/btl_scratch/aafshinfard/physlr-dev/data/fish.indexlr.n100-5000.c2-x.physlr.overlap.n41.subgraphs_stats.molCount"
+add_nodeg65 = "/projects/btl_scratch/aafshinfard/physlr-dev/data/fish.indexlr.n100-5000.c2-x.physlr.overlap.n65.subgraphs_stats.molCount"
+
+### 
 nodeg0 = 
   read.table(add_nodeg0, sep = " ", header = FALSE, skip = 1)
 nodeg20 = 
   read.table(add_nodeg20, sep = " ", header = FALSE, skip = 1)
+nodeg29 = 
+  read.table(add_nodeg29, sep = " ", header = FALSE, skip = 1)
 nodeg50 = 
   read.table(add_nodeg50, sep = " ", header = FALSE, skip = 1)
+nodeg53 = 
+  read.table(add_nodeg53, sep = " ", header = FALSE, skip = 1)
 nodeg70 = 
   read.table(add_nodeg70, sep = " ", header = FALSE, skip = 1)
 nodeg100 = 
@@ -164,21 +195,40 @@ nodeg100 =
 nodeg200 = 
   read.table(add_nodeg200, sep = " ", header = FALSE, skip = 1)
 
+
+
+nodeg0 = 
+  read.table(add_nodeg0, sep = " ", header = FALSE, skip = 1)
+nodeg23 = 
+  read.table(add_nodeg23, sep = " ", header = FALSE, skip = 1)
+nodeg41 = 
+  read.table(add_nodeg41, sep = " ", header = FALSE, skip = 1)
+nodeg65 = 
+  read.table(add_nodeg65, sep = " ", header = FALSE, skip = 1)
+  
 #nodeg
 names(nodeg0)=c("Barcodes","nodes","edges","alpha","molCount")
 names(nodeg20)=c("Barcodes","nodes","edges","alpha","molCount")
+names(nodeg29)=c("Barcodes","nodes","edges","alpha","molCount")
 names(nodeg50)=c("Barcodes","nodes","edges","alpha","molCount")
+names(nodeg53)=c("Barcodes","nodes","edges","alpha","molCount")
 names(nodeg70)=c("Barcodes","nodes","edges","alpha","molCount")
 names(nodeg100)=c("Barcodes","nodes","edges","alpha","molCount")
 names(nodeg200)=c("Barcodes","nodes","edges","alpha","molCount")
 head(nodeg100)
 tail(nodeg100)
 
+
+names(nodeg0)=c("Barcodes","nodes","edges","alpha","molCount")
+names(nodeg23)=c("Barcodes","nodes","edges","alpha","molCount")
+names(nodeg41)=c("Barcodes","nodes","edges","alpha","molCount")
+names(nodeg65)=c("Barcodes","nodes","edges","alpha","molCount")
+
 #head(nodeg[,"nodes","edges"])
 #headi = head(nodeg)
 #headi[,2:3]
 
-a=nodeg_filt0
+a=nodeg0
 th=sort((a[,"nodes"]))[length(a[,"nodes"])/10]
 nodeg_filt0 = nodeg0[nodeg0[,"nodes"]>th,]
 
@@ -186,9 +236,17 @@ a=nodeg_filt20
 th=sort((a[,"nodes"]))[length(a[,"nodes"])/10]
 nodeg_filt20 = nodeg20[nodeg20[,"nodes"]>th,]
 
+a=nodeg29
+th=sort((a[,"nodes"]))[length(a[,"nodes"])/10]
+nodeg_filt29 = nodeg29[nodeg29[,"nodes"]>th,]
+
 a=nodeg_filt50
 th=sort((a[,"nodes"]))[length(a[,"nodes"])/10]
 nodeg_filt50 = nodeg50[nodeg50[,"nodes"]>th,]
+
+a=nodeg_filt53
+th=sort((a[,"nodes"]))[length(a[,"nodes"])/10]
+nodeg_filt53 = nodeg53[nodeg53[,"nodes"]>th,]
 
 a=nodeg_filt70
 th=sort((a[,"nodes"]))[length(a[,"nodes"])/10]
@@ -202,6 +260,24 @@ a=nodeg_filt200
 th=sort((a[,"nodes"]))[length(a[,"nodes"])/10]
 nodeg_filt200 = nodeg200[nodeg200[,"nodes"]>th,]
 
+
+
+a=nodeg0
+th=sort((a[,"nodes"]))[length(a[,"nodes"])/10]
+nodeg_filt0 = nodeg0[nodeg0[,"nodes"]>th,]
+
+a=nodeg23
+th=sort((a[,"nodes"]))[length(a[,"nodes"])/10]
+nodeg_filt23 = nodeg23[nodeg23[,"nodes"]>th,]
+
+a=nodeg41
+th=sort((a[,"nodes"]))[length(a[,"nodes"])/10]
+nodeg_filt41 = nodeg41[nodeg41[,"nodes"]>th,]
+
+a=nodeg65
+th=sort((a[,"nodes"]))[length(a[,"nodes"])/10]
+nodeg_filt65 = nodeg65[nodeg65[,"nodes"]>th,]
+
 #dim(nodeg)[1]
 dim(nodeg_filt0)[1]
 
@@ -209,16 +285,34 @@ dim(nodeg_filt0)[1]
 maxi = 70000
 nodeg_filt2_0 = nodeg_filt0[1:maxi,]
 nodeg_filt2_20 = nodeg_filt20[1:maxi,]
+nodeg_filt2_29 = nodeg_filt29[1:maxi,]
 nodeg_filt2_50 = nodeg_filt50[1:maxi,]
+nodeg_filt2_53 = nodeg_filt53[1:maxi,]
 nodeg_filt2_70 = nodeg_filt70[1:maxi,]
 nodeg_filt2_100 = nodeg_filt100[1:maxi,]
 nodeg_filt2_200 = nodeg_filt200[1:maxi,]
 
+nodeg_filt2_0 = nodeg_filt0[1:maxi,]
+nodeg_filt2_23 = nodeg_filt23[1:maxi,]
+nodeg_filt2_41 = nodeg_filt41[1:maxi,]
+nodeg_filt2_65 = nodeg_filt65[1:maxi,]
+
+
+
+
+
 nodeg_filt2_0 = nodeg_filt2_0[nodeg_filt2_0[,"molCount"]<9,]
 nodeg_filt2_20 = nodeg_filt2_20[nodeg_filt2_20[,"molCount"]<9,]
+nodeg_filt2_29 = nodeg_filt2_29[nodeg_filt2_29[,"molCount"]<9,]
 nodeg_filt2_50 = nodeg_filt2_50[nodeg_filt2_50[,"molCount"]<9,]
+nodeg_filt2_53 = nodeg_filt2_53[nodeg_filt2_53[,"molCount"]<9,]
 nodeg_filt2_100 = nodeg_filt2_100[nodeg_filt2_100[,"molCount"]<9,]
 nodeg_filt2_200 = nodeg_filt2_200[nodeg_filt2_200[,"molCount"]<7,]
+
+nodeg_filt2_0 = nodeg_filt2_0[nodeg_filt2_0[,"molCount"]<9,]
+nodeg_filt2_23 = nodeg_filt2_23[nodeg_filt2_23[,"molCount"]<9,]
+nodeg_filt2_41 = nodeg_filt2_41[nodeg_filt2_41[,"molCount"]<9,]
+nodeg_filt2_65 = nodeg_filt2_65[nodeg_filt2_65[,"molCount"]<9,]
 
 #ploti = ggplot(nodeg_filt2_0, aes(x=`nodes`, y=`edges`)) +
 #  geom_bin2d(bins = 400) +
@@ -228,9 +322,12 @@ nodeg_filt2_200 = nodeg_filt2_200[nodeg_filt2_200[,"molCount"]<7,]
 #  stat_density_2d(aes(fill = ..level..), geom = "polygon")
 #ploti
 
-title="Fly - whole data - n0 - subsampled to 70K subgraphs"
-ploti = ggplot(nodeg_filt2_20, aes(x=`nodes`, y=`edges`,color=nodeg_filt2_20[,"molCount"])) + geom_point(size=0.001)+
-#ploti = ggplot(nodeg_filt2_20, aes(x=`nodes`, y=`edges`)) + geom_point(size=0.001,colour=nodeg_filt2_20[,"molCount"])+
+bb=nodeg_filt2_20
+head(bb)
+
+title="Fish - whole data - n65 - subsampled to 70K subgraphs"
+#ploti = ggplot(nodeg_filt2_20, aes(x=`nodes`, y=`edges`,color=nodeg_filt2_20[,"molCount"])) + geom_point(size=0.001)+
+ploti = ggplot(nodeg_filt2_65, aes(x=`nodes`, y=`edges`)) + geom_point(size=0.001,colour=nodeg_filt2_65[,"molCount"])+
   ggtitle(title) +
   labs(x= "Number of nodes",y= "Number of edges") + 
   #xlim(0,1300)+

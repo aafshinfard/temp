@@ -15,6 +15,7 @@ adj_numpy  = np.array([[0,6,0,0,0],[6,0,0,0,0],[0,0,0,3,0],[0,0,3,0,0],[0,0,0,0,
 adj_numpy  = np.array([[0,6,0,0,4],[6,0,0,0,3],[0,0,0,3,3],[0,0,3,0,3],[4,3,3,3,0]])
 
 
+adj_numpy  = np.array([[0,0,0,0,0,0,0,1],[0,0,0,0,0,0,0,1],[0,0,0,0,0,0,0,1],[0,0,0,0,0,0,0,1],[0,0,0,0,0,0,0,1],[0,0,0,0,0,0,0,1],[0,0,0,0,0,0,0,1],[1,1,1,1,1,1,1,0]])
 adj_numpy  = np.array([[0,6,4,0,0,0,0,1],[6,0,5,0,0,0,0,1],[4,5,0,0,0,0,0,1],[0,0,0,0,7,3,1,1],[0,0,0,7,0,4,0,1],[0,0,0,3,4,0,0,1],[4,0,0,1,0,0,0,1],[1,1,1,1,1,1,1,0]])
 
 adj_numpy  = np.array([[0,6,4,2,0,0,0,1],[6,0,5,0,0,0,0,1],[4,5,0,0,0,0,0,1],[2,0,0,0,7,3,0,1],[0,0,0,7,0,4,0,1],[0,0,0,3,4,0,0,1],[0,0,0,0,0,0,0,1],[1,1,1,1,1,1,1,0]])
@@ -32,6 +33,15 @@ cos_components = list(nx.connected_components(sub_graph))
 cos_components.sort(key=len, reverse=True)
 multi_node_components = [i for i in cos_components if len(i) > 1]
 return u, {v: i for i, vs in enumerate(multi_node_components) for v in vs}
+
+
+partition = community.best_partition(sub_graph)
+for com in set(partition.values()) :
+    list_nodes = [nodes for nodes in partition.keys()
+                                if partition[nodes] == com]
+	if len(list_nodes)>1 :
+		print({com: v for v in list_nodes})
+
 
 
 components = list(nx.connected_components(g.subgraph(set(g.neighbors(u)).union(set([u])))))

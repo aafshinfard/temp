@@ -219,8 +219,14 @@ dat="/projects/btl/aafshinfard/projects/physlr-dev/data/physlrSubgraphs/weFailTh
 dat="/projects/btl/aafshinfard/projects/physlr-dev/data/physlrSubgraphs/weFailTheyDo/AAACACCCAGCTCGCA-1.tsv" #341 BUT WE DID IT HERE! becuz of squaring  (we:1 they:2 Tigmint:2)
 dat="/projects/btl/aafshinfard/projects/physlr-dev/data/physlrSubgraphs/weFailTheyDo/" #341 (we:1 they:2 Tigmint:2)
 
+
+
+##################### Shaun examples:
+dat="/projects/btl/aafshinfard/projects/fish.indexlr.n100-5000.c2-x.physlr.overlap.n100.subgraph.tsv" #35
+
+
 a = read.table(dat, header = FALSE, col.names = paste0("V",seq_len(3)),as.is = "V3", fill = TRUE)
-a = a[248:dim(a)[1],]
+a = a[35:dim(a)[1],]
 a[,3] = as.numeric(a[,3])
 gr <- graph.data.frame(a)
 gr = as.undirected(gr)
