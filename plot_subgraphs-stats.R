@@ -109,14 +109,14 @@ ploti = ggplot(nodeg_filt2_20_mol, aes(x=`nodes`, y=`edges`)) + geom_point(size=
   theme(text = element_text(size=14),
         axis.text.x = element_text(angle=0, hjust=1))
 ploti
-ploti = ggplot(nodeg_filt2_20, aes(x=`nodes`, y=`edges`)) + geom_point(size=0.001)+
+ploti = ggplot(nodeg_filt2_20, aes(x=`nodes`, y=`alpha`)) + geom_point(size=0.001)+
   ggtitle(title) +
   labs(x= "Number of nodes",y= "Number of edges") + 
   xlim(0,300)+
-  ylim(0,8000)+#ylim(0,2.5*10^5)+
+  #ylim(0,8000)+#ylim(0,2.5*10^5)+
   theme(text = element_text(size=14),
         axis.text.x = element_text(angle=0, hjust=1))+
-  geom_step(data = nodeg_filt2_20_mol)
+  geom_point(data = nodeg_filt2_20_mol,size=0.001,color="red")
 ploti
 
 
@@ -128,13 +128,19 @@ ploti
 6
 7
 8
-ploti = ggplot(nodeg_filt200, aes(x=`nodes`, y=`edges`)) +
+ploti = ggplot(nodeg_filt2_20, aes(x=`nodes`, y=`alpha`)) +
   geom_hex(bins=100) +
   theme_bw()
 ploti
 
-ploti = ggplot(nodeg_filt0, aes(x=`nodes`, y=`edges`)) +
+ploti = ggplot(nodeg_filt2_20, aes(x=`nodes`, y=`alpha`)) +
   geom_density_2d() +
+  theme_bw()
+ploti
+
+ploti = ggplot(nodeg_filt2_20, aes(x=`nodes`, y=`alpha`)) +
+  stat_density_2d(aes(fill = stat(level)), geom = "polygon") +
+  scale_fill_viridis_c()+
   theme_bw()
 ploti
 

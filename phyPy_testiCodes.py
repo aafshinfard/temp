@@ -18,6 +18,8 @@ adj_numpy  = np.array([[0,6,0,0,4],[6,0,0,0,3],[0,0,0,3,3],[0,0,3,0,3],[4,3,3,3,
 adj_numpy  = np.array([[0,0,0,0,0,0,0,1],[0,0,0,0,0,0,0,1],[0,0,0,0,0,0,0,1],[0,0,0,0,0,0,0,1],[0,0,0,0,0,0,0,1],[0,0,0,0,0,0,0,1],[0,0,0,0,0,0,0,1],[1,1,1,1,1,1,1,0]])
 adj_numpy  = np.array([[0,6,4,0,0,0,0,1],[6,0,5,0,0,0,0,1],[4,5,0,0,0,0,0,1],[0,0,0,0,7,3,1,1],[0,0,0,7,0,4,0,1],[0,0,0,3,4,0,0,1],[4,0,0,1,0,0,0,1],[1,1,1,1,1,1,1,0]])
 
+adj_numpy  = np.array([[0,6,4,2,0,0,1],[6,0,5,0,0,0,1],[4,5,0,0,0,0,1],[2,0,0,0,7,3,1],[0,0,0,7,0,4,1],[0,0,0,3,4,0,1],[1,1,1,1,1,1,0]])
+
 adj_numpy  = np.array([[0,6,4,2,0,0,0,1],[6,0,5,0,0,0,0,1],[4,5,0,0,0,0,0,1],[2,0,0,0,7,3,0,1],[0,0,0,7,0,4,0,1],[0,0,0,3,4,0,0,1],[0,0,0,0,0,0,0,1],[1,1,1,1,1,1,1,0]])
 
 G = nx.from_numpy_matrix(adj_numpy)
@@ -35,12 +37,18 @@ multi_node_components = [i for i in cos_components if len(i) > 1]
 return u, {v: i for i, vs in enumerate(multi_node_components) for v in vs}
 
 
-partition = community.best_partition(sub_graph)
+import community as cm
+partition = cm.best_partition(sub_graph)
 for com in set(partition.values()) :
     list_nodes = [nodes for nodes in partition.keys()
                                 if partition[nodes] == com]
 	if len(list_nodes)>1 :
 		print({com: v for v in list_nodes})
+
+
+from networkx.algorithms import community
+a=community.greedy_modularity_communities(sub_graph)
+
 
 
 
