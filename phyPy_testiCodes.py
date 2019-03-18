@@ -1,5 +1,7 @@
 import networkx as nx
 import numpy as np
+import community as louvian
+from networkx.algorithms import community as nxcommunity
 import scipy as sp
 from sklearn.metrics.pairwise import cosine_similarity
 scipy.linalg.blas.sgemm(...) #matrix-matrix
