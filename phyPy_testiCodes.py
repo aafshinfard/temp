@@ -1,6 +1,6 @@
 import networkx as nx
 import numpy as np
-import community as louvian
+import community as louvain
 from networkx.algorithms import community as nxcommunity
 import scipy as sp
 from sklearn.metrics.pairwise import cosine_similarity
@@ -23,7 +23,8 @@ adj_numpy  = np.array([[0,6,4,0,0,0,0,1],[6,0,5,0,0,0,0,1],[4,5,0,0,0,0,0,1],[0,
 adj_numpy  = np.array([[0,6,4,2,0,0,1],[6,0,5,0,0,0,1],[4,5,0,0,0,0,1],[2,0,0,0,7,3,1],[0,0,0,7,0,4,1],[0,0,0,3,4,0,1],[1,1,1,1,1,1,0]])
 
 adj_numpy  = np.array([[0,6,4,2,0,0,0,1],[6,0,5,0,0,0,0,1],[4,5,0,0,0,0,0,1],[2,0,0,0,7,3,0,1],[0,0,0,7,0,4,0,1],[0,0,0,3,4,0,0,1],[0,0,0,0,0,0,0,1],[1,1,1,1,1,1,1,0]])
-
+u = 7
+threshold=0.75
 G = nx.from_numpy_matrix(adj_numpy)
 g = G
 sub_graph = g.subgraph(g.neighbors(7))
@@ -38,6 +39,24 @@ cos_components.sort(key=len, reverse=True)
 multi_node_components = [i for i in cos_components if len(i) > 1]
 return u, {v: i for i, vs in enumerate(multi_node_components) for v in vs}
 
+
+for comp in components:
+    if len(comp) > 1:
+        sub_graph = g.subgraph(g.neighbors(comp))
+adj_array = nx.adjacency_matrix(sub_graph).toarray()
+new_adj = np.multiply(
+            cosine_similarity(sp.linalg.blas.sgemm(1.0, adj_array, adj_array)) >= 0.75, adj_array)
+edges_to_remove = np.argwhere(new_adj != adj_array)
+barcode_dict = dict(zip(range(len(sub_graph)), list(sub_graph.nodes)))
+edges_to_remove_barcode = [(barcode_dict[i], barcode_dict[j]) for i, j in edges_to_remove]
+sub_graph_copy = nx.Graph(sub_graph)
+sub_graph_copy.remove_edges_from(edges_to_remove_barcode)
+cos_components = list(nx.connected_components(sub_graph_copy))
+cos_components.sort(key=len, reverse=True)
+for com in cos_components:
+            if len(com) > 1:
+                communities.append(com)
+        return
 
 import community as cm
 partition = cm.best_partition(sub_graph)
