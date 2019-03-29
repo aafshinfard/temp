@@ -196,6 +196,8 @@ gr = as.undirected(gr)
 adj = as_adjacency_matrix(gr, type = c("both"), attr = NULL, edges = FALSE, names = FALSE, sparse=FALSE)
 plot(gr,vertex.label=NA)
 
+
+
 dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/physlr/AAACACCAGTCACGCC.n70.neigh.subgraph" #
 dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/physlr/AAACACCCAACACCTA.n70.neigh.subgraph" # 
 dat="/projects/btl/aafshinfard/projects/physlr-dev/data/subgraphs/physlr/AAACACCCAATCCTTT.n70.neigh.subgraph" # 
@@ -257,6 +259,11 @@ sum(adj_t != adj_filt)
 grnew = graph_from_adjacency_matrix(adj_t)
 comps = components(grnew)
 plot(grnew)
+
+
+nnmf(adj, k = 3) -> b
+heatmap(b$W, Colv = NA, xlab = 'Meta-vertice', ylab = 'vertice', margins = c(2,2),
+        labRow = '', labCol = '', scale = 'column', col = cm.colors(100));
 
 ########################################
 ### Summary
