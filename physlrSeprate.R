@@ -1,4 +1,5 @@
 library("ggplot2")
+library("GGally")
 library("cowplot")
 library("igraph")
 library("lsa")
@@ -232,12 +233,27 @@ dat="/projects/btl_scratch/aafshinfard/physlr-current/physlr/data/fish.indexlr.n
 
 
 a = read.table(dat, header = FALSE, col.names = paste0("V",seq_len(3)),as.is = "V3", fill = TRUE)
-a = a[52:dim(a)[1],]
+a = a[118:dim(a)[1],]
 a[,3] = as.numeric(a[,3])
 gr <- graph.data.frame(a)
 gr = as.undirected(gr)
 adj = as_adjacency_matrix(gr, type = c("both"), attr = NULL, edges = FALSE, names = FALSE, sparse=FALSE)
-plot(gr,vertex.label=NA)
+plot(gr,vertex.label=NA,vertex.size=3)
+
+## temp
+E(gr)[1]
+plot(gr,vertex.size=7,vertex.label=1:length(V(gr)),vertex.label.cex=0.8)
+adj = as_adjacency_matrix(gr, type = c("both"), attr = NULL, edges = TRUE, names = FALSE, sparse=FALSE)
+adj2=adj*-1
+
+gr_mst=graph_from_edgelist(kruskal(adj), directed=FALSE)
+grnew = graph_from_adjacency_matrix(adj)
+ggnet2(grnew, color = "mode", palette = col, label = TRUE, edge.label = "weights")
+#edge_attr(grnew)
+#gr_mst = mst(gr,weights = ,algorithm = 'kruskal')
+plot(gr_mst,vertex.size=7,vertex.label=1:length(V(gr)),vertex.label.cex=0.8,edge.label = "weights")
+## end temp
+
 adj_filt = adj
 adj_sq = adj_filt%*%adj_filt
 cos = cosine(adj_filt)
@@ -261,7 +277,7 @@ comps = components(grnew)
 plot(grnew)
 
 
-nnmf(adj, k = 3) -> b
+nnmf(adj, k = 4) -> b
 heatmap(b$W, Colv = NA, xlab = 'Meta-vertice', ylab = 'vertice', margins = c(2,2),
         labRow = '', labCol = '', scale = 'column', col = cm.colors(100));
 
