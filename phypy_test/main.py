@@ -102,6 +102,29 @@ def community_detection_biconnected_components(g, node_set):
     components.sort(key=len, reverse=True)
     return components
 
+def split_subgraph_into_chunks_randomly(node_set, max_size=200):
+    "Split the subgraph into chunks for faster processing. Return chunks."
+    chunks_count = 1
+    if len(node_set) > max_size:
+        chunks_count = 1 + int(len(node_set) / 200)
+    node_list = list(node_set)
+    random.shuffle(node_list)
+    size, leftover = divmod(len(node_set), chunks_count)
+    chunks = [node_list[0 + size * i: size * (i + 1)] for i in list(range(chunks_count))]
+    edge = size * chunks_count
+    for i in list(range(leftover)):
+        chunks[i % chunks_count].append(node_list[edge + i])
+    chunk_sets = [set() for _ in range(len(chunks))]
+    for i, c in zip(range(len(chunks)), chunks):
+        chunk_sets[i].update(set(c))
+    return chunk_sets
+
+
+sub_communities = []
+for chunk in chunks:
+    chunk_communities = Physlr.community_detection_k_clique(g, chunk, 3)
+    for chunk_community in chunk_communities:
+        sub_communities.append(chunk_community)
 
 u = 12
 threshold=0.75
@@ -116,3 +139,35 @@ c = community_detection_k_clique(g,node_set)
 d = community_detection_biconnected_components(g,node_set)
 
 node_set
+for bi_connected_component in bi_connected_components:
+    communities.append(x for x in community_detection_k_clique(g, bi_connected_component))
+
+for bi_connected_component in bi_connected_components:
+    for x in community_detection_k_clique(g, bi_connected_component):
+        communities.append(x)
+    communities.append(
+        community_detection_k_clique(g, bi_connected_component))
+
+def merge_communities(g, communities, node_set=0, strategy=1):
+    """Merge communities if appropriate."""
+    if len(communities) == 1:
+        return communities
+    if strategy == 1:  # Merge ad-hoc
+        merge_list = []
+        remove_list = []
+        for i, com1 in enumerate(communities):
+            for k, com2 in enumerate(communities):
+                if i < k:
+                    if nx.number_of_edges(
+                            g.subgraph(com1.union(com2))) - \
+                            nx.number_of_edges(g.subgraph(com1)) - \
+                            nx.number_of_edges(g.subgraph(com2)) > 10:
+                        merge_list.append(com1.union(com2))
+                        remove_list.append(com1)
+                        remove_list.append(com2)
+                    else:
+                        merge_list.append(com1)
+                        merge_list.append(com2)
+        return [com for com in merge_list if com not in remove_list]
+    # Merge by Initializing Louvain with the communities
+    return community_detection_louvain(g, node_set, communities)
