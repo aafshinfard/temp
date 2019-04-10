@@ -5,24 +5,6 @@ from networkx.algorithms import community as nxcommunity
 import scipy as sp
 from sklearn.metrics.pairwise import cosine_similarity
 
-adj_numpy  = np.array([
-    [0,1,1,1,0,0,0,0,0,0,0,0,1,0],
-    [1,0,1,1,0,0,0,0,0,0,0,0,1,0],
-    [1,1,0,1,1,0,0,0,0,0,0,0,1,0],
-    [1,1,1,0,0,1,0,0,0,0,0,0,1,0],
-    [0,0,1,0,0,1,1,1,0,0,0,0,1,0],
-    [0,0,0,1,1,0,1,1,0,0,0,0,1,1],
-    [0,0,0,0,1,1,0,1,0,0,0,0,1,0],
-    [0,0,0,0,1,1,1,0,0,0,0,0,1,1],
-    [0,0,0,0,0,0,0,0,0,1,0,1,1,1],
-    [0,0,0,0,0,0,0,0,1,0,1,1,1,1],
-    [0,0,0,0,0,0,0,0,0,1,0,1,1,0],
-    [0,0,0,0,0,0,0,0,1,1,1,0,1,0],
-    [1,1,1,1,1,1,1,1,1,1,1,1,0,1],
-    [0,0,0,0,0,1,0,1,1,1,0,0,1,0]])
-
-sum(abs(adj_numpy-adj_numpy.T))
-
 
 def split_subgraph_into_chunks_randomly(node_set, max_size=200):
     "Split the subgraph into chunks for faster processing. Return chunks."
@@ -102,6 +84,7 @@ def community_detection_biconnected_components(g, node_set):
     components.sort(key=len, reverse=True)
     return components
 
+
 def split_subgraph_into_chunks_randomly(node_set, max_size=200):
     "Split the subgraph into chunks for faster processing. Return chunks."
     chunks_count = 1
@@ -120,41 +103,14 @@ def split_subgraph_into_chunks_randomly(node_set, max_size=200):
     return chunk_sets
 
 
-sub_communities = []
-for chunk in chunks:
-    chunk_communities = Physlr.community_detection_k_clique(g, chunk, 3)
-    for chunk_community in chunk_communities:
-        sub_communities.append(chunk_community)
-
-u = 12
-threshold=0.75
-G = nx.from_numpy_matrix(adj_numpy)
-g = G
-sub_graph = g.subgraph(g.neighbors(u))
-node_set = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,13}
-node_set = set(g.neighbors(12))
-a = community_detection_cosine_of_squared(g,node_set)
-b = community_detection_louvain(g,node_set)
-c = community_detection_k_clique(g,node_set)
-d = community_detection_biconnected_components(g,node_set)
-
-node_set
-for bi_connected_component in bi_connected_components:
-    communities.append(x for x in community_detection_k_clique(g, bi_connected_component))
-
-for bi_connected_component in bi_connected_components:
-    for x in community_detection_k_clique(g, bi_connected_component):
-        communities.append(x)
-    communities.append(
-        community_detection_k_clique(g, bi_connected_component))
-
 def merge_communities(g, communities, node_set=0, strategy=1):
     """Merge communities if appropriate."""
     if len(communities) == 1:
         return communities
     if strategy == 1:  # Merge ad-hoc
-        merge_list = []
-        remove_list = []
+        merge_network = nx.Graph()
+        for i, j in enumerate(communities):
+            merge_network.add_node(i)
         for i, com1 in enumerate(communities):
             for k, com2 in enumerate(communities):
                 if i < k:
@@ -162,12 +118,52 @@ def merge_communities(g, communities, node_set=0, strategy=1):
                             g.subgraph(com1.union(com2))) - \
                             nx.number_of_edges(g.subgraph(com1)) - \
                             nx.number_of_edges(g.subgraph(com2)) > 10:
-                        merge_list.append(com1.union(com2))
-                        remove_list.append(com1)
-                        remove_list.append(com2)
-                    else:
-                        merge_list.append(com1)
-                        merge_list.append(com2)
-        return [com for com in merge_list if com not in remove_list]
+                        merge_network.add_edge(i, k)
+        res = []
+        for i in list(nx.connected_components(merge_network)):
+            subset = set()
+            for j in list(i):
+                for barcode in list(communities[j]):
+                    subset.add(barcode)
+            res.append(subset)
+        # return res
+        return [{barcode for j in list(i) for barcode in list(communities[j])} for i in
+                list(nx.connected_components(merge_network))]
     # Merge by Initializing Louvain with the communities
     return community_detection_louvain(g, node_set, communities)
+
+
+def main(self):
+    adj_numpy = np.array([
+        [0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+        [1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+        [1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+        [1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0],
+        [0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0],
+        [0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1],
+        [0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0],
+        [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1],
+        [0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0]])
+    sum(abs(adj_numpy - adj_numpy.T))
+    u = 12
+    g = nx.from_numpy_matrix(adj_numpy)
+    sub_graph = g.subgraph(g.neighbors(u))
+    node_set = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13}
+    node_set = set(g.neighbors(12))
+    a = community_detection_cosine_of_squared(g, node_set)
+    b = community_detection_louvain(g, node_set)
+    c = community_detection_k_clique(g, node_set)
+    d = community_detection_biconnected_components(g, node_set)
+
+    address="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr-old/eg/TCGGGCAAGAGCACCA.tsv"
+
+    eg_list = [(1,2)]
+
+merge_network = nx.Graph()
+for i in enumerate(communities):
+    merge_network.add_node(i)
