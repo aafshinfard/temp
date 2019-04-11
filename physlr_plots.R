@@ -7,7 +7,7 @@ addnodeg = "/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/prevR
 addnodeg = "/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/prevRuns/run5/f1chr4.physlr.overlap.n50.mol.tsv"
 addnodeg = "/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr/f1chr4.physlr.overlap.neighbor.stat.tsv"
 addnodeg = "/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr-old/prevRuns/simMat/f1chr4.physlr.overlap.neighbor.noFilter_simMat_Histo.tsv"
-
+addnodeg = "/projects/btl_scratch/aafshinfard/phys-cd/physlr/data/hg004.indexlr.n100-5000.c2-x.physlr.overlap.n60.subgraphs-stats.tsv"
 ### If it's Histogram of cosine sim:
 # go to the end of this code
 
@@ -15,7 +15,7 @@ addnodeg = "/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr-old/p
 ### If it's |E| vs |V| :
 nodeg = 
   read.table(addnodeg, sep = "\t", header = FALSE)
-nodeg
+#nodeg
 head(nodeg)
 tail(nodeg)
 sum(nodeg$V1==0)
