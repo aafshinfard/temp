@@ -14,12 +14,13 @@ addnodeg = "/projects/btl_scratch/aafshinfard/phys-cd/physlr/data/hg004.indexlr.
 
 ### If it's |E| vs |V| :
 nodeg = 
-  read.table(addnodeg, sep = "\t", header = FALSE)
+  read.table(addnodeg, sep = "\t", header = TRUE)
 #nodeg
 head(nodeg)
 tail(nodeg)
-sum(nodeg$V1==0)
-sum(nodeg$V1==1)
+dim(nodeg)
+sum(nodeg$Nodes==0)
+sum(nodeg$Edges==1)
 sum(nodeg$V1==1)/sum(nodeg$V1==0)
 
 
