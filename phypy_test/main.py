@@ -102,9 +102,8 @@ def split_subgraph_into_chunks_randomly(node_set, max_size=200):
         chunk_sets[i].update(set(c))
     return chunk_sets
 
-
-def merge_communities(g, communities, node_set=0, strategy=1):
-    """Merge communities if appropriate."""
+def merge_communities(g, communities, node_set=0, strategy=1, mode=1):
+    """Merge communities if appropriate. """
     if len(communities) == 1:
         return communities
     if strategy == 1:  # Merge ad-hoc
@@ -114,24 +113,72 @@ def merge_communities(g, communities, node_set=0, strategy=1):
         for i, com1 in enumerate(communities):
             for k, com2 in enumerate(communities):
                 if i < k:
-                    if nx.number_of_edges(
-                            g.subgraph(com1.union(com2))) - \
-                            nx.number_of_edges(g.subgraph(com1)) - \
-                            nx.number_of_edges(g.subgraph(com2)) > 10:
-                        merge_network.add_edge(i, k)
-        res = []
-        for i in list(nx.connected_components(merge_network)):
-            subset = set()
-            for j in list(i):
-                for barcode in list(communities[j]):
-                    subset.add(barcode)
-            res.append(subset)
+                    if mode == 1:  # disjoint input communities.
+                        if nx.number_of_edges(
+                                g.subgraph(com1.union(com2))) - \
+                                nx.number_of_edges(g.subgraph(com1)) - \
+                                nx.number_of_edges(g.subgraph(com2)) > 8:
+                            merge_network.add_edge(i, k)
+                    else:  # overlapping input communities.
+                        if nx.number_of_edges(
+                                g.subgraph(com1.union(com2))) - \
+                                len(set(g.subgraph(com1).edges()).union(
+                                    set(g.subgraph(com2).edges()))) \
+                                > 8:
+                            merge_network.add_edge(i, k)
+        # res = []
+        # for i in list(nx.connected_components(merge_network)):
+        #     subset = set()
+        #     for j in list(i):
+        #         for barcode in list(communities[j]):
+        #             subset.add(barcode)
+        #     res.append(subset)
         # return res
-        return [{barcode for j in list(i) for barcode in list(communities[j])} for i in
-                list(nx.connected_components(merge_network))]
+        return [{barcode for j in i for barcode in communities[j]}
+                for i in nx.connected_components(merge_network)]
     # Merge by Initializing Louvain with the communities
     return community_detection_louvain(g, node_set, communities)
 
+communities = []
+for bi_connected_component in community_detection_biconnected_components(g, set(g.neighbors(u))):
+    communities += [merge_communities(g, sub_communities, bi_connected_component, strategy=1)
+                    for chunk in split_subgraph_into_chunks_randomly(bi_connected_component, max_size=50)
+                    for sub_communities in community_detection_k_clique(g, chunk, 3)]
+communities = []
+for bi_connected_component in community_detection_biconnected_components(g, set(g.neighbors(u))):
+    sub_communities = [community_detection_k_clique(g, chunk, 3)
+                       for chunk in split_subgraph_into_chunks_randomly(bi_connected_component, max_size=50)]
+    print(sub_communities)
+    communities += merge_communities(g, sub_communities[0], bi_connected_component, strategy=1)
+
+communities = []
+for bi_connected_component in community_detection_biconnected_components(g, set(g.neighbors(u))):
+    sub_communities = [cluster
+                       for chunk in split_subgraph_into_chunks_randomly(bi_connected_component, max_size=50)
+                       for cluster in community_detection_k_clique(g, chunk, 3)]
+    print(sub_communities)
+    communities += merge_communities(g, sub_communities, bi_connected_component, strategy=1)
+
+communities = []
+for bi_connected_component in community_detection_biconnected_components(g, set(g.neighbors(u))):
+    communities += merge_communities(g, [cluster
+                       for chunk in split_subgraph_into_chunks_randomly(bi_connected_component, max_size=50)
+                       for cluster in community_detection_k_clique(g, chunk, 3)], bi_connected_component, strategy=1)
+
+communities = [merge_communities(g, [cluster
+                       for chunk in split_subgraph_into_chunks_randomly(bi_connected_component, max_size=50)
+                       for cluster in community_detection_k_clique(g, chunk, 3)], bi_connected_component, strategy=1)
+               for bi_connected_component in community_detection_biconnected_components(g, set(g.neighbors(u)))]
+
+communities = []
+for bi_connected_component in community_detection_biconnected_components(g, set(g.neighbors(u))):
+    sub_communities = []
+    for chunk in split_subgraph_into_chunks_randomly(bi_connected_component, max_size=50):
+        sub_communities += community_detection_k_clique(g, chunk, 3)
+        # for chunk_community in Physlr.community_detection_k_clique(g, chunk, 3):
+        #     sub_communities.append(chunk_community)
+    print(sub_communities)
+    communities += merge_communities(g, sub_communities, bi_connected_component, strategy=1)
 
 def main(self):
     adj_numpy = np.array([
