@@ -6,6 +6,7 @@ library(ggplot2)
 
 addnodeg = "/projects/btl_scratch/aafshinfard/phys-cd/physlr/data/hg004.indexlr.n100-5000.c2-x.physlr.overlap.n60.subgraphs-stats.tsv"
 addnodeg = "/projects/btl_scratch/aafshinfard/phys-cd/physlr/data/hg004.indexlr.n100-5000.c2-x.physlr.overlap.n90.subgraphs-stats.tsv"
+addnodeg = "/projects/btl_scratch/aafshinfard/phys-cd/physlr/data/hg004.indexlr.n100-5000.c2-x.physlr.overlap.n50.subgraphs-stats.tsv"
 ### If it's Histogram of cosine sim:
 # go to the end of this code
 
@@ -26,6 +27,7 @@ sum(nodeg$Edges==0)
 
 hist(nodeg$Nodes)
 mean(nodeg$Nodes)
+mean(nodeg$Density)
 
 ##############################################################################
 ############# Physlr node edge data
