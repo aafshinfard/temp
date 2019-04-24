@@ -211,6 +211,34 @@ def main(self):
 
     eg_list = [(1,2)]
 
+
 merge_network = nx.Graph()
 for i in enumerate(communities):
     merge_network.add_node(i)
+
+
+def wrap_up(mst, messages, sender, receiver):
+    neighbors_to_wrapup = list(set(mst.neighbors(sender)) - {receiver})
+    if not neighbors_to_wrapup:
+        messages[(receiver, sender)] = 1
+    messages[(receiver, sender)] = 1 + sum([messages[(sender, neighbor)] for neighbor in neighbors_to_wrapup])
+
+
+
+dfs = list(nx.dfs_edges(sub_mst))
+stack = [dfs[0][0]]
+messages = dict()
+# Gather
+for edge in dfs:
+    # edge[0]
+    # edge[1]
+    while stack[-1] != edge[0]:
+        wrap_up(sub_mst, messages, stack.pop(), stack[-1])
+    stack.append(edge[1])
+while len(stack) != 1:
+    wrap_up(sub_mst, messages, stack.pop(), stack[-1])
+# Distribute
+for edge in dfs:
+    wrap_up(sub_mst, messages, edge[0], edge[1])
+#stack.pop()
+
