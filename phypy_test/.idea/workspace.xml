@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9a79cda1-99e4-4431-b9c5-42ab3cac16e6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../CACCAGACGAC_f1.test2.n100.tsv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,8 +16,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="367">
-              <caret line="239" column="12" lean-forward="true" selection-start-line="239" selection-start-column="12" selection-end-line="239" selection-end-column="12" />
+            <state relative-caret-position="240">
+              <caret line="16" column="27" lean-forward="true" selection-end-line="243" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -152,8 +152,8 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="367">
-          <caret line="239" column="12" lean-forward="true" selection-start-line="239" selection-start-column="12" selection-end-line="239" selection-end-column="12" />
+        <state relative-caret-position="240">
+          <caret line="16" column="27" lean-forward="true" selection-end-line="243" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
