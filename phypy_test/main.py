@@ -210,6 +210,23 @@ def main(self):
     address="/projects/btl/aafshinfard/projects/physlr/physlr-cloned/physlr-old/eg/TCGGGCAAGAGCACCA.tsv"
 
     eg_list = [(1,2)]
+    sub_mst = nx.maximum_spanning_tree(g.subgraph(node_set), weight="n")
+    dfs = list(nx.dfs_edges(sub_mst))
+    stack = [dfs[0][0]]
+    messages = dict()
+    # Gather
+    for edge in dfs:
+        # edge[0]
+        # edge[1]
+        while stack[-1] != edge[0]:
+            wrap_up(sub_mst, messages, stack.pop(), stack[-1])
+        stack.append(edge[1])
+    while len(stack) != 1:
+        wrap_up(sub_mst, messages, stack.pop(), stack[-1])
+    # Distribute
+    for edge in dfs:
+        wrap_up(sub_mst, messages, edge[0], edge[1])
+    # stack.pop()
 
 
 merge_network = nx.Graph()
@@ -225,20 +242,21 @@ def wrap_up(mst, messages, sender, receiver):
 
 
 
-dfs = list(nx.dfs_edges(sub_mst))
-stack = [dfs[0][0]]
-messages = dict()
-# Gather
-for edge in dfs:
-    # edge[0]
-    # edge[1]
-    while stack[-1] != edge[0]:
-        wrap_up(sub_mst, messages, stack.pop(), stack[-1])
-    stack.append(edge[1])
-while len(stack) != 1:
-    wrap_up(sub_mst, messages, stack.pop(), stack[-1])
-# Distribute
-for edge in dfs:
-    wrap_up(sub_mst, messages, edge[0], edge[1])
-#stack.pop()
 
+def prune_branches_of_trees(g, messages, pruning_threshold=20):
+    """"Determine the backbones of the maximum spanning trees
+            and remove branches smaller than branch_size."""
+    g.copy(g)
+    list_of_edges_for_pruning = [(node, neighbor)
+                                 for node in list(g.nodes)
+                                 for neighbor in g.neighbors(node)
+                                 if messages[(node, neighbor)] < 2]
+    for edge in list_of_edges_for_pruning:
+        stack = [edge[1]]
+        while stack:
+            node_to_delete = stack.pop()
+            for new_node in g.neighbors(node_to_delete):
+                if new_node != edge[0]:
+                    stack.append(new_node)
+            g.remove_node(node_to_delete)
+    return g
