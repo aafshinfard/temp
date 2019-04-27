@@ -254,7 +254,20 @@ def wrap_up(mst, messages, sender, receiver):
         for node_to_remove in set_of_nodes_for_pruning:
             g.remove_node(node_to_remove)
         return g
-    
+
+def detect_and_cut_junctions_of_tree(g, messages, pruning_threshold=50):
+    """"
+    detect the junction in the tree, and split the tree from that point
+    """
+    g = g.copy()
+    set_of_all_junctions = {node
+                            for node in list(g.nodes)
+                            if g.degree(node) > 3}
+    for candidate in set_of_all_junctions:
+        candidate_messages = [messages[(candidate, e)] for e in g.neighbors(candidate)]
+    for node_to_remove in set_of_nodes_for_pruning:
+        g.remove_node(node_to_remove)
+    return g
 
 def prune_branches_of_trees(g, messages, pruning_threshold=20):
     """"Determine the backbones of the maximum spanning trees
@@ -286,3 +299,56 @@ def prune_branches_of_trees(g, messages, pruning_threshold=20):
 
 pruned_sub_mst = prune_branches_of_trees(sub_mst, messages, 4)
 nx.adj_matrix(pruned_sub_mst).toarray()
+
+
+def detect_and_cut_junctions_of_tree(gcomponent, messages, junction_threshold=200):
+    """"
+    detect the junctions in the tree, and split the tree from those points.
+    """
+    gcomponent = gcomponent.copy()
+    set_of_all_junctions = {node
+                            for node in list(gcomponent.nodes)
+                            if gcomponent.degree(node) > 3}
+    nodes_to_remove = []
+    for candidate in set_of_all_junctions:
+        candidate_messages = [messages[(candidate, e)] for e in gcomponent.neighbors(candidate)]
+        candidate_messages.sort()
+        if candidate_messages[-3] > junction_threshold:
+            nodes_to_remove.append(candidate )
+    for node_to_remove in nodes_to_remove:
+        gcomponent.remove_node(node_to_remove)
+    return gcomponent
+
+
+def determine_safer_backbones_of_trees(g, pruning_threshold):
+    """"Determine the backbones of the maximum spanning trees
+            and remove branches smaller than branch_size."""
+    paths = []
+    for component in nx.connected_components(g):
+        gcomponent = g.subgraph(component)
+        messages = Physlr.determine_reachability_of_tree_by_message_passing(gcomponent)
+        gcomponents = Physlr.detect_and_cut_junctions_of_tree(gcomponent, messages, pruning_threshold)
+        for component2 in nx.connected_components(gcomponents):
+            gcomponent2 = g.subgraph(component2)
+            u, v, _ = Physlr.diameter_of_tree(gcomponent2, weight="n")
+            path = nx.shortest_path(gcomponent2, u, v, weight="n")
+            paths.append(path)
+    paths.sort(key=len, reverse=True)
+    return paths
+
+
+def determine_safer_backbones(g, pruning_threshold=100):
+    """"Determine the backbones of the graph
+    with ambiguous nodes being removed """
+    g = g.copy()
+    backbones = []
+    while not nx.is_empty(g):
+        gmst = g
+        paths = Physlr.determine_safer_backbones_of_trees(gmst, pruning_threshold)
+        backbones.extend(paths)
+        vertices = [u for path in paths for u in path]
+        neighbors = [v for u in vertices for v in g.neighbors(u)]
+        g.remove_nodes_from(vertices)
+        g.remove_nodes_from(neighbors)
+    backbones.sort(key=len, reverse=True)
+    return backbones
