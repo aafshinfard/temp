@@ -241,22 +241,48 @@ def wrap_up(mst, messages, sender, receiver):
     messages[(receiver, sender)] = 1 + sum([messages[(sender, neighbor)] for neighbor in neighbors_to_wrapup])
 
 
-
+    def detect_and_cut_junctions_of_tree(g, messages, pruning_threshold=50):
+        """"
+        detect the junction in the tree, and split the tree from that point
+        """
+        g = g.copy()
+        set_of_all_junctions = {node
+                                for node in list(g.nodes)
+                                if g.degree(node) > 3}
+        for candidate in set_of_all_junctions:
+            candidate_messages = [messages[(candidate, e)] for e in g.neighbors(candidate)]
+        for node_to_remove in set_of_nodes_for_pruning:
+            g.remove_node(node_to_remove)
+        return g
+    
 
 def prune_branches_of_trees(g, messages, pruning_threshold=20):
     """"Determine the backbones of the maximum spanning trees
             and remove branches smaller than branch_size."""
-    g.copy(g)
-    list_of_edges_for_pruning = [(node, neighbor)
+    g = g.copy()
+    # list_of_edges_for_pruning = [(node, neighbor)
+    #                              for node in list(g.nodes)
+    #                              for neighbor in g.neighbors(node)
+    #                              if messages[(node, neighbor)] < pruning_threshold]
+    set_of_nodes_for_pruning = {neighbor
                                  for node in list(g.nodes)
                                  for neighbor in g.neighbors(node)
-                                 if messages[(node, neighbor)] < 2]
-    for edge in list_of_edges_for_pruning:
-        stack = [edge[1]]
-        while stack:
-            node_to_delete = stack.pop()
-            for new_node in g.neighbors(node_to_delete):
-                if new_node != edge[0]:
-                    stack.append(new_node)
-            g.remove_node(node_to_delete)
+                                 if messages[(node, neighbor)] < pruning_threshold}
+    #new_edge_list = [(i, j) for i, j in list_of_edges_for_pruning if i not in [k for t, k in list_of_edges_for_pruning]]
+    #list_of_edges_for_pruning = [(i, j) for i, j in list_of_edges_for_pruning if i not in [k for t, k in list_of_edges_for_pruning]]
+    print(set_of_nodes_for_pruning)
+    for node_to_remove in set_of_nodes_for_pruning:
+        g.remove_node(node_to_remove)
+    # for edge in list_of_edges_for_pruning:
+    #     stack = [edge[1]]
+    #     while stack:
+    #         node_to_delete = stack.pop()
+    #         for new_node in g.neighbors(node_to_delete):
+    #             if new_node != edge[0]:
+    #                 stack.append(new_node)
+    #         g.remove_node(node_to_delete)
     return g
+
+
+pruned_sub_mst = prune_branches_of_trees(sub_mst, messages, 4)
+nx.adj_matrix(pruned_sub_mst).toarray()
