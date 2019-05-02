@@ -70,11 +70,9 @@ def community_detection_louvain(g, node_set, init_communities=False):
 
 def community_detection_k_clique(g, node_set, k=3):
     """Apply k-clique community detection. Return communities."""
-    from networkx.algorithms import community as nxcommunity
-
-    if len(node_set) > 1:
-        return [set(i) for i in nxcommunity.k_clique_communities(g.subgraph(node_set), k)]
-    return []
+    if len(node_set) < 2:
+        return []
+    return [set(i) for i in nx.community.k_clique_communities(g.subgraph(node_set), k)]
 
 
 def community_detection_biconnected_components(g, node_set):
@@ -352,3 +350,16 @@ def determine_safer_backbones(g, pruning_threshold=100):
         g.remove_nodes_from(neighbors)
     backbones.sort(key=len, reverse=True)
     return backbones
+
+
+
+paths = []
+for component2 in nx.connected_components(gcomponents):
+    gcomponent2 = sub_mst.subgraph(component2)
+    u, v, _ = diameter_of_tree(gcomponent2, weight="n")
+    path = nx.shortest_path(gcomponent2, u, v, weight="n")
+    paths.append(path)
+paths.sort(key=len, reverse=True)
+
+
+
