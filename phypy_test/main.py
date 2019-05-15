@@ -362,4 +362,73 @@ for component2 in nx.connected_components(gcomponents):
 paths.sort(key=len, reverse=True)
 
 
+def wrap_up_messages_and_pass(mst, messages, sender, receiver):
+    """Wrap up all incoming messages to this node (sender) except the one from receiver;
+    and set (pass) the message from sender to receiver."""
+    neighbors_to_wrap_up = list(set(mst.neighbors(sender)) - {receiver})
+    if not neighbors_to_wrap_up:
+        messages[(receiver, sender)] = 1
+    messages[(receiver, sender)] = 1 + sum([messages[(sender, neighbor)] for neighbor in neighbors_to_wrap_up])
 
+
+def determine_reachability_by_message_passing(mst):
+    """Using message passing, determine for each edge of each vertex
+    the number of vertices of the tree reachable from that vertex through that edge."""
+    dfs = list(nx.dfs_edges(mst))
+    if not dfs:
+        return dict()
+    stack = [dfs[0][0]]
+    messages = dict()
+    # Gather
+    for edge in dfs:
+        while stack[-1] != edge[0]:
+            wrap_up_messages_and_pass(mst, messages, stack.pop(), stack[-1])
+        stack.append(edge[1])
+    while len(stack) != 1:
+        wrap_up_messages_and_pass(mst, messages, stack.pop(), stack[-1])
+    # Distribute
+    for edge in dfs:
+        wrap_up_messages_and_pass(mst, messages, edge[0], edge[1])
+    return messages
+
+
+def detect_junctions_of_tree(gcomponent, messages, junction_threshold):
+    """"
+    detect the junctions in the tree, and return.
+    """
+    gcomponent = gcomponent.copy()
+    set_of_all_junctions = {node
+                            for node in list(gcomponent.nodes)
+                            if gcomponent.degree(node) > 2}
+    nodes_to_remove = []
+    for candidate in set_of_all_junctions:
+        candidate_messages = [messages[(candidate, neighbor)]
+                              for neighbor in gcomponent.neighbors(candidate)]
+        candidate_messages.sort()
+        if candidate_messages[-3] > junction_threshold:
+            nodes_to_remove.append(candidate)
+    return nodes_to_remove
+
+
+def determine_junctions_of_trees(g, junction_threshold):
+    """"
+    Determine the backbones of the maximum spanning trees
+    and remove junctions over junction threshold.
+    """
+    junctions = []
+    for component in nx.connected_components(g):
+        gcomponent = g.subgraph(component)
+        messages = determine_reachability_by_message_passing(gcomponent)
+        new_junctions = \
+            detect_junctions_of_tree(gcomponent, messages, junction_threshold)
+        junctions.extend(new_junctions)
+    return junctions
+
+
+def determine_junctions(g, junction_threshold=100):
+    """"
+    Determine the backbones of the graph with ambiguous nodes being removed
+    """
+    gmst = nx.maximum_spanning_tree(g, weight="n")
+    junctions = determine_junctions_of_trees(gmst, junction_threshold)
+    return junctions

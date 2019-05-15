@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9a79cda1-99e4-4431-b9c5-42ab3cac16e6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../CACCAGACGAC_f1.test2.n100.tsv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,8 +16,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="350">
-              <caret line="365" lean-forward="true" selection-start-line="365" selection-end-line="365" />
+            <state relative-caret-position="301">
+              <caret line="432" column="31" selection-start-line="432" selection-start-column="31" selection-end-line="432" selection-end-column="31" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -38,6 +38,7 @@
     <findStrings>
       <find>sub_mst</find>
       <find>from networkx.algorithms import community as nxcommunity</find>
+      <find>determine_reachability_by_message_passing</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -53,7 +54,7 @@
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="y" value="28" />
     <option name="width" value="1920" />
-    <option name="height" value="1018" />
+    <option name="height" value="962" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -157,8 +158,8 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="365" lean-forward="true" selection-start-line="365" selection-end-line="365" />
+        <state relative-caret-position="301">
+          <caret line="432" column="31" selection-start-line="432" selection-start-column="31" selection-end-line="432" selection-end-column="31" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
