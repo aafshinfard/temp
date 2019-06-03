@@ -511,19 +511,20 @@ def determine_molecules_bc_k_cliques(g, u):
             for community in
             detect_communities_k_clique(g, bi_connected_component)]
 
-def determine_molecules_consensus(g, u):
+def determine_molecules_consensus(g, node_set):
     """
     Assign the neighbours of this vertex to molecules
     by Applying a queue of different algorithms on top of each other.
     """
     from collections import deque
 
-    communities = [g[u].keys()]
+    communities = [node_set]
     communities_final = []
 
     alg_list = deque(["bc", "k3", "bc"])
     while alg_list:
-        communities_final.clear()
+        communities_final = []
+        print(communities)
         algoritm = alg_list.popleft()
         if algoritm == "bc":
             for component in communities:
@@ -542,11 +543,7 @@ def determine_molecules_consensus(g, u):
             for component in communities:
                 communities_final.extend(
                     detect_communities_cosine_of_squared(g, component))
-        # for component in communities_final:
-        #     print(component)
-        communities = communities_final.copy()
-        #communities.clear()
-        #communities.extend(communities_final)
+        communities = communities_final
     return communities_final
 
 adj_numpy = np.array([
