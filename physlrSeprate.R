@@ -233,7 +233,7 @@ dat="/projects/btl_scratch/aafshinfard/physlr-current/physlr/data/fish.indexlr.n
 
 
 a = read.table(dat, header = FALSE, col.names = paste0("V",seq_len(3)),as.is = "V3", fill = TRUE)
-a = a[118:dim(a)[1],]
+a = a[52:dim(a)[1],]
 a[,3] = as.numeric(a[,3])
 gr <- graph.data.frame(a)
 gr = as.undirected(gr)

@@ -3,10 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="9a79cda1-99e4-4431-b9c5-42ab3cac16e6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../CACCAGACGAC_f1.test2.n100.tsv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/louvain" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/np" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sp" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="21">
-              <caret line="513" column="46" lean-forward="true" selection-start-line="513" selection-start-column="4" selection-end-line="513" selection-end-column="46" />
+            <state relative-caret-position="171">
+              <caret line="527" column="37" lean-forward="true" selection-start-line="527" selection-start-column="37" selection-end-line="527" selection-end-column="37" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -58,7 +54,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="432" />
     <option name="y" value="28" />
     <option name="width" value="1144" />
@@ -141,7 +137,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="28" width="1920" height="1018" extended-state="6" />
+    <frame x="0" y="28" width="1920" height="1018" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.09440928" />
@@ -166,8 +162,8 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21">
-          <caret line="513" column="46" lean-forward="true" selection-start-line="513" selection-start-column="4" selection-end-line="513" selection-end-column="46" />
+        <state relative-caret-position="171">
+          <caret line="527" column="37" lean-forward="true" selection-start-line="527" selection-start-column="37" selection-end-line="527" selection-end-column="37" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
