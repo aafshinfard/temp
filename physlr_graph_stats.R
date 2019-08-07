@@ -15,9 +15,13 @@ a[1:10,"Size.largest"]=0
 
 head(a)
 tail(a)
-ggplot(data = a, aes(x=Threshold, y = Comp.count)) + geom_col() + labs(x="Threshold on edge weight", y="Number of components (in the overlap graph)")
-ggplot(data = a, aes(x=Threshold, y = Large.comp.count)) + geom_col() + labs(x="Threshold on edge weight", y="Number of components (in the overlap graph)")
-ggplot(data = a, aes(x=Threshold, y = Size.largest)) + geom_col() + labs(x="Threshold on edge weight", y="Number of components (in the overlap graph)")
+ggplot(data = a, aes(x=Threshold, y = Comp.count)) + geom_col(fill='cyan', color = 'purple') + labs(x="Threshold on edge weight", y="Number of components (in the overlap graph)")
+ggplot(data = a, aes(x=Threshold, y = Large.comp.count)) + geom_col(fill='cyan', color = 'purple') + labs(x="Threshold on edge weight", y="Number of significant components (in the overlap graph)")
+ggplot(data = a, aes(x=Threshold, y = Size.largest)) + geom_col(fill='cyan', color = 'purple') + labs(x="Threshold on edge weight", y="Size of largest component (in the overlap graph)")
+ggplot(data = a, aes(x=Threshold, y = Edge.count)) + geom_col(fill='cyan', color = 'purple') + labs(x="Threshold on edge weight", y="Number of edges (in the overlap graph)")
+ggplot(data = a, aes(x=Threshold, y = Node.count)) + geom_col(fill='cyan', color = 'purple') + labs(x="Threshold on edge weight", y="Number of vertices (in the overlap graph)")
+
+
 ggplot(data = a, aes(x=Threshold, y = Node.count)) + geom_col()
 ggplot(data = a, aes(x=Threshold, y = Edge.count)) + geom_col()
 
