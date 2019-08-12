@@ -22,6 +22,12 @@ ggplot(data = a, aes(x=Threshold, y = Size.largest)) + geom_col(fill='purple', c
 ggplot(data = a, aes(x=Threshold, y = Edge.count)) + geom_col(fill='purple', color = 'purple') + labs(x="Threshold on edge weight", y="Number of edges (in the overlap graph)")
 ggplot(data = a, aes(x=Threshold, y = Node.count)) + geom_col(fill='purple', color = 'purple') + labs(x="Threshold on edge weight", y="Number of vertices (in the overlap graph)")
 
+ggplot(data = a, aes(x=Threshold, y = Node.count- Size.largest)) + geom_col(fill='red', color = 'red') + labs(x="Threshold on edge weight", y="Size of largest component (in the overlap graph)")
+
+ggplot(data = a, aes(x=Threshold, y = Node.count)) + 
+  geom_col(fill='red') +
+  geom_col(data = a, aes(x=Threshold, y = Size.largest)) +
+  labs(x="Threshold on edge weight", y="Size of largest component (in the overlap graph)")
 
 ggplot(data = a, aes(x=Threshold, y = Node.count)) + geom_col()
 ggplot(data = a, aes(x=Threshold, y = Edge.count)) + geom_col()

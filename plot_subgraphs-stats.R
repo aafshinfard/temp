@@ -26,6 +26,9 @@ add_nodeg100 = "/projects/btl_scratch/aafshinfard/physlr-dev/data/fish.indexlr.n
 add_nodeg20 = "/projects/btl_scratch/aafshinfard/phys-dev/physlr/data/fish.indexlr.n100-2000.c2-x.physlr.overlap.n20.subgraphs_stats"
 add_nodeg20_mol = "/projects/btl_scratch/aafshinfard/phys-dev/physlr/data/fish.indexlr.n100-2000.c2-x.physlr.overlap.n20.mol.subgraphs_stats"
 
+### WS77111
+add_nodeg0 = "/projects/btl_scratch/aafshinfard/projects/physlr2/physlr/data/ws77111.indexlr.n100-5000.c2-x.physlr.overlap.n30.subgraphs.stats"
+
 ### If it's |E| vs |V| :
 nodeg0 = 
   read.table(add_nodeg0, sep = "\t", header = FALSE, skip = 1)
@@ -57,7 +60,7 @@ tail(nodeg0)
 #headi = head(nodeg)
 #headi[,2:3]
 
-a=nodeg_filt0
+a=nodeg0
 th=sort((a[,"nodes"]))[length(a[,"nodes"])/10]
 nodeg_filt0 = nodeg0[nodeg0[,"nodes"]>th,]
 
@@ -88,9 +91,11 @@ nodeg_filt200 = nodeg200[nodeg200[,"nodes"]>th,]
 
 #dim(nodeg)[1]
 dim(nodeg_filt0)[1]
+dim(nodeg0)[1]
+
 
 #head(nodeg_filt)
-maxi = 70000
+maxi = 150000
 nodeg_filt2_0 = nodeg_filt0[1:maxi,]
 nodeg_filt2_20 = nodeg_filt20[1:maxi,]
 nodeg_filt2_20_mol = nodeg_filt20_mol[1:maxi,]
@@ -99,7 +104,28 @@ nodeg_filt2_70 = nodeg_filt70[1:maxi,]
 nodeg_filt2_100 = nodeg_filt100[1:maxi,]
 nodeg_filt2_200 = nodeg_filt200[1:maxi,]
 
+title="WS77111 - before mol2bar - n30 - subsampled to 150K subgraphs"
+ploti = ggplot(nodeg_filt2_0, aes(x=`nodes`, y=`edges`)) + geom_point(size=0.001)+
+  ggtitle(title) +
+  labs(x= "Number of nodes",y= "Number of edges") + 
+  xlim(0,200)+
+  ylim(0,350)+#ylim(0,2.5*10^5)+
+  theme(text = element_text(size=14),
+        axis.text.x = element_text(angle=0, hjust=1))
+ploti = ggplot(nodeg_filt2_0, aes(x=`nodes`, y=`alpha`)) + geom_point(size=0.001)+
+  ggtitle(title) +
+  labs(x= "Number of nodes",y= "alpha = number of nodes / number of possible nodes in a graph") + 
+  xlim(0,120)+
+  #ylim(0,8000)+#ylim(0,2.5*10^5)+
+  theme(text = element_text(size=14),
+        axis.text.x = element_text(angle=0, hjust=1))+
+  geom_point(data = nodeg_filt2_0,size=0.001,color="red")
+ploti
+
+ploti
+
 title="Fish - after mol2bar - n20 - subsampled to 70K subgraphs"
+
 #ploti = ggplot(nodeg, aes(x=`nodes`, y=`edges`,color=`multip-comp`)) + geom_point()+
 ploti = ggplot(nodeg_filt2_20_mol, aes(x=`nodes`, y=`edges`)) + geom_point(size=0.001)+
   ggtitle(title) +
