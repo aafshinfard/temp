@@ -91,7 +91,7 @@ nodeg_filt200 = nodeg200[nodeg200[,"nodes"]>th,]
 
 #dim(nodeg)[1]
 dim(nodeg_filt0)[1]
-dim(nodeg0)[1]
+(dim(nodeg0)[1] - dim(nodeg_filt0)[1]) / dim(nodeg0)[1]
 
 
 #head(nodeg_filt)
