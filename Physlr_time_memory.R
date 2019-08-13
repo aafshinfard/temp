@@ -2,24 +2,29 @@
 
 library("ggplot2")
 library("dplyr")
-data<-read.csv("/home/gdilek/benchmarking/f1chr4.time.txt.minutes.tsv", sep = "\t" , header=T)
+data<-read.csv("/projects/btl_scratch/aafshinfard/projects/physlr2/physlr/data/hg004.time.min.tsv", sep = "\t" , header=T)
+data<- data[seq(dim(df)[1],1),]
 df <- data.frame(
   steps=data$Physlrstep,
   time=(data$Begin + data$End)/2,
-  group= c("cpp","cpp","py","py","py"),
+  #group= c("cpp","cpp","cpp","cpp","cpp","cpp","py","py","py"),
   upper=data$End,
   lower=data$Begin
 )
+
+#pl = ggplot(df, aes(x=factor(steps), y=time))+ geom_linerange(aes(ymin=df$lower, ymax=df$upper))+ coord_flip() + theme_bw()+ geom_text(label=sprintf("%f min",data$Elapsedtime),, size=3, hjust=0, vjust=0, check_overlap = T )
+
 level_order<-data$Physlrstep
-p <- ggplot(df, aes(x=factor(steps, level=level_order), y=time))
-myplot <- p+ geom_linerange(aes(ymin=lower, ymax=upper))+ coord_flip() + theme_bw() + ggtitle("Time Usage")+ geom_text(label=sprintf("%f min",data$Elapsedtime), size=3, hjust=0, vjust=0, check_overlap = T) + ylim(0,8)
+#p <- ggplot(df, aes(x=factor(steps, level=level_order), y=time)) + geom_linerange(aes(ymin=lower, ymax=upper))+ coord_flip() + theme_bw() + ggtitle("Time Usage")+ geom_text(label=sprintf("%f min",data$Elapsedtime), size=3, hjust=0, vjust=0, check_overlap = T) + ylim(0,8)
+p <- ggplot(df, aes(x=factor(steps), y=time))
+myplot <- p+ geom_linerange(aes(ymin=df$lower, ymax=df$upper), size=5)+ coord_flip() + theme_bw() + ggtitle("Time Usage")+ geom_text(label=sprintf("%f min",data$Elapsedtime), size=3, hjust=0, vjust=-1, check_overlap = T) #+ ylim(0,8)
 #png("/path/file", units="in",width=XX, height=XX, res=500)
 myplot
 #dev.off()
 #p <- ggplot(df, aes(steps, time, colour= group))
 
 #memory usage:
-data2=read.csv("/home/gdilek/benchmarking/f1chr4.mem.txt.tsv", sep = "\t", header=T) #read like this tab sep files!!<3
+data2<-read.csv("/projects/btl_scratch/aafshinfard/projects/physlr2/physlr/data/hg004.mem.tsv", sep = "\t" , header=T)
 df2 <- data.frame(
   steps=data2$Physlrstep,
   memory=(data2$Memory)/1000,
