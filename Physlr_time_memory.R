@@ -3,7 +3,10 @@
 library("ggplot2")
 library("dplyr")
 data<-read.csv("/projects/btl_scratch/aafshinfard/projects/physlr2/physlr/data/hg004.time.min.tsv", sep = "\t" , header=T)
-data<- data[seq(dim(df)[1],1),]
+
+levels(data[,1]) = c(levels(data[,1]),"molecules_fast")
+data[10,1]="molecules_fast"
+#data<- data[seq(dim(df)[1],1),]
 df <- data.frame(
   steps=data$Physlrstep,
   time=(data$Begin + data$End)/2,
@@ -17,7 +20,7 @@ df <- data.frame(
 level_order<-data$Physlrstep
 #p <- ggplot(df, aes(x=factor(steps, level=level_order), y=time)) + geom_linerange(aes(ymin=lower, ymax=upper))+ coord_flip() + theme_bw() + ggtitle("Time Usage")+ geom_text(label=sprintf("%f min",data$Elapsedtime), size=3, hjust=0, vjust=0, check_overlap = T) + ylim(0,8)
 p <- ggplot(df, aes(x=factor(steps), y=time))
-myplot <- p+ geom_linerange(aes(ymin=df$lower, ymax=df$upper), size=5)+ coord_flip() + theme_bw() + ggtitle("Time Usage")+ geom_text(label=sprintf("%f min",data$Elapsedtime), size=3, hjust=0, vjust=-1, check_overlap = T) #+ ylim(0,8)
+myplot <- p+ geom_linerange(aes(ymin=df$lower, ymax=df$upper), size=4)+ coord_flip() + theme_bw() + ggtitle("Time Usage")+ geom_text(label=sprintf("%f min",data$Elapsedtime), size=4, hjust=0, vjust=-0.7, check_overlap = T) #+ ylim(0,8)
 #png("/path/file", units="in",width=XX, height=XX, res=500)
 myplot
 #dev.off()
@@ -25,16 +28,18 @@ myplot
 
 #memory usage:
 data2<-read.csv("/projects/btl_scratch/aafshinfard/projects/physlr2/physlr/data/hg004.mem.tsv", sep = "\t" , header=T)
+levels(data2[,1]) = c(levels(data2[,1]),"molecules_fast")
+data2[1,1]="molecules_fast"
 df2 <- data.frame(
   steps=data2$Physlrstep,
-  memory=(data2$Memory)/1000,
+  memory=(data2$Memory)/(1024*1024),
   #group=c("cpp","cpp","py","py","py"),
   lower=0,
-  upper=(data2$Memory)/1000
+  upper=(data2$Memory)/(1024*1024)
 )
 level_order<-data$Physlrstep
-p <- ggplot(df2, aes(factor(steps, level=level_order),memory))
-p+ geom_linerange(aes(ymin=lower, ymax=upper)) +coord_flip()+ theme_bw()+ ggtitle("Memory Usage (MB)")+ geom_text(label=(data2$Memory)/1000, size=3, hjust=0.5, vjust=0, check_overlap = T) + ylim(0, 3400) + labs(y="Memory (MB)", x="Physlr step")
+p <- ggplot(df2, aes(factor(steps , level=level_order),memory))
+p+ geom_linerange(aes(ymin=lower, ymax=upper), size=3) +coord_flip()+ theme_bw()+ ggtitle("Memory Usage (MB)")+ geom_text(label=round((data2$Memory)/(1024*1024), digits=1), size=4, hjust=0.5, vjust=-0.8, check_overlap = T) + labs(y="Memory (GB)", x="Physlr step")
 
 
 #fixed versions after investigating Lauren's scripts:
