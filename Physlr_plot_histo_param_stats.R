@@ -19,5 +19,5 @@ sub_df = data.frame(df[sample(nrow(df), 1000000), ])
 class(sub_df)
 names(sub_df) = "edge_weight"
 head(sub_df)
-p = ggplot(sub_df, aes(x=edge_weight))+geom_histogram(binwidth = 1)#+xlim(0,100)
-p10 = ggplot(round(sub_df/10), aes(x=edge_weight))+geom_histogram(binwidth = 1)#+xlim(0,100)
+p = ggplot(sub_df, aes(x=edge_weight))+geom_histogram(binwidth = 10)#+xlim(0,100)
+#p10 = ggplot(round(sub_df/10), aes(x=edge_weight))+geom_histogram(binwidth = 1)#+xlim(0,100)
