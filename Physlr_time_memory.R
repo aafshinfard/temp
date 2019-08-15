@@ -38,7 +38,7 @@ df2 <- data.frame(
   upper=(data2$Memory)/(1024*1024)
 )
 level_order<-data$Physlrstep
-p <- ggplot(df2, aes(factor(steps , level=level_order),memory))
+p <- ggplot(df2, aes(factor(steps, level=level_order),memory))
 p+ geom_linerange(aes(ymin=lower, ymax=upper), size=3) +coord_flip()+ theme_bw()+ ggtitle("Memory Usage (MB)")+ geom_text(label=round((data2$Memory)/(1024*1024), digits=1), size=4, hjust=0.5, vjust=-0.8, check_overlap = T) + labs(y="Memory (GB)", x="Physlr step")
 
 
