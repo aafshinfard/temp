@@ -15,7 +15,7 @@ ggplot(mol, aes(x=Coverage)) +
   scale_x_continuous(limits=c(0, 1))
 
 ggplot(mol2, aes(x=Length)) +
-  geom_histogram(stat="bin", binwidth=1000)+xlim(0,100000)
+  geom_histogram(stat="bin", binwidth=1000)+xlim(0,200000)
 
 ggplot(mol2, aes(x=num_reads)) +
   geom_histogram(stat="bin", binwidth=1)+xlim(0,350)
