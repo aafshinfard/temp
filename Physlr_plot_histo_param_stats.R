@@ -61,6 +61,8 @@ class(sub_df3)
 names(sub_df3) = "edge_weight"
 head(sub_df3)
 
+
+
 p21 = ggplot(sub_df2, aes(x=edge_weight))+geom_histogram(binwidth = 0.005)#+xlim(0,100)
 p22 = ggplot(sub_df2, aes(x=edge_weight))+geom_histogram(binwidth = 100)+xlim(0,50000)+ylim(0,7000)
 
