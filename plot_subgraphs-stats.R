@@ -28,6 +28,9 @@ add_nodeg20_mol = "/projects/btl_scratch/aafshinfard/phys-dev/physlr/data/fish.i
 
 ### WS77111
 add_nodeg0 = "/projects/btl_scratch/aafshinfard/projects/physlr2/physlr/data/ws77111.indexlr.n100-5000.c2-x.physlr.overlap.n30.subgraphs.stats"
+add_nodeg0 = "/projects/btl_scratch/aafshinfard/projects/physlr2/physlr/data/ws77111.indexlr.n100-5000.c2-x.physlr.overlap.tsv.subgraphs.stats2"
+
+
 
 ### If it's |E| vs |V| :
 nodeg0 = 
