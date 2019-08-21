@@ -1,6 +1,3 @@
-
-
-
 # first extract the edge weights from the overlap graph file you have (*.overlap.tsv) via the command pattern below:
 # cat hg004.k32-w32.n100-5000.c2-x.physlr.overlap.tsv | awk '{if(gsub(/\t/,"\t")>1) print $3}' > hg004.k32-w32.n100-5000.c2-x.physlr.overlap.edge_weights
 # then 
@@ -17,9 +14,6 @@ data_backup = data
 head(data)
 # if you data hsa 3 columns, discard the first two using:
 data= data.frame(data[,3])
-
-
-
 
 
 class(data[1,1])
