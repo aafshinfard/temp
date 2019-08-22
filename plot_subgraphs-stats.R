@@ -30,8 +30,6 @@ add_nodeg20_mol = "/projects/btl_scratch/aafshinfard/phys-dev/physlr/data/fish.i
 add_nodeg0 = "/projects/btl_scratch/aafshinfard/projects/physlr2/physlr/data/ws77111.indexlr.n100-5000.c2-x.physlr.overlap.n30.subgraphs.stats"
 add_nodeg0 = "/projects/btl_scratch/aafshinfard/projects/physlr2/physlr/data/ws77111.indexlr.n100-5000.c2-x.physlr.overlap.tsv.subgraphs.stats2"
 
-
-
 ### If it's |E| vs |V| :
 nodeg0 = 
   read.table(add_nodeg0, sep = "\t", header = FALSE, skip = 1)
@@ -107,7 +105,7 @@ nodeg_filt2_70 = nodeg_filt70[1:maxi,]
 nodeg_filt2_100 = nodeg_filt100[1:maxi,]
 nodeg_filt2_200 = nodeg_filt200[1:maxi,]
 
-title="WS77111 - before mol2bar - n30 - subsampled to 150K subgraphs"
+title="WS77111 - before mol2bar - n10 - subsampled to 150K subgraphs"
 ploti = ggplot(nodeg_filt2_0, aes(x=`nodes`, y=`edges`)) + geom_point(size=0.001)+
   ggtitle(title) +
   labs(x= "Number of nodes",y= "Number of edges") + 
@@ -118,8 +116,8 @@ ploti = ggplot(nodeg_filt2_0, aes(x=`nodes`, y=`edges`)) + geom_point(size=0.001
 ploti = ggplot(nodeg_filt2_0, aes(x=`nodes`, y=`alpha`)) + geom_point(size=0.001)+
   ggtitle(title) +
   labs(x= "Number of nodes",y= "alpha = number of nodes / number of possible nodes in a graph") + 
-  xlim(0,120)+
-  #ylim(0,8000)+#ylim(0,2.5*10^5)+
+  xlim(0,300)+
+  #ylim(0,0.3)+#ylim(0,2.5*10^5)+
   theme(text = element_text(size=14),
         axis.text.x = element_text(angle=0, hjust=1))+
   geom_point(data = nodeg_filt2_0,size=0.001,color="red")
