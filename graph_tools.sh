@@ -92,6 +92,19 @@ tail f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.tsv
 
 ##############################################################################
 ### Fly overlap graphs
+
+# file with no W filtering:
+/projects/btl/jowong/github/physlr/data_n_with_w_filtering/f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.tsv
+# so:
+cp /projects/btl/jowong/github/physlr/data_n_with_w_filtering/f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.tsv f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.tsv
+# then:
+
+
+
+
+
+
+
 tail f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.tsv		#n10
 tail f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.tsv 	#n10 w15000
 
@@ -104,16 +117,58 @@ f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.tsv
 awk 'NF<3 {print} (s<3 && NF>2) {print} {s=NF}' f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.tsv > f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.true_edges.tsv
 wc -l f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.true_edges.tsv
 awk 'NR==FNR{c[$1,$2]++;next};c[$1,$2]' /projects/btl/jowong/github/physlr/ground_truth/true_edges.txt f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.tsv >> f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.true_edges.tsv
-wc -l f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.true_edges.tsv
+awk 'NR==FNR{c[$2,$1]++;next};c[$1,$2]' /projects/btl/jowong/github/physlr/ground_truth/true_edges.txt f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.tsv >> f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.true_edges.tsv
+make f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.true_edges.gv -n 
+make f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.true_edges.gv.sfdp.pdf -n
 
 ## n10 w15000: true edges only
 
 awk 'NF<3 {print} (s<3 && NF>2) {print} {s=NF}' f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.tsv > f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.true_edges.tsv
 wc -l f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.true_edges.tsv
 awk 'NR==FNR{c[$1,$2]++;next};c[$1,$2]' /projects/btl/jowong/github/physlr/ground_truth/true_edges.txt f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.tsv >> f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.true_edges.tsv
-wc -l f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.true_edges.tsv
+awk 'NR==FNR{c[$2,$1]++;next};c[$1,$2]' /projects/btl/jowong/github/physlr/ground_truth/true_edges.txt f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.tsv >> f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.true_edges.tsv
+make f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.true_edges.gv -n 
+make f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.true_edges.gv.sfdp.pdf -n
 
 
+
+
+
+
+## n10 and no w15000
+awk 'NF<3 {print} (s<3 && NF>2) {print} {s=NF}' f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.tsv > f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w15000.tsv
+wc -l f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w15000.tsv
+awk '(s>3 && NF>3 && $4>15000) {print} {s=NF}' f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.tsv >> f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w15000.tsv
+wc -l f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w15000.tsv
+make f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w15000.gv -n
+
+## n10 and no w17000
+awk 'NF<3 {print} (s<3 && NF>2) {print} {s=NF}' f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.tsv > f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w17000.tsv
+wc -l f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w17000.tsv
+awk '(s>3 && NF>3 && $4>17000) {print} {s=NF}' f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.tsv >> f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w17000.tsv
+wc -l f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w17000.tsv
+make f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w17000.gv -n
+make f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w17000.gv.sfdp.pdf -n
+
+
+awk 'NR==FNR{c[$1,$2]++;next};c[$1,$2]' /projects/btl/jowong/github/physlr/ground_truth/true_edges.txt f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.tsv >> f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.true_edges.tsv
+awk 'NR==FNR{c[$2,$1]++;next};c[$1,$2]' /projects/btl/jowong/github/physlr/ground_truth/true_edges.txt f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.tsv >> f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.true_edges.tsv
+make f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.true_edges.gv -n 
+make f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.true_edges.gv.sfdp.pdf -n
+
+
+
+tail f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.tsv
+## 
+
+awk 'NF<3 {print} (s<3 && NF>2) {print} {s=NF}' f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.mol.tsv > f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.mol.true_edges.tsv
+wc -l f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.mol.true_edges.tsv
+awk 'NR==FNR{c[$1,$2]++;next};c[$1,$2]' /projects/btl/jowong/github/physlr/ground_truth/true_edges.txt f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.mol.tsv >> f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.mol.true_edges.tsv
+wc -l f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.mol.true_edges.tsv
+
+
+awk 'NF<3 {print} (s<3 && NF>2) {print} {s=NF}' f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.tsv > f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.w15000.tsv
+awk '(s>3 && NF>3 && $4>15000) {print} {s=NF}' f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.tsv >> f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.w15000.tsv
 
 awk 'NF<3 {print} (s<3 && NF>2) {print} {s=NF}' f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.mol.tsv > f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.mol.true_edges.tsv
 wc -l f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.mol.true_edges.tsv
