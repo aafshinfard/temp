@@ -94,32 +94,28 @@ tail f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.tsv
 ### Fly overlap graphs
 
 # file with no W filtering:
-/projects/btl/jowong/github/physlr/data_n_with_w_filtering/f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.tsv
+# /projects/btl/jowong/github/physlr/data_n_with_w_filtering/f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.tsv
 # so:
-cp /projects/btl/jowong/github/physlr/data_n_with_w_filtering/f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.tsv f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.tsv
+# cp /projects/btl/jowong/github/physlr/data_n_with_w_filtering/f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.tsv f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.tsv
 # then:
-
-
-
-
-
-
 
 tail f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.tsv		#n10
 tail f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.tsv 	#n10 w15000
 
 ## n10 w0: all edges
-f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.tsv
+nohup env PYTHONPATH=/projects/btl_scratch/aafshinfard/projects/physlr2/physlr /projects/btl/aafshinfard/virtuEnv/pypy3/bin/pypy3 /projects/btl_scratch/aafshinfard/projects/physlr2/physlr/bin/physlr filter --min-component-size=50 -Ogv f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.tsv >f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.gv 2> gv.out&
+nohup /gsc/btl/linuxbrew/bin/sfdp -Gsize=100 -Goverlap_scaling=200 -Tpdf -o f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.gv.sfdp.pdf f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.gv > gv.sfdp.out&
 ## n10 w15000: all edges
-f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.tsv
+nohup env PYTHONPATH=/projects/btl_scratch/aafshinfard/projects/physlr2/physlr /projects/btl/aafshinfard/virtuEnv/pypy3/bin/pypy3 /projects/btl_scratch/aafshinfard/projects/physlr2/physlr/bin/physlr filter --min-component-size=50 -Ogv f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.tsv >f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.gv 2> gv.n0.out&
+nohup /gsc/btl/linuxbrew/bin/sfdp -Gsize=100 -Goverlap_scaling=200 -Tpdf -o f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.gv.sfdp.pdf f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.gv > gv.n0.sfdp.out&
 
 ## n10 w0: true edges only
 awk 'NF<3 {print} (s<3 && NF>2) {print} {s=NF}' f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.tsv > f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.true_edges.tsv
 wc -l f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.true_edges.tsv
 awk 'NR==FNR{c[$1,$2]++;next};c[$1,$2]' /projects/btl/jowong/github/physlr/ground_truth/true_edges.txt f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.tsv >> f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.true_edges.tsv
 awk 'NR==FNR{c[$2,$1]++;next};c[$1,$2]' /projects/btl/jowong/github/physlr/ground_truth/true_edges.txt f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.tsv >> f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.true_edges.tsv
-make f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.true_edges.gv -n 
-make f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.true_edges.gv.sfdp.pdf -n
+nohup env PYTHONPATH=/projects/btl_scratch/aafshinfard/projects/physlr2/physlr /projects/btl/aafshinfard/virtuEnv/pypy3/bin/pypy3 /projects/btl_scratch/aafshinfard/projects/physlr2/physlr/bin/physlr filter --min-component-size=50 -Ogv f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.true_edges.tsv >f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.true_edges.gv 2> gv.true_edges.out&
+nohup /gsc/btl/linuxbrew/bin/sfdp -Gsize=100 -Goverlap_scaling=200 -Tpdf -o f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.true_edges.gv.sfdp.pdf f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.true_edges.gv > gv.sfdp.true_edges.out&
 
 ## n10 w15000: true edges only
 
@@ -127,8 +123,8 @@ awk 'NF<3 {print} (s<3 && NF>2) {print} {s=NF}' f1chr4.k32-w32.n100-1000.c2-x.ph
 wc -l f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.true_edges.tsv
 awk 'NR==FNR{c[$1,$2]++;next};c[$1,$2]' /projects/btl/jowong/github/physlr/ground_truth/true_edges.txt f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.tsv >> f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.true_edges.tsv
 awk 'NR==FNR{c[$2,$1]++;next};c[$1,$2]' /projects/btl/jowong/github/physlr/ground_truth/true_edges.txt f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.tsv >> f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.true_edges.tsv
-make f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.true_edges.gv -n 
-make f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.true_edges.gv.sfdp.pdf -n
+nohup env PYTHONPATH=/projects/btl_scratch/aafshinfard/projects/physlr2/physlr /projects/btl/aafshinfard/virtuEnv/pypy3/bin/pypy3 /projects/btl_scratch/aafshinfard/projects/physlr2/physlr/bin/physlr filter --min-component-size=50 -Ogv f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.true_edges.tsv >f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.true_edges.gv 2> gv.n0.true_edges.out&
+nohup /gsc/btl/linuxbrew/bin/sfdp -Gsize=100 -Goverlap_scaling=200 -Tpdf -o f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.true_edges.gv.sfdp.pdf f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.true_edges.gv > gv.n0.sfdp.true_edges.out&
 
 
 
