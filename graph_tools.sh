@@ -175,3 +175,19 @@ wc -l f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.mol.true_edges.tsv
 awk 'NF<3 {print} (s<3 && NF>2) {print} {s=NF}' f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.tsv > f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.w15000.tsv
 awk '(s>3 && NF>3 && $4>15000) {print} {s=NF}' f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.tsv >> f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.w15000.tsv
 
+
+
+### Making a labeled dataset
+#
+file_overlap="f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap"
+file_true_edges="/projects/btl/jowong/github/physlr/ground_truth/true_edges.txt"
+tail ${file_overlap}.tsv
+tail ${file_true_edges}
+
+awk '(NF>3 && s>3) {print} {s=NF}' ${file_overlap}.tsv > ${file_overlap}.edges.tsv
+head ${file_overlap}.edges.tsv
+# Labeling
+awk 'NR==FNR{a[$1$2]++;next} ($1$2 in a){print $1"\t"$2"\t"$3"\t"$4"\t1"}' ${file_true_edges} ${file_overlap}.edges.tsv > ${file_overlap}.edges.labeled_t.tsv
+awk 'NR==FNR{a[$2$1]++;next} ($1$2 in a){print $1"\t"$2"\t"$3"\t"$4"\t1"}' ${file_true_edges} ${file_overlap}.edges.tsv >> ${file_overlap}.edges.labeled_t.tsv
+awk 'NR==FNR{a[$1$2]++;next} !($1$2 in a){print $1"\t"$2"\t"$3"\t"$4"\t0"}' ${file_overlap}.edges.labeled_t.tsv ${file_overlap}.edges.tsv > ${file_overlap}.edges.labeled_f.tsv
+
