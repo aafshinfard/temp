@@ -31,7 +31,7 @@ ggplot(sub_data2, aes(x = V3, y = V4, colour = V5)) +
 ### plot all features included in 2 files.
 
 ad_t = "/projects/btl_scratch/aafshinfard/projects/physlr2/physlr/data/f1chr4.edge_weights.labeled_t.tsv"
-ad_f = "/projects/btl_scratch/aafshinfard/projects/physlr2/physlr/data/f1chr4.edge_weights.labeled_t.tsv"
+ad_f = "/projects/btl_scratch/aafshinfard/projects/physlr2/physlr/data/f1chr4.edge_weights.labeled_f.tsv"
 data_t = read.table(ad_t, sep = "\t", header = TRUE)
 data_f = read.table(ad_f, sep = "\t", header = TRUE)
 # subsample 
@@ -43,16 +43,13 @@ dim(data)
 head(data)
 tail(data)
 class(data[1,3])
-data$V5 <- as.factor(data$V5)
+data$label <- as.factor(data$label)
 
+# hitogram of all features
+
+# plot 2 features at a time
 sub_data2 = data.frame(data[sample(nrow(data), 30000), ])
-
-ggplot(data, aes(x = V3, y = V4, colour = V5)) +
-  geom_point() +
-  facet_wrap( ~ V5)
-
-ggplot(sub_data2, aes(x = V3, y = V4, colour = V5)) +
-  geom_point() 
-+
-  facet_wrap( ~ V5)
-
+head(sub_data2)
+ggplot(sub_data2, aes(x = n_tfidf, y = w_tfidf, colour = label)) +
+  geom_point() + ggtitle("f1chr4 n vs. w (with weighted minimizers)") + xlab("n_tfidf") + ylab("w_tfidf")+ theme(text = element_text(size=16))
++ facet_wrap( ~ V5)
