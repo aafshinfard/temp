@@ -19,14 +19,13 @@ data$V5 <- as.factor(data$V5)
 
 sub_data2 = data.frame(data[sample(nrow(data), 30000), ])
 
-ggplot(data, aes(x = V3, y = V4, colour = V5)) +
+ggplot(data, aes(x = n, y = w, colour = "true edges")) +
   geom_point() +
   facet_wrap( ~ V5)
-
+names(sub_data2) = c("V1", "V2", "V3", "V4", "V5")
 ggplot(sub_data2, aes(x = V3, y = V4, colour = V5)) +
-  geom_point() 
-+
-  facet_wrap( ~ V5)
+  geom_point() + ggtitle("f1chr4 n vs. w") + xlab("n") + ylab("w")+ theme(text = element_text(size=16))
++ facet_wrap( ~ V5)
 
 #############################################################
 ### plot all features included in 2 files.
