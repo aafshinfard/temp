@@ -101,3 +101,21 @@ head(sub_data2[,3:10])
 mat = as.matrix(sub_data2[,3:9])
 tsne_out <- Rtsne(mat, pca_scale=TRUE) # Run TSNE
 plot(tsne_out$Y,col=sub_data2$label)
+
+
+###################################################
+# plots for wrong edges:
+
+ggplot(data, aes(x = n, y = w)) +
+  geom_density_2d() + ggtitle("f1chr4 - true and false edges stats") + xlab("n") + ylab("w")+ theme(text = element_text(size=16)) + facet_wrap( ~ label)
+ggplot(data, aes(x = n, y = w)) +
+  stat_density_2d(aes(fill = stat(level)), geom = "polygon") + ggtitle("f1chr4 - true and false edges stats") + xlab("n") + ylab("w")+ theme(text = element_text(size=16)) + facet_wrap( ~ label)
+
+
+ggplot(data, aes(x = n, y = w_tfidf)) +
+  geom_density_2d() + ggtitle("f1chr4 - true and false edges stats") + xlab("n") + ylab("w_tfidf")+ theme(text = element_text(size=16)) + facet_wrap( ~ label)
+ggplot(data, aes(x = n, y = w_tfidf)) +
+  stat_density_2d(aes(fill = stat(level)), geom = "polygon") + ggtitle("f1chr4 - true and false edges stats") + xlab("n") + ylab("w_tfidf")+ theme(text = element_text(size=16)) + facet_wrap( ~ label)
+
+ggplot(data, aes(x = n, y = n_jaccard)) +
+  geom_point(size=1)+stat_density_2d(aes(fill = stat(level)), geom = "polygon") + ggtitle("f1chr4 - true and false edges stats") + xlab("n") + ylab("n_jaccard")+ theme(text = element_text(size=16)) + facet_wrap( ~ label)
