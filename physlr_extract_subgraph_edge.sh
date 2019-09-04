@@ -31,4 +31,3 @@
 
 
 file_path="/projects/btl_scratch/aafshinfard/projects/physlr2/physlr/data/f1chr4.edge_weights.labeled_f.tsv"
-

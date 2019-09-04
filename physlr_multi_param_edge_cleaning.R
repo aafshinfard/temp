@@ -117,5 +117,20 @@ ggplot(data, aes(x = n, y = w_tfidf)) +
 ggplot(data, aes(x = n, y = w_tfidf)) +
   stat_density_2d(aes(fill = stat(level)), geom = "polygon") + ggtitle("f1chr4 - true and false edges stats") + xlab("n") + ylab("w_tfidf")+ theme(text = element_text(size=16)) + facet_wrap( ~ label)
 
+# n vs n_jaccard
 ggplot(data, aes(x = n, y = n_jaccard)) +
-  geom_point(size=1)+stat_density_2d(aes(fill = stat(level)), geom = "polygon") + ggtitle("f1chr4 - true and false edges stats") + xlab("n") + ylab("n_jaccard")+ theme(text = element_text(size=16)) + facet_wrap( ~ label)
+  stat_density_2d(aes(fill = stat(level)), geom = "polygon") + ggtitle("f1chr4 - true and false edges stats") + xlab("n") + ylab("n_jaccard")+ theme(text = element_text(size=16)) + facet_wrap( ~ label)
+ggplot(data, aes(x = n, y = n_jaccard)) +
+  geom_point(size=.1)+stat_density_2d(aes(fill = stat(level)), geom = "polygon") + ggtitle("f1chr4 - true and false edges stats") + xlab("n") + ylab("n_jaccard")+ theme(text = element_text(size=16)) + facet_wrap( ~ label)
+
+# n vs n_tfidf
+ggplot(data, aes(x = n, y = n_tfidf)) +
+  stat_density_2d(aes(fill = stat(level)), geom = "polygon") + ggtitle("f1chr4 - true and false edges stats") + xlab("n") + ylab("n_jaccard")+ theme(text = element_text(size=16)) + facet_wrap( ~ label)
+ggplot(data, aes(x = n, y = n_tfidf)) +
+  geom_point(size=.1)+stat_density_2d(aes(fill = stat(level)), geom = "polygon") + ggtitle("f1chr4 - true and false edges stats") + xlab("n") + ylab("n_jaccard")+ theme(text = element_text(size=16)) + facet_wrap( ~ label)
+
+# w vs w_jaccard
+ggplot(data, aes(x = w, y = w_jaccard)) +
+  stat_density_2d(aes(fill = stat(level)), geom = "polygon") + ggtitle("f1chr4 - true and false edges stats") + xlab("w") + ylab("w_jaccard")+ theme(text = element_text(size=16)) + facet_wrap( ~ label)
+ggplot(data, aes(x = w, y = w_jaccard)) +
+  geom_point(size=.1)+stat_density_2d(aes(fill = stat(level)), geom = "polygon") + ggtitle("f1chr4 - true and false edges stats") + xlab("w") + ylab("w_jaccard")+ theme(text = element_text(size=16)) + facet_wrap( ~ label)
