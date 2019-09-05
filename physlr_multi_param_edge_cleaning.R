@@ -87,6 +87,12 @@ ggplot(data=pca.data.labeled, aes(x=X, y=Y, colour=label))+
   theme_bw()+
   ggtitle("PCA")
 
+
+ggplot(pca.data.labeled, aes(x=X, y=Y, colour=label)) +
+  geom_point() + ggtitle("PCA - f1chr4 - true and false edges") + xlab("x") + ylab("y")+ theme(text = element_text(size=16)) + facet_wrap( ~ sub_data2$label)
+ggplot(pca.data.labeled, aes(x=X, y=Y)) +
+  stat_density_2d(aes(fill = stat(level)), geom = "polygon") + ggtitle("PCA - f1chr4 - true and false edges") + xlab("x") + ylab("y")+ theme(text = element_text(size=16)) + facet_wrap( ~ sub_data2$label)
+
 ###################################################
 # t-SNE
 head(iris)
@@ -101,7 +107,14 @@ head(sub_data2[,3:10])
 mat = as.matrix(sub_data2[,3:9])
 tsne_out <- Rtsne(mat, pca_scale=TRUE) # Run TSNE
 plot(tsne_out$Y,col=sub_data2$label)
-
+class(tsne_out$Y)
+head(tsne_out$Y)
+tsne.df=data.frame(tsne_out$Y)
+tsne.df2 = cbind(tsne.df, sub_data2$label)
+ggplot(tsne.df2, aes(x = X1, y = X2, colour=sub_data2$label)) +
+  geom_point() + ggtitle("t-sne - f1chr4 - true and false edges") + xlab("x") + ylab("y")+ theme(text = element_text(size=16)) + facet_wrap( ~ sub_data2$label)
+ggplot(tsne.df2, aes(x = X1, y = X2)) +
+  stat_density_2d(aes(fill = stat(level)), geom = "polygon") + ggtitle("t-sne - f1chr4 - true and false edges") + xlab("x") + ylab("y")+ theme(text = element_text(size=16)) + facet_wrap( ~ sub_data2$label)
 
 ###################################################
 # plots for wrong edges:
