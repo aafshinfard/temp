@@ -2,7 +2,7 @@ library(ggplot2)
 library("Rtsne")
 #############################################################
 ### plot 2 features (n and w)
-
+# first you need to make two files one for true edges and one for false edges and then:
 ad_t = "/projects/btl_scratch/aafshinfard/projects/physlr2/physlr/data/f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.edges.labeled_t.tsv"
 ad_f = "/projects/btl_scratch/aafshinfard/projects/physlr2/physlr/data/f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.edges.labeled_f.tsv"
 data_t = read.table(ad_t, sep = "\t", header = FALSE)

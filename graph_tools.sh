@@ -191,7 +191,13 @@ awk 'NR==FNR{a[$1$2]++;next} ($1$2 in a){print $1"\t"$2"\t"$3"\t"$4"\t1"}' ${fil
 awk 'NR==FNR{a[$2$1]++;next} ($1$2 in a){print $1"\t"$2"\t"$3"\t"$4"\t1"}' ${file_true_edges} ${file_overlap}.edges.tsv >> ${file_overlap}.edges.labeled_t.tsv
 awk 'NR==FNR{a[$1$2]++;next} !($1$2 in a){print $1"\t"$2"\t"$3"\t"$4"\t0"}' ${file_overlap}.edges.labeled_t.tsv ${file_overlap}.edges.tsv > ${file_overlap}.edges.labeled_f.tsv
 
-### Making a labeled dataset 2
+### With 5 columns
+#awk 'NR==FNR{a[$1$2]++;next} ($1$2 in a){print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t1"}' ${file_true_edges} f1chr4.nn.overlap.edges.tsv > f1chr4.nn.overlap.edges.labeled_t.tsv
+#awk 'NR==FNR{a[$2$1]++;next} ($1$2 in a){print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t1"}' ${file_true_edges} f1chr4.nn.overlap.edges.tsv >> f1chr4.nn.overlap.edges.labeled_t.tsv
+#awk 'NR==FNR{a[$1$2]++;next} !($1$2 in a){print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t0"}' f1chr4.nn.overlap.edges.labeled_t.tsv f1chr4.nn.overlap.edges.tsv > f1chr4.nn.overlap.edges.labeled_f.tsv
+
+
+### Making a labeled dataset 3
 #
 file_weights="/projects/btl/jowong/github/physlr/data_n_with_w_filtering_test/histogramall.txt"
 file_true_edges="/projects/btl/jowong/github/physlr/ground_truth/true_edges.txt"
@@ -200,10 +206,10 @@ tail ${file_weights}
 tail ${file_true_edges}
 
 # Labeling
-head ${file_weights} -n1 | awk 'BEGIN {ORS=""} {print; print"\tlabel\n"}' > ${file_output_prefix}.labeled_t.tsv
+cat ${file_weights} -n1 | awk 'BEGIN {ORS=""} {print; print"\tlabel\n"}' > ${file_output_prefix}.labeled_t.tsv
 awk 'BEGIN {ORS=""} NR==FNR{a[$1$2]++;next} ($1$2 in a){print; print "\t1\n"}' ${file_true_edges} ${file_weights} >> ${file_output_prefix}.labeled_t.tsv
 awk 'BEGIN {ORS=""} NR==FNR{a[$2$1]++;next} ($1$2 in a){print; print "\t1\n"}' ${file_true_edges} ${file_weights} >> ${file_output_prefix}.labeled_t.tsv
-head ${file_weights} -n1 | awk 'BEGIN {ORS=""} {print; print"\tlabel\n"}' > ${file_output_prefix}.labeled_f.tsv
+cat ${file_weights} -n1 | awk 'BEGIN {ORS=""} {print; print"\tlabel\n"}' > ${file_output_prefix}.labeled_f.tsv
 awk 'BEGIN {ORS=""} NR==FNR{a[$1$2]++;next} !($1$2 in a){print; print "\t0\n"}' ${file_output_prefix}.labeled_t.tsv ${file_weights} >> ${file_output_prefix}.labeled_f.tsv
 #filtering for n<10
 cat ${file_output_prefix}.labeled_f.tsv | awk '(NR<2 || ( NR>1 && $3>10 ) ){print}' > ${file_output_prefix}.labeled_f2.tsv
