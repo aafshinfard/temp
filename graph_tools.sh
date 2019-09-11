@@ -219,5 +219,12 @@ mv ${file_output_prefix}.labeled_f2.tsv ${file_output_prefix}.labeled_f.tsv
 
 
 
-
+### removing false edges from subgraph ".tsv" files
+file_subgraph="f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.subgraph_CGGAACCTCGCCTGAG-1,CATTCTACAGGGCATA-1"
+file_true_edges="/projects/btl/jowong/github/physlr/ground_truth/true_edges.txt"
+awk '(NF<3) {print}' ${file_subgraph}.tsv > ${file_subgraph}_t.tsv
+awk '(NF>3 && s<3) {print} {s=NF}' ${file_subgraph}.tsv >> ${file_subgraph}_t.tsv
+awk '(NF>3 && s>3) {print} {s=NF}' ${file_subgraph}.tsv > ${file_subgraph}.edges.tsv
+awk 'NR==FNR{a[$1$2]++;next} ($1$2 in a){print}' ${file_true_edges} ${file_subgraph}.edges.tsv >> ${file_subgraph}_t.tsv
+awk 'NR==FNR{a[$2$1]++;next} ($1$2 in a){print}' ${file_true_edges} ${file_subgraph}.edges.tsv >> ${file_subgraph}_t.tsv
 

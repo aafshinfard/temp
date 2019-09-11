@@ -71,3 +71,21 @@ nohup /gsc/btl/linuxbrew/bin/sfdp -Gsize=100 -Goverlap_scaling=200 -Tpdf -o f1ch
 nohup env PYTHONPATH=/projects/btl_scratch/aafshinfard/projects/physlr2/physlr /projects/btl/aafshinfard/virtuEnv/pypy3/bin/pypy3 /projects/btl_scratch/aafshinfard/projects/physlr2/physlr/bin/physlr filter --min-component-size=1 -Ogv f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.subgraph.n50.tsv >f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.subgraph.n50.gv 2> gv.out &
 nohup /gsc/btl/linuxbrew/bin/sfdp -Gsize=100 -Goverlap_scaling=200 -Tpdf -o f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.subgraph.n50.gv.sfdp.pdf f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.subgraph.n50.gv > sfdp.out&
 
+
+
+
+### filter subgraph for false edges:
+file_subgraph="f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.subgraph_CGGAACCTCGCCTGAG-1,CATTCTACAGGGCATA-1"
+file_true_edges="/projects/btl/jowong/github/physlr/ground_truth/true_edges.txt"
+awk '(NF<3) {print}' ${file_subgraph}.tsv > ${file_subgraph}_t.tsv
+awk '(NF>3 && s<3) {print} {s=NF}' ${file_subgraph}.tsv >> ${file_subgraph}_t.tsv
+awk '(NF>3 && s>3) {print} {s=NF}' ${file_subgraph}.tsv > ${file_subgraph}.edges.tsv
+awk 'NR==FNR{a[$1$2]++;next} ($1$2 in a){print}' ${file_true_edges} ${file_subgraph}.edges.tsv >> ${file_subgraph}_t.tsv
+awk 'NR==FNR{a[$2$1]++;next} ($1$2 in a){print}' ${file_true_edges} ${file_subgraph}.edges.tsv >> ${file_subgraph}_t.tsv
+# so now, make gv, and gv.sfdp.pdf
+nohup env PYTHONPATH=/projects/btl_scratch/aafshinfard/projects/physlr2/physlr /projects/btl/aafshinfard/virtuEnv/pypy3/bin/pypy3 /projects/btl_scratch/aafshinfard/projects/physlr2/physlr/bin/physlr filter --min-component-size=1 -Ogv ${file_subgraph}_t.tsv >${file_subgraph}_t.gv 2> gv.out &
+nohup /gsc/btl/linuxbrew/bin/sfdp -Gsize=100 -Goverlap_scaling=200 -Tpdf -o ${file_subgraph}_t.gv.sfdp.pdf ${file_subgraph}_t.gv > sfdp.out&
+
+
+
+
