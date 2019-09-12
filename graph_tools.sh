@@ -126,17 +126,28 @@ awk 'NR==FNR{c[$2,$1]++;next};c[$1,$2]' /projects/btl/jowong/github/physlr/groun
 nohup env PYTHONPATH=/projects/btl_scratch/aafshinfard/projects/physlr2/physlr /projects/btl/aafshinfard/virtuEnv/pypy3/bin/pypy3 /projects/btl_scratch/aafshinfard/projects/physlr2/physlr/bin/physlr filter --min-component-size=50 -Ogv f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.true_edges.tsv >f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.true_edges.gv 2> gv.n0.true_edges.out&
 nohup /gsc/btl/linuxbrew/bin/sfdp -Gsize=100 -Goverlap_scaling=200 -Tpdf -o f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.true_edges.gv.sfdp.pdf f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n0.true_edges.gv > gv.n0.sfdp.true_edges.out&
 
-
-
-
-
-
 ## n10 and no w15000
 awk 'NF<3 {print} (s<3 && NF>2) {print} {s=NF}' f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.tsv > f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w15000.tsv
 wc -l f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w15000.tsv
 awk '(s>3 && NF>3 && $4>15000) {print} {s=NF}' f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.tsv >> f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w15000.tsv
 wc -l f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w15000.tsv
 make f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w15000.gv -n
+
+### subset edges - w15000
+# 50 %
+awk 'NF<3 {print} (s<3 && NF>2) {print} {s=NF}' f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w15000.tsv > f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w15000.50pe.tsv
+awk '(s>2 && NF>2 && NR%2>0) {print} {s=NF}' f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w15000.tsv >> f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w15000.50pe.tsv
+file_graph="f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w15000.50pe"
+nohup env PYTHONPATH=/projects/btl_scratch/aafshinfard/projects/physlr2/physlr /projects/btl/aafshinfard/virtuEnv/pypy3/bin/pypy3 /projects/btl_scratch/aafshinfard/projects/physlr2/physlr/bin/physlr filter --min-component-size=1 -Ogv ${file_graph}.tsv >${file_graph}.gv 2> gv.out &
+nohup /gsc/btl/linuxbrew/bin/sfdp -Gsize=100 -Goverlap_scaling=200 -Tpdf -o ${file_graph}.gv.sfdp.pdf ${file_graph}.gv > sfdp.out&
+# 25 %
+awk 'NF<3 {print} (s<3 && NF>2) {print} {s=NF}' f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w15000.tsv > f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w15000.25pe.tsv
+awk '(s>2 && NF>2 && NR%4>2) {print} {s=NF}' f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w15000.tsv >> f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w15000.25pe.tsv
+file_graph="f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w15000.25pe"
+nohup env PYTHONPATH=/projects/btl_scratch/aafshinfard/projects/physlr2/physlr /projects/btl/aafshinfard/virtuEnv/pypy3/bin/pypy3 /projects/btl_scratch/aafshinfard/projects/physlr2/physlr/bin/physlr filter --min-component-size=1 -Ogv ${file_graph}.tsv >${file_graph}.gv 2> gv.out &
+nohup /gsc/btl/linuxbrew/bin/sfdp -Gsize=100 -Goverlap_scaling=200 -Tpdf -o ${file_graph}.gv.sfdp.pdf ${file_graph}.gv > sfdp.out&
+
+
 
 ## n10 and no w17000
 awk 'NF<3 {print} (s<3 && NF>2) {print} {s=NF}' f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.tsv > f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w17000.tsv
