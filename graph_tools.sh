@@ -146,6 +146,12 @@ awk '(s>2 && NF>2 && NR%4>2) {print} {s=NF}' f1chr4.k32-w32.n100-1000.c2-x.physl
 file_graph="f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w15000.25pe"
 nohup env PYTHONPATH=/projects/btl_scratch/aafshinfard/projects/physlr2/physlr /projects/btl/aafshinfard/virtuEnv/pypy3/bin/pypy3 /projects/btl_scratch/aafshinfard/projects/physlr2/physlr/bin/physlr filter --min-component-size=1 -Ogv ${file_graph}.tsv >${file_graph}.gv 2> gv.out &
 nohup /gsc/btl/linuxbrew/bin/sfdp -Gsize=100 -Goverlap_scaling=200 -Tpdf -o ${file_graph}.gv.sfdp.pdf ${file_graph}.gv > sfdp.out&
+# 10 %
+file_graph="f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w15000.10pe"
+awk 'NF<3 {print} (s<3 && NF>2) {print} {s=NF}' f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w15000.tsv > ${file_graph}.tsv
+awk '(s>2 && NF>2 && NR%10>8) {print} {s=NF}' f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.w15000.tsv >> ${file_graph}.tsv
+nohup env PYTHONPATH=/projects/btl_scratch/aafshinfard/projects/physlr2/physlr /projects/btl/aafshinfard/virtuEnv/pypy3/bin/pypy3 /projects/btl_scratch/aafshinfard/projects/physlr2/physlr/bin/physlr filter --min-component-size=1 -Ogv ${file_graph}.tsv >${file_graph}.gv 2> gv.out &
+nohup /gsc/btl/linuxbrew/bin/sfdp -Gsize=100 -Goverlap_scaling=200 -Tpdf -o ${file_graph}.gv.sfdp.pdf ${file_graph}.gv > sfdp.out&
 
 
 
