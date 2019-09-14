@@ -33,6 +33,7 @@ ggplot(sub_data2, aes(x = V3, y = V4, colour = V5)) +
 
 ad_t = "/projects/btl_scratch/aafshinfard/projects/physlr2/physlr/data/f1chr4.edge_weights.labeled_t.tsv"
 ad_f = "/projects/btl_scratch/aafshinfard/projects/physlr2/physlr/data/f1chr4.edge_weights.labeled_f.tsv"
+
 data_t = read.table(ad_t, sep = "\t", header = TRUE)
 data_f = read.table(ad_f, sep = "\t", header = TRUE)
 # subsample 
@@ -141,9 +142,40 @@ ggplot(data, aes(x = n, y = n_tfidf)) +
   stat_density_2d(aes(fill = stat(level)), geom = "polygon") + ggtitle("f1chr4 - true and false edges stats") + xlab("n") + ylab("n_jaccard")+ theme(text = element_text(size=16)) + facet_wrap( ~ label)
 ggplot(data, aes(x = n, y = n_tfidf)) +
   geom_point(size=.1)+stat_density_2d(aes(fill = stat(level)), geom = "polygon") + ggtitle("f1chr4 - true and false edges stats") + xlab("n") + ylab("n_jaccard")+ theme(text = element_text(size=16)) + facet_wrap( ~ label)
-
+ 
 # w vs w_jaccard
 ggplot(data, aes(x = w, y = w_jaccard)) +
   stat_density_2d(aes(fill = stat(level)), geom = "polygon") + ggtitle("f1chr4 - true and false edges stats") + xlab("w") + ylab("w_jaccard")+ theme(text = element_text(size=16)) + facet_wrap( ~ label)
 ggplot(data, aes(x = w, y = w_jaccard)) +
   geom_point(size=.1)+stat_density_2d(aes(fill = stat(level)), geom = "polygon") + ggtitle("f1chr4 - true and false edges stats") + xlab("w") + ylab("w_jaccard")+ theme(text = element_text(size=16)) + facet_wrap( ~ label)
+
+
+#######################################################################
+#### unlabeled file:
+
+
+
+ad = "/projects/btl_scratch/aafshinfard/projects/physlr2/physlr/data/f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.nn.edges.tsv"
+
+data = read.table(ad, sep = "\t", header = TRUE)
+
+# subsample 
+#sub = data.frame(data_t[sample(nrow(data_t), dim(data_f)[1]), ])
+#data = rbind(sub_t,data_f)
+sub = data.frame(data[sample(nrow(data), 100000), ])
+
+dim(data)
+head(data)
+tail(data)
+class(data[1,3])
+#data$label <- as.factor(data$label)
+
+# hitogram of all features
+
+# plot 2 features at a time
+sub_data2 = data.frame(data[sample(nrow(data), 30000), ])
+head(sub_data2)
+ggplot(sub_data2, aes(x = n, y = sn1)) +
+  geom_point() + ggtitle("f1chr4 n vs. ns1") + xlab("n") + ylab("ns1")+ theme(text = element_text(size=16))
+ggplot(sub_data2, aes(x = n, y = sn1)) +
+  geom_density_2d() + ggtitle("f1chr4 n vs. ns1") + xlab("n") + ylab("ns1")+ theme(text = element_text(size=16))

@@ -245,3 +245,4 @@ awk '(NF>3 && s>3) {print} {s=NF}' ${file_subgraph}.tsv > ${file_subgraph}.edges
 awk 'NR==FNR{a[$1$2]++;next} ($1$2 in a){print}' ${file_true_edges} ${file_subgraph}.edges.tsv >> ${file_subgraph}_t.tsv
 awk 'NR==FNR{a[$2$1]++;next} ($1$2 in a){print}' ${file_true_edges} ${file_subgraph}.edges.tsv >> ${file_subgraph}_t.tsv
 
+
