@@ -2,6 +2,30 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 from collections import defaultdict
 molecule = {}
 f = open("/projects/btl/jowong/github/physlr/ground_truth/flchr4.reads.molecule.bed", "r")
