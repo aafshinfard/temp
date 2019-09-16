@@ -25,7 +25,7 @@
 
 
 
-
+# code by Johnathan - start{
 from collections import defaultdict
 molecule = {}
 f = open("/projects/btl/jowong/github/physlr/ground_truth/flchr4.reads.molecule.bed", "r")
@@ -42,7 +42,7 @@ for i, n in molecule.items():
             continue
         if (m[0] >= n[0] and m[0]<=n[1]) or (m[1] >= n[0] and m[1]<=n[1]):
             edges[(i,j)] = 1
-
+#}end
 fout = "edges_GT1.txt"
 fo = open(fout, "w")
 for k, v in edges.items():
