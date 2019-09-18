@@ -7,13 +7,18 @@ library("Rtsne")
 #ad_f = "/projects/btl_scratch/aafshinfard/projects/physlr2/physlr/data/f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.edges.labeled_f.tsv"
 ad_t = "/projects/btl_scratch/aafshinfard/projects/physlr2/physlr/data/f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.nn.edges.edges.labeled_t.tsv"
 ad_f = "/projects/btl_scratch/aafshinfard/projects/physlr2/physlr/data/f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.nn.edges.edges.labeled_f.tsv"
-
 data_t = read.table(ad_t, sep = "\t", header = FALSE)
 data_f = read.table(ad_f, sep = "\t", header = FALSE)
+
+ad_t ="/projects/btl_scratch/aafshinfard/projects/physlr2/physlr/data/f1chr4.alledges.edges.labeled_t.tsv"
+ad_f ="/projects/btl_scratch/aafshinfard/projects/physlr2/physlr/data/f1chr4.alledges.edges.labeled_f.tsv"
+data_t = read.table(ad_t, sep = "\t", header = TRUE)
+data_f = read.table(ad_f, sep = "\t", header = TRUE)
 head(data_t)
 dim(data_t)
 head(data_f)
 dim(data_f)
+hist(data_t[,'n'])
 # subsample 
 sub_t = data.frame(data_t[sample(nrow(data_t), dim(data_f)[1]), ])
 head(sub_t)
@@ -24,14 +29,16 @@ dim(data)
 head(data)
 tail(data)
 class(data[1,3])
-data$V6 <- as.factor(data$V6)
+colnames(data)
+data$label <- as.factor(data$label)
 
 sub_data2 = data.frame(data[sample(nrow(data), 30000), ])
 head(sub_data2)
 
-ggplot(data, aes(x = n, y = w, colour = "true edges")) +
-  geom_point() +
-  facet_wrap( ~ V5)
+ggplot(sub_data2, aes(x = w, colour = label)) +
+  geom_histogram() + ggtitle("f1chr4 w") + xlab("w") + ylab("histo")+ theme(text = element_text(size=16)) + facet_wrap( ~ label)
+
+
 names(sub_data2) = c("V1", "V2", "V3", "V4", "V5")
 ggplot(sub_data2, aes(x = V3, y = V5, colour = V6)) +
   geom_point() + ggtitle("f1chr4 n vs. ns1") + xlab("n") + ylab("ns1")+ theme(text = element_text(size=16)) + facet_wrap( ~ V6)
@@ -152,7 +159,7 @@ ggplot(data, aes(x = n, y = n_tfidf)) +
   stat_density_2d(aes(fill = stat(level)), geom = "polygon") + ggtitle("f1chr4 - true and false edges stats") + xlab("n") + ylab("n_jaccard")+ theme(text = element_text(size=16)) + facet_wrap( ~ label)
 ggplot(data, aes(x = n, y = n_tfidf)) +
   geom_point(size=.1)+stat_density_2d(aes(fill = stat(level)), geom = "polygon") + ggtitle("f1chr4 - true and false edges stats") + xlab("n") + ylab("n_jaccard")+ theme(text = element_text(size=16)) + facet_wrap( ~ label)
- 
+
 # w vs w_jaccard
 ggplot(data, aes(x = w, y = w_jaccard)) +
   stat_density_2d(aes(fill = stat(level)), geom = "polygon") + ggtitle("f1chr4 - true and false edges stats") + xlab("w") + ylab("w_jaccard")+ theme(text = element_text(size=16)) + facet_wrap( ~ label)

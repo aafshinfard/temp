@@ -43,8 +43,10 @@ for i, n in molecule.items():
         if (m[0] >= n[0] and m[0]<=n[1]) or (m[1] >= n[0] and m[1]<=n[1]):
             edges[(i,j)] = 1
 #}end
-fout = "edges_GT1.txt"
+fout = "f1chr4_corrected_GT.txt"
 fo = open(fout, "w")
 for k, v in edges.items():
      if v==1:
          fo.write('\n'+str(k[0]) +'\t'+ str(k[1]) +'\t'+str(v))
+
+fo.close()
