@@ -36,7 +36,7 @@ sub_data2 = data.frame(data[sample(nrow(data), 30000), ])
 head(sub_data2)
 
 ggplot(sub_data2, aes(x = w, colour = label)) +
-  geom_histogram() + ggtitle("f1chr4 w") + xlab("w") + ylab("histo")+ theme(text = element_text(size=16)) + facet_wrap( ~ label)
+  stat_bin(bins=30) + ggtitle("f1chr4 w") + xlab("w") + ylab("histo")+ theme(text = element_text(size=16)) + facet_wrap( ~ label)
 
 
 names(sub_data2) = c("V1", "V2", "V3", "V4", "V5")
@@ -95,7 +95,7 @@ ggplot(data=pca.data, aes(x=X, y=Y, label=Sample))+
   ggtitle("PCA")
 head(pca.data)
 head(sub_data2)
-pca.data.labeled = cbind(pca.data,sub_data2[,10])
+pca.data.labeled = cbind(pca.data,sub_data2[,'label'])
 names(pca.data.labeled)[4] = "label"
 head(pca.data.labeled)
 ggplot(data=pca.data.labeled, aes(x=X, y=Y, colour=label))+
