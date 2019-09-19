@@ -23,6 +23,8 @@ hist(data_t[,'n'])
 sub_t = data.frame(data_t[sample(nrow(data_t), dim(data_f)[1]), ])
 head(sub_t)
 data = rbind(sub_t,data_f)
+data_unb = rbind(data_t,data_f)
+
 
 dim(data_t)
 dim(data)
@@ -33,6 +35,7 @@ colnames(data)
 data$label <- as.factor(data$label)
 
 sub_data2 = data.frame(data[sample(nrow(data), 30000), ])
+sub_data2_unb = data.frame(data_unb[sample(nrow(data_unb), 30000), ])
 head(sub_data2)
 
 ggplot(sub_data2, aes(x = w, colour = label)) +

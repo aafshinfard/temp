@@ -11,7 +11,7 @@ fi
 if [ -n "$2" ];then
 	file_true_edges=$2		
 else
-	file_true_edges="/projects/btl_scratch/aafshinfard/projects/physlr2/extra/ground_truth/f1chr4_corrected_GT.txt"
+	file_true_edges="/projects/btl_scratch/aafshinfard/projects/physlr2/extra/ground_truth/f1chr4_corrected2_GT.txt"
 fi
 printf "\n ##################################################################################"
 printf "\n #### label edges of an input overlap graph based on the ground truth "
