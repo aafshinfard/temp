@@ -1,0 +1,126 @@
+
+
+
+pre-funcs:
+...
+
+class Physlr:
+	- print_graph_stats
+
+	- read_bed
+	- read_paf
+	- read_fastas
+	- read_paths
+	- write_tsv
+	- write_graph
+	- read_tsv
+	- read_graphviz
+
+
+	- reverse_complement
+	- get_oriented_sequence
+	- sort_vertices
+	- read_graph
+	- remove_singletons
+	- filter_edges
+	- keep_best_edges
+	- remove_unsupported edges
+	- read_minimizers
+	- read_minimizers_list
+	- read_minimizers_pos
+	- count_molecules_per_bx
+	- construct_minimizers_to_barcodes
+	- triconnected_components
+	- diameter_of_tree
+	- detect_junctions_of_tree
+	- split_junctions_of_tree
+
+{541
+	- determine_backbones_of_trees
+	- identify_chimera
+	- determine_backbones_and_remove_chimera
+	- physlr_cut_chimera
+	- determine_pruned_mst
+	- identify_contiguous_paths
+	- identify_bridges
+	- remove_bridges_once
+	- remove_bridges
+	- determine_backbones
+	- wrap_up_messages_and_pass
+	- measure_branch_length
+	- prune_mst_once
+	- prune_mst
+}834
+
+
+	- print_flesh_path
+	- is_valid_pair
+	- remove_small_components
+	- physlr_filter
+	- physlr_best_edges
+	- physlr_flesh_backbone
+	- physlr_subgraph
+	- physlr_subgraphs
+	- physlr_indexfa
+1000
+	- physlr_indexlr
+	- physlr_count_minimizers
+	- physlr_intersect
+	- remove_singleton_minimizers
+	- physlr_filter_barcodes
+	- physlr_filter_minimizers
+	- remove_repetitive_minimizers
+	- physlr_overlap
+	- physlr_degree
+	- physlr_common_neighbours
+1250
+	- physlr_mst
+	- physlr_backbone
+	- physlr_backbone_graph
+	- physlr_biconnected_components
+	- physlr_tiling_graph
+	- physlr_count_molecules
+	- split_minimizers_bx
+	- split_minimizers_bx_process
+	- physlr_split_minimizers
+	- physlr_split_reads_molecules
+	- print_read
+	- parse_minimizer_line
+	- assign_read_molecule
+	- detect_communities_biconnected_components
+	- detect_communities_common_neighbours
+	- detect_communities_k_clique
+	- detect_communities_louvain
+1500
+	- detect_communities_cosine_of_squared
+	- partition_subgraph_into_bins_randomly
+	- merge_communities
+	- determine_molecules_partition_split_merge
+	- determine_molecules
+	- determine_molecules_process
+	- physlr_molecules
+	- write_subgraphs_stats
+	- subgraph_stats
+	- subgraph_stats_process
+1750
+	- physlr_subgraphs_stats
+	- index_minimizers_in_backbones
+	- determine_orientation
+	- map_indexing
+	- physlr_map_mkt
+	- physlr_map
+	- physlr_map_paf
+	- physlr_liftover_paf
+	- chr_isdecimal
+2000
+	- chr_int
+	- physlr_annotate_graph
+	- physlr_bed_to_path
+	- physlr_path_to_fasta
+	- physlr_filter_bed
+	- compute_ngxx
+	- physlr_path_metrics
+	- physlr_paf_metrics
+	- physlr_fasta_gaps
+	- parse_arguments
+	- 
