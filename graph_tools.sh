@@ -41,6 +41,7 @@ cat f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n15000.nisn.tsv | awk 'NF==0 {p
 
 #ccomps connected components of the graph
 ccomps -xz f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n15000.nisn.gv -o f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n15000.nisn.ccomps.gv
+# ccomps -v f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n15000.nisn.gv > node_edge_ccomps_count.log
 
 
 ###
