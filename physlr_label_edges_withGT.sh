@@ -23,7 +23,7 @@ echo ${file_overlap}
 #tail ${file_overlap}.tsv
 #tail ${file_true_edges}
 
-awk '(NF>3) {print} {s=NF}' ${file_overlap}.tsv > ${file_overlap}.edges.tsv
+awk '(NF>3) {print} {s=NF}' ${file_overlap}.tsv > ${file_overlap}.edges.tsv.
 
 #head ${file_overlap}.edges.tsv
 # Labeling

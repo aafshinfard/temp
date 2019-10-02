@@ -19,11 +19,25 @@ dim(data_t)
 head(data_f)
 dim(data_f)
 hist(data_t[,'n'])
+#n10
+data_f_n10 = data_f[data_f[,"n"]>=9,]
+head(data_f_n10)
+dim(data_f_n10)/dim(data_f)
+data_t_n10 = data_t[data_t[,"n"]>=9,]
+head(data_t_n10)
+dim(data_t_n10)/dim(data_t)
+(dim(data_f_n10)+dim(data_t_n10))/(dim(data_f)+dim(data_t))
+# unbalanced
+data_unb = rbind(data_t,data_f)
+data_unb_n10 = rbind(data_t_n10,data_f_n10)
+
 # subsample 
 sub_t = data.frame(data_t[sample(nrow(data_t), dim(data_f)[1]), ])
+sub_t_n10 = data.frame(data_t_n10[sample(nrow(data_t_n10), dim(data_f_n10)[1]), ])
 head(sub_t)
 data = rbind(sub_t,data_f)
-data_unb = rbind(data_t,data_f)
+data_n10 = rbind(sub_t_n10,data_f_n10)
+
 
 
 dim(data_t)
@@ -33,12 +47,18 @@ tail(data)
 class(data[1,3])
 colnames(data)
 data$label <- as.factor(data$label)
+data_n10$label <- as.factor(data_n10$label)
 
 sub_data2 = data.frame(data[sample(nrow(data), 30000), ])
+sub_data2_n10 = data.frame(data_n10[sample(nrow(data_n10), 30000), ])
 sub_data2_unb = data.frame(data_unb[sample(nrow(data_unb), 30000), ])
+sub_data2_unb_n10 = data.frame(data_unb_n10[sample(nrow(data_unb_n10), 30000), ])
 head(sub_data2)
 
+# w histo
 ggplot(sub_data2, aes(x = w, colour = label)) +
+  stat_bin(bins=30) + ggtitle("f1chr4 w") + xlab("w") + ylab("histo")+ theme(text = element_text(size=16)) + facet_wrap( ~ label)
+ggplot(sub_data2_n10, aes(x = w, colour = label)) +
   stat_bin(bins=30) + ggtitle("f1chr4 w") + xlab("w") + ylab("histo")+ theme(text = element_text(size=16)) + facet_wrap( ~ label)
 
 
@@ -73,8 +93,23 @@ data$label <- as.factor(data$label)
 sub_data2 = data.frame(data[sample(nrow(data), 30000), ])
 head(sub_data2)
 ggplot(sub_data2, aes(x = n_tfidf, y = w_tfidf, colour = label)) +
-  geom_point() + ggtitle("f1chr4 n vs. w (with weighted minimizers)") + xlab("n_tfidf") + ylab("w_tfidf")+ theme(text = element_text(size=16))
-+ facet_wrap( ~ V5)
+  geom_point() + ggtitle("f1chr4 n vs. w (with weighted minimizers)") + xlab("n_tfidf") + ylab("w_tfidf")+ theme(text = element_text(size=16))+ facet_wrap( ~ label)
+ggplot(sub_data2, aes(x = n_tfidf, y = w_tfidf, colour = label)) +
+  stat_density_2d() + ggtitle("f1chr4 n vs. w (with weighted minimizers)") + xlab("n_tfidf") + ylab("w_tfidf")+ theme(text = element_text(size=16))+ facet_wrap( ~ label)
+ggplot(sub_data2, aes(x = n, y = w, colour = label)) +
+  stat_density_2d() + ggtitle("f1chr4 n vs. w (with weighted minimizers)") + xlab("n") + ylab("w")+ theme(text = element_text(size=16))+ facet_wrap( ~ label)
+
+#n10
+ggplot(sub_data2_n10, aes(x = n, y = w, colour = label)) +
+  stat_density_2d() + ggtitle("f1chr4 n vs. w") + xlab("n") + ylab("w")+ theme(text = element_text(size=16))+ facet_wrap( ~ label)
+ggplot(sub_data2_n10, aes(x = n_tfidf, y = w_tfidf, colour = label)) +
+  stat_density_2d() + ggtitle("f1chr4 n vs. w (with weighted minimizers)") + xlab("n_tfidf") + ylab("w_tfidf")+ theme(text = element_text(size=16))+ facet_wrap( ~ label)
+ggplot(sub_data2_n10, aes(x = n_tfidf, y = w_tfidf, colour = label)) +
+  geom_point() + ggtitle("f1chr4 n vs. w (with weighted minimizers)") + xlab("n_tfidf") + ylab("w_tfidf")+ theme(text = element_text(size=16))+ facet_wrap( ~ label)
+
+ggplot(sub_data2_unb_n10, aes(x = n_tfidf, y = w_tfidf, colour = label)) +
+  stat_density_2d() + ggtitle("f1chr4 n vs. w (with weighted minimizers)") + xlab("n_tfidf") + ylab("w_tfidf")+ theme(text = element_text(size=16))+ facet_wrap( ~ label)
+
 head(as.matrix(sub_data2[,1:9]))
 head((sub_data2[,1:9]))
 
@@ -149,6 +184,40 @@ ggplot(pca.data.labeled, aes(x=X, y=Y, colour=label)) +
 ggplot(pca.data.labeled, aes(x=X, y=Y)) +
   stat_density_2d(aes(fill = stat(level)), geom = "polygon") + ggtitle("PCA - f1chr4 - true and false edges") + xlab("x") + ylab("y")+ theme(text = element_text(size=16)) + facet_wrap( ~ sub_data2_unb$label)
 
+#n10
+pca = prcomp(sub_data2_n10[,3:9], scale=TRUE)
+plot(pca$x[,1], pca$x[,2])
+pca.var = pca$sdev^2
+pca.var.per = round(pca.var/sum(pca.var)*100,1)
+barplot(pca.var,main="Scree plot", xlab="PC", ylab="Variation (%)")
+
+pca.data = data.frame(Sample=rownames(pca$x),
+                      X=pca$x[,1],
+                      Y=pca$x[,2])
+head(pca.data)
+ggplot(data=pca.data, aes(x=X, y=Y, label=Sample))+
+  geom_point()+#geom_text() +
+  xlab(paste("PC1 - ",pca.var.per[1], "%", sep=""))+
+  ylab(paste("PC2 - ",pca.var.per[2], "%", sep=""))+
+  theme_bw()+
+  ggtitle("PCA")
+head(pca.data)
+head(sub_data2)
+pca.data.labeled = cbind(pca.data,sub_data2_n10[,'label'])
+names(pca.data.labeled)[4] = "label"
+head(pca.data.labeled)
+ggplot(data=pca.data.labeled, aes(x=X, y=Y, colour=label))+
+  geom_point()+#geom_text() +
+  xlab(paste("PC1 - ",pca.var.per[1], "%", sep=""))+
+  ylab(paste("PC2 - ",pca.var.per[2], "%", sep=""))+
+  theme_bw()+
+  ggtitle("PCA")
+
+
+ggplot(pca.data.labeled, aes(x=X, y=Y, colour=label)) +
+  geom_point() + ggtitle("PCA - f1chr4 - true and false edges") + xlab("x") + ylab("y")+ theme(text = element_text(size=16)) + facet_wrap( ~ sub_data2_n10$label)
+ggplot(pca.data.labeled, aes(x=X, y=Y)) +
+  stat_density_2d(aes(fill = stat(level)), geom = "polygon") + ggtitle("PCA - f1chr4 - true and false edges") + xlab("x") + ylab("y")+ theme(text = element_text(size=16)) + facet_wrap( ~ sub_data2_n10$label)
 
 
 ###################################################
@@ -177,16 +246,28 @@ ggplot(tsne.df2, aes(x = X1, y = X2)) +
 # unbalanced:
 mat = as.matrix(sub_data2_unb[,3:9])
 tsne_out <- Rtsne(mat, pca_scale=TRUE) # Run TSNE
-plot(tsne_out$Y,col=sub_data2_unb$label)
+plot(tsne_out$Y,col=sub_data2_unb$label+1)
 class(tsne_out$Y)
 head(tsne_out$Y)
 tsne.df=data.frame(tsne_out$Y)
-tsne.df2 = cbind(tsne.df, sub_data2$label)
-ggplot(tsne.df2, aes(x = X1, y = X2, colour=sub_data2$label)) +
-  geom_point() + ggtitle("t-sne - f1chr4 - true and false edges") + xlab("x") + ylab("y")+ theme(text = element_text(size=16)) + facet_wrap( ~ sub_data2$label)
+tsne.df2 = cbind(tsne.df, sub_data2_unb$label)
+ggplot(tsne.df2, aes(x = X1, y = X2, colour=sub_data2_unb$label)) +
+  geom_point() + ggtitle("t-sne - f1chr4 - true and false edges") + xlab("x") + ylab("y")+ theme(text = element_text(size=16)) + facet_wrap( ~ sub_data2_unb$label)
 ggplot(tsne.df2, aes(x = X1, y = X2)) +
-  stat_density_2d(aes(fill = stat(level)), geom = "polygon") + ggtitle("t-sne - f1chr4 - true and false edges") + xlab("x") + ylab("y")+ theme(text = element_text(size=16)) + facet_wrap( ~ sub_data2$label)
+  stat_density_2d(aes(fill = stat(level)), geom = "polygon") + ggtitle("t-sne - f1chr4 - true and false edges") + xlab("x") + ylab("y")+ theme(text = element_text(size=16)) + facet_wrap( ~ sub_data2_unb$label)
 
+#n10:
+mat = as.matrix(sub_data2_n10[,3:9])
+tsne_out <- Rtsne(mat, pca_scale=TRUE) # Run TSNE
+plot(tsne_out$Y,col=sub_data2_n10$label)
+class(tsne_out$Y)
+head(tsne_out$Y)
+tsne.df=data.frame(tsne_out$Y)
+tsne.df2 = cbind(tsne.df, sub_data2_n10$label)
+ggplot(tsne.df2, aes(x = X1, y = X2, colour=sub_data2_n10$label)) +
+  geom_point() + ggtitle("t-sne - f1chr4 - true and false edges") + xlab("x") + ylab("y")+ theme(text = element_text(size=16)) + facet_wrap( ~ sub_data2_n10$label)
+ggplot(tsne.df2, aes(x = X1, y = X2)) +
+  stat_density_2d(aes(fill = stat(level)), geom = "polygon") + ggtitle("t-sne - f1chr4 - true and false edges") + xlab("x") + ylab("y")+ theme(text = element_text(size=16)) + facet_wrap( ~ sub_data2_n10$label)
 
 
 ###################################################
