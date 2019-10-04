@@ -32,10 +32,9 @@ class Physlr:
 	- construct_minimizers_to_barcodes
 	- triconnected_components
 	- diameter_of_tree
+{502
 	- detect_junctions_of_tree
 	- split_junctions_of_tree
-
-{541
 	- determine_backbones_of_trees
 	- identify_chimera
 	- determine_backbones_and_remove_chimera
