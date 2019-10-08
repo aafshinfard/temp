@@ -16,7 +16,6 @@ class Physlr:
 	- read_tsv
 	- read_graphviz
 
-
 	- reverse_complement
 	- get_oriented_sequence
 	- sort_vertices
@@ -25,9 +24,11 @@ class Physlr:
 	- filter_edges
 	- keep_best_edges
 	- remove_unsupported edges
+
 	- read_minimizers
 	- read_minimizers_list
 	- read_minimizers_pos
+
 	- count_molecules_per_bx
 	- construct_minimizers_to_barcodes
 	- triconnected_components
