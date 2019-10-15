@@ -20,10 +20,10 @@ head(data_f)
 dim(data_f)
 hist(data_t[,'n'])
 #n10
-data_f_n10 = data_f[data_f[,"n"]>=9,]
+data_f_n10 = data_f[data_f[,"n"]>=7,]
 head(data_f_n10)
 dim(data_f_n10)/dim(data_f)
-data_t_n10 = data_t[data_t[,"n"]>=9,]
+data_t_n10 = data_t[data_t[,"n"]>=7,]
 head(data_t_n10)
 dim(data_t_n10)/dim(data_t)
 (dim(data_f_n10)+dim(data_t_n10))/(dim(data_f)+dim(data_t))
