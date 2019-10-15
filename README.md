@@ -1,2 +1,4 @@
 # temp
-Temporary directory for scripts and codes with no specific project linked to them
+learning github
+again
+`emporary directory for scripts and codes with no specific project linked to them
