@@ -29,7 +29,7 @@ with open(rfn, 'r') as fh:
         if len(lines) == n:
             (barcode, record) = process(lines)
             if barcode in bx_read_dict.keys():
-                bx_read_dict[barcode].append(record)
+                bx_read_dict[barcode] += record
             else:
                 bx_read_dict[barcode] = record
             lines = []
@@ -45,6 +45,7 @@ with open(pfn, 'r') as fh:
         chunks_bx.append(line.split(" "))
 for chunk_bx in chunks_bx:
     chunks_reads.append([read for bx in chunk_bx for read in bx_read_dict[bx]])
+    # chunks_reads.append([[i for i in read] for bx in chunk_bx for read in bx_read_dict[bx]])
 iter=0
 for chunk_reads in chunks_reads:
     iter+=1
