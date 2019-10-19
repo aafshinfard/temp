@@ -38,7 +38,7 @@ with open(rfn, 'r') as fh:
 # load the chunks
 chunks_bx = []
 chunks_reads = []
-with open(rfn, 'r') as fh:
+with open(pfn, 'r') as fh:
     lines = []
     for line in fh:
        chunks_bx.append(line.split(" "))
