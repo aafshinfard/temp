@@ -1,8 +1,8 @@
 import sys
 # file=open("../f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n50.mol.backbone.fleshed.path", mode='r')
-file_fleshed_backbones = "../f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n50.mol.backbone.fleshed.path"#sys.args[1]
-chunks_count = sys.args[2]
-overlap_ratio = sys.args[3]
+file_fleshed_backbones = "../f1chr4.k32-w32.n100-1000.c2-x.physlr.overlap.n50.mol.backbone.fleshed.path"#sys.argv[1]
+chunks_count = sys.argv[2]
+overlap_ratio = sys.argv[3]
 
 file = open(file_fleshed_backbones, mode='r')
 all = file.read()
@@ -21,5 +21,5 @@ for backbone in fleshed_backbones:
 for chunks in chunkss:
     for chunk in chunks:
         for mol in chunk:
-            print(mol, end=' ', file=sys.stderr)
+            print(mol, end = ' ', file=sys.stderr)
         print(file=sys.stderr)
