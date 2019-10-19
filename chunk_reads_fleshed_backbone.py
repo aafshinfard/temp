@@ -41,7 +41,7 @@ chunks_reads = []
 with open(pfn, 'r') as fh:
     lines = []
     for line in fh:
-        line=line[:-1]
+        line=line[:-2]
         chunks_bx.append(line.split(" "))
 for chunk_bx in chunks_bx:
     chunks_reads.append([read for bx in chunk_bx for read in bx_read_dict[bx]])
