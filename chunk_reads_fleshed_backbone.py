@@ -53,4 +53,4 @@ for chunk_reads in chunks_reads:
     for read in chunk_reads:
         for line in read:
             print(line, end = '\n', file=fout)
-
+    fout.close()
