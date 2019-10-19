@@ -51,6 +51,6 @@ for chunk_reads in chunks_reads:
     ofn_t = ofn+"_"+str(iter)+".fq"
     fout = open(ofn_t, "w+")
     for read in chunk_reads:
-        for line in read:
-            print(line, end = '\n', file=fout)
+        #for line in read:
+        print(read, end = '\n', file=fout)
     fout.close()
