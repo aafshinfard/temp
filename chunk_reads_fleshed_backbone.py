@@ -48,7 +48,7 @@ for chunk_bx in chunks_bx:
 iter=0
 for chunk_reads in chunks_reads:
     iter+=1
-    ofn_t = ofn+"_"+iter+".fq"
+    ofn_t = ofn+"_"+str(iter)+".fq"
     for read in chunk_reads:
         for line in read:
             print(line, end = '\n', file=ofn_t)
