@@ -1,3 +1,11 @@
+
+# Input
+#   argv1: fleshed.chunked.path file_name made by chunk_fleshed_backbones
+#   argv2: address for the unzipped reads
+#   argv3: directory and prefix to generate multiple output filenames
+# Output:
+#   groups of reads from an overlapping subset of barcodes, grouped by fleshed.chunked.path
+
 import sys
 import os
 def process(lines=None):
