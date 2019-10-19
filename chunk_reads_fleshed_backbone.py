@@ -57,6 +57,8 @@ for chunk_bx in chunks_bx:
 iter=0
 try:
     os,mkdir(pfn+"_reads/")
+except IndexError as ie:
+    raise SystemError("Error: Could not make the directory.\n")
 
 for chunk_reads in chunks_reads:
     iter+=1
