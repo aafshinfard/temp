@@ -1,3 +1,4 @@
+//  g++ -std=c++11 tests.cpp
 #include <fstream>
 #include <getopt.h>
 #include <iomanip>
@@ -15,15 +16,24 @@
 #include <omp.h>
 #endif
 
-//static uint64_t
+//static uint64_t;
 using namespace std;
+
+
+using adjacencyMatrix_t = vector<vector<int>>;
+
+void func(adjacencyMatrix_t& temp){
+    cout<<temp[1][1]<<endl;
+}
 
 int
 main(int argc, char* argv[])
 {
-	vector< vector<int> > a(3, vector<int>(3,4));
-	vector< vector<int> > b(a);
-	cout<<b.size();
+	adjacencyMatrix_t a(3, vector<int>(5,4));
+	adjacencyMatrix_t b(a);
+	//cout<<b.size()<<endl;
+	//cout<<b[1][1];
+    func(b);
 
 	return 0;
 }
