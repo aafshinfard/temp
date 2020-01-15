@@ -171,7 +171,7 @@ inline double cosine_similarity_vectors(adjacencyMatrix_t::iterator& row_i, adja
 
 inline
 adjacencyMatrix_t
-calculate_cosine_similarity_2d_v2(adjacencyMatrix_t& adj_mat, vector<vector<double> >& cosimilarity)
+calculate_cosine_similarity_2d_v2(adjacencyMatrix_t adj_mat, vector<vector<double> > cosimilarity)
 {
     // Assumptions: the input matrix is symmetric and cubic
     // This function calculate the 2-dimensional cosine similarity of the input matrix
