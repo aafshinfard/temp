@@ -124,6 +124,80 @@ square_matrix_ikj( // Might be faster than ijk, benchmark it
 //{
 //    return boost::numeric::ublas::prod(M, M);
 //}
+inline double cosine_similarity_vectors(adjacencyMatrix_t::iterator& row_i, adjacencyMatrix_t::iterator& row_j)
+{
+    // Input: 2 vectors (1D) as rows and columns of a Matrix
+    // Output: Cosine similarity of the two vectors
+    // (Cosine Simiarity between 2 corresponding vertices)
+
+    float mul = 0.0; // also test double
+    float d_i = 0.0;
+    float d_j = 0.0;
+
+    if (row_i->size() != row_j->size())
+    {
+        throw std::logic_error("Vector A and Vector B are not the same size");
+    }
+
+    // Prevent Division by zero
+    if (A.size() < 1)
+    {
+        throw std::logic_error("Input vectors for multiplication are empty");
+    }
+
+    adjacencyVector_t::iterator i_iter = row_i->begin();
+    adjacencyVector_t::iterator j_iter = row_j->begin();
+    for( ; i_iter != row_i->end(); i_iter++ , j_iter++ )
+    {
+        mul += *i_iter * *j_iter;
+        d_i += *i_iter * *i_iter;
+        d_j += *j_iter * *j_iter;
+    }
+    if (mul == 0.0f)
+    {
+        return 0;
+    }
+    if (d_i == 0.0f || d_j == 0.0f)
+    {
+        return 0;
+//        throw std::logic_error(
+//                "cosine similarity is not defined whenever one or both "
+//                "input vectors are zero-vectors.");
+    }
+    //return mul / (sqrt(d_a) * sqrt(d_b));
+    return mul / sqrt(d_i * d_j);
+}
+
+inline
+adjacencyMatrix_t
+calculate_cosine_similarity_2d_v2(adjacencyMatrix_t& adj_mat, adjacencyMatrix_t& cosimilarity)
+{
+    // Assumptions: the input matrix is symmetric and cubic
+    // This function calculate the 2-dimensional cosine similarity of the input matrix
+    // to itself, that is the similarity between vertices of the corresponding graph
+    // for the input matrix (as adj matrix)
+    adjacencyMatrix_t::iterator row_i;
+    adjacencyMatrix_t::iterator row_j;
+    int i = 0;
+    int j = 0;
+    for (row_i = adj_mat.begin(); row_i != adj_mat.end(); row_i++)
+    {
+        for (row_j = adj_mat.begin(); row_j != adj_mat.end(); row_j++)
+        {
+            if (j < i)
+            {
+                cosimilarity[i][j] = cosimilarity[j][i];
+            }
+            else
+            {
+                cosimilarity[i][j] = cosine_similarity_vectors(row_i, row_j);
+            }
+            j += 1;
+        }
+        i += 1;
+    }
+}
+
 
 int
 main(int argc, char* argv[])
@@ -133,15 +207,35 @@ main(int argc, char* argv[])
 	//cout<<b.size()<<endl;
 	//cout<<b[1][1];
     //func(b);
-    adjacencyMatrix_t a(500, adjacencyVector_t(500,4));
+    adjacencyMatrix_t a_small(3, adjacencyVector_t(3,4));
+    vector<double> tempVector_small(3, 0);
+    vector<vector<double> > cosSimilarity2d_small(3, tempVector_small);
+
+    calculate_cosine_similarity_2d_v2(a_small,cosSimilarity2d_small);
+    vector<vector<double> >::iterator row = cosSimilarity2d_small.begin();
+    for ( ; row != cosSimilarity2d_small.end(); row++ )
+    {
+        for (vector<double>::iterator col = row->begin(); col != row->end(); col++){
+            cout<<" "<<*col;
+        }
+        cout<<endl;
+    }
+
+
+    int test_size = 500
+    adjacencyMatrix_t a(test_size, adjacencyVector_t(test_size,4));
+    vector<double> tempVector(test_size, 0);
+    vector<vector<double> > cosSimilarity2d(test_size, tempVector);
     auto start = high_resolution_clock::now();
     for( int i=0 ; i < 10000 ; i++){
+        a[0][0] = a[0][0] + 1;
         adjacencyMatrix_t temp(square_matrix_ijk(a));
         if(temp[0][0]<0){
             cout<<"Failed";
             return 0;
-
         }
+        calculate_cosine_similarity_2d_v2(a,cosSimilarity2d);
+
 //        if(! test_fast_initialization1() ){
 //            cout<<"Failed";
 //            return 0;
