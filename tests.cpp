@@ -220,7 +220,7 @@ main(int argc, char* argv[])
 				{ 0, 1, 1, 1 },
 				{ 1, 0, 1, 0 },
 				{ 1, 1, 0, 0 },
-				{ 1, 0, 0, 0 }
+				{ 0, 0, 0, 0 }
 			};
     vector<double> tempVector_small(4, 0.0);
     vector<vector<double> > cosSimilarity2d_small(4, tempVector_small);
