@@ -182,7 +182,7 @@ calculate_cosine_similarity_2d_v2(adjacencyMatrix_t& adj_mat, vector<vector<doub
     adjacencyMatrix_t::iterator row_j;
     int i = 0;
     int j = 0;
-    cosimilarity[0][0] = 4;
+    //cosimilarity[0][0] = 4;
     for (row_i = adj_mat.begin(); row_i != adj_mat.end(); ++row_i)
 //    for (int row_i = 0; row_i 4; row_i++)
     {
@@ -198,7 +198,7 @@ calculate_cosine_similarity_2d_v2(adjacencyMatrix_t& adj_mat, vector<vector<doub
             }
             else
             {
-                cosine_similarity_vectors(row_i, row_j);
+                cosimilarity[i][j] = cosine_similarity_vectors(row_i, row_j);
                 cout<<" "<<i<<" "<<j<<" done!"<<endl;
             }
             j += 1;
