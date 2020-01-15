@@ -183,6 +183,7 @@ calculate_cosine_similarity_2d_v2(adjacencyMatrix_t adj_mat, vector<vector<doubl
     int j = 0;
     for (row_i = adj_mat.begin(); row_i != adj_mat.end(); ++row_i)
     {
+        j = 0;
         for (row_j = adj_mat.begin(); row_j != adj_mat.end(); ++row_j)
         {
             if (j < i)
