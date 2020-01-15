@@ -181,30 +181,31 @@ calculate_cosine_similarity_2d_v2(adjacencyMatrix_t adj_mat, vector<vector<doubl
     adjacencyMatrix_t::iterator row_j;
     int i = 0;
     int j = 0;
-    for (row_i = adj_mat.begin(); row_i != adj_mat.end(); ++row_i)
-    {
-        j = 0;
-        if ( i>2 )
-            break;
-        for (row_j = adj_mat.begin(); row_j != adj_mat.end(); ++row_j)
-        {
-            if ( i>2 || j>2 )
-                break;
-            cout<<" "<<i<<" "<<j<<" started!"<<endl;
-            if (j < i)
-            {
-                cosimilarity[i][j] = cosimilarity[j][i];
-                cout<<" "<<i<<" "<<j<<" copied!"<<endl;
-            }
-            else
-            {
-                cosimilarity[i][j] = 0.7; // cosine_similarity_vectors(row_i, row_j);
-                cout<<" "<<i<<" "<<j<<" done!"<<endl;
-            }
-            j += 1;
-        }
-        i += 1;
-    }
+    cosimilarity[0][0] = 4
+//    for (row_i = adj_mat.begin(); row_i != adj_mat.end(); ++row_i)
+//    {
+//        j = 0;
+//        if ( i>2 )
+//            break;
+//        for (row_j = adj_mat.begin(); row_j != adj_mat.end(); ++row_j)
+//        {
+//            if ( i>2 || j>2 )
+//                break;
+//            cout<<" "<<i<<" "<<j<<" started!"<<endl;
+//            if (j < i)
+//            {
+//                cosimilarity[i][j] = cosimilarity[j][i];
+//                cout<<" "<<i<<" "<<j<<" copied!"<<endl;
+//            }
+//            else
+//            {
+//                cosimilarity[i][j] = 0.7; // cosine_similarity_vectors(row_i, row_j);
+//                cout<<" "<<i<<" "<<j<<" done!"<<endl;
+//            }
+//            j += 1;
+//        }
+//        i += 1;
+//    }
 }
 
 
