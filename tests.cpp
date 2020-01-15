@@ -238,28 +238,28 @@ main(int argc, char* argv[])
         cout<<endl;
     }
 
-//    int test_size = 500;
-//    adjacencyMatrix_t a(test_size, adjacencyVector_t(test_size,4));
-//    vector<double> tempVector(test_size, 0);
-//    vector<vector<double> > cosSimilarity2d(test_size, tempVector);
-//    auto start = high_resolution_clock::now();
-//    for( int i=0 ; i < 10000 ; i++){
-//        a[0][0] = a[0][0] + 1;
-//        adjacencyMatrix_t temp(square_matrix_ijk(a));
-//        if(temp[0][0]<0){
+    int test_size = 500;
+    adjacencyMatrix_t a(test_size, adjacencyVector_t(test_size,4));
+    vector<double> tempVector(test_size, 0);
+    vector<vector<double> > cosSimilarity2d(test_size, tempVector);
+    auto start = high_resolution_clock::now();
+    for( int i=0 ; i < 10000 ; i++){
+        a[0][0] = a[0][0] + 1;
+        adjacencyMatrix_t temp(square_matrix_ijk(a));
+        if(temp[0][0]<0){
+            cout<<"Failed";
+            return 0;
+        }
+        calculate_cosine_similarity_2d_v2(a,cosSimilarity2d);
+
+//        if(! test_fast_initialization1() ){
 //            cout<<"Failed";
 //            return 0;
 //        }
-//        calculate_cosine_similarity_2d_v2(a,cosSimilarity2d);
-//
-////        if(! test_fast_initialization1() ){
-////            cout<<"Failed";
-////            return 0;
-////        }
-//    }
-//    auto stop = high_resolution_clock::now();
-//    auto duration = duration_cast<microseconds>(stop - start);
-//    cout << "\nElapsed time: "<<duration.count() << endl;
+    }
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+    cout << "\nElapsed time: "<<duration.count() << endl;
 
 	return 0;
 }
