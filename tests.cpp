@@ -153,7 +153,7 @@ inline double cosine_similarity_vectors(adjacencyMatrix_t::iterator& row_i, adja
         mul += *i_iter * *j_iter;
         d_i += *i_iter * *i_iter;
         d_j += *j_iter * *j_iter;
-        cout<<"\nDebug - mul:"<<mul<<" - d_i:"<<d_i<<" - d_j:"<<d_j<<endl;
+        // cout<<"\nDebug - mul:"<<mul<<" - d_i:"<<d_i<<" - d_j:"<<d_j<<endl;
     }
     if (mul == 0.0f)
     {
@@ -190,16 +190,16 @@ calculate_cosine_similarity_2d_v2(adjacencyMatrix_t& adj_mat, vector<vector<doub
         for (row_j = adj_mat.begin(); row_j != adj_mat.end(); ++row_j)
 //        for (int row_j = 0; row_j 4; row_j++)
         {
-            cout<<" "<<i<<" "<<j<<" started!"<<endl;
+//            cout<<" "<<i<<" "<<j<<" started!"<<endl;
             if (j < i)
             {
                 cosimilarity[i][j] = cosimilarity[j][i];
-                cout<<" "<<i<<" "<<j<<" copied!"<<endl;
+//                cout<<" "<<i<<" "<<j<<" copied!"<<endl;
             }
             else
             {
                 cosimilarity[i][j] = cosine_similarity_vectors(row_i, row_j);
-                cout<<" "<<i<<" "<<j<<" done!"<<endl;
+//                cout<<" "<<i<<" "<<j<<" done!"<<endl;
             }
             j += 1;
         }
