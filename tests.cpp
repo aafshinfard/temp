@@ -63,6 +63,33 @@ square_matrix_ijk(
     return M2;
 }
 
+adjacencyMatrix_t
+square_matrix_ijk2(
+    adjacencyMatrix_t M,
+    bool symmetric=true)
+{
+    int n = M.size();
+
+    adjacencyVector_t tempVector(n, 0); // Fast initialization
+    adjacencyMatrix_t M2(n, tempVector);
+    adjacencyMatrix_t::iterator M_iter = M.begin();
+    adjacencyMatrix_t::iterator M2_iter = M2.begin();
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if ( j < i && symmetric )
+                M2[i][j] = M2[j][i];
+                continue;
+            for (int k = 0; k < n; k++) {
+                M2[i][j] += M[i][k] * M[k][j];
+            }
+        }
+    }
+    return M2;
+}
+
+
+
 
 adjacencyMatrix_t
 square_matrix_ikj( // Might be faster than ijk, benchmark it
