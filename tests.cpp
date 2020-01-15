@@ -217,7 +217,7 @@ main(int argc, char* argv[])
 
     //adjacencyMatrix_t a_small(3, adjacencyVector_t(3,4));
     adjacencyMatrix_t a_small {
-				{ 0, 1, 1, 1 },
+				{ 0, 1, 1, 0 },
 				{ 1, 0, 1, 0 },
 				{ 1, 1, 0, 0 },
 				{ 0, 0, 0, 0 }
