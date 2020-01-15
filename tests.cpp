@@ -181,7 +181,7 @@ calculate_cosine_similarity_2d_v2(adjacencyMatrix_t adj_mat, vector<vector<doubl
     adjacencyMatrix_t::iterator row_j;
     int i = 0;
     int j = 0;
-    cosimilarity[0][0] = 4
+    cosimilarity[0][0] = 4;
 //    for (row_i = adj_mat.begin(); row_i != adj_mat.end(); ++row_i)
 //    {
 //        j = 0;
