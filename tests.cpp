@@ -8,6 +8,7 @@
 #include <vector>
 #include <stdint.h>
 #include <chrono>
+#include <tgmath.h>
 //#include <boost/graph/adjacency_list.hpp>
 //#include <boost/graph/biconnected_components.hpp>
 //#include <boost/graph/graph_utility.hpp>
@@ -140,7 +141,7 @@ inline double cosine_similarity_vectors(adjacencyMatrix_t::iterator& row_i, adja
     }
 
     // Prevent Division by zero
-    if (A.size() < 1)
+    if (row_i->size() < 1)
     {
         throw std::logic_error("Input vectors for multiplication are empty");
     }
@@ -170,7 +171,7 @@ inline double cosine_similarity_vectors(adjacencyMatrix_t::iterator& row_i, adja
 
 inline
 adjacencyMatrix_t
-calculate_cosine_similarity_2d_v2(adjacencyMatrix_t& adj_mat, adjacencyMatrix_t& cosimilarity)
+calculate_cosine_similarity_2d_v2(adjacencyMatrix_t& adj_mat, vector<vector<double> >& cosimilarity)
 {
     // Assumptions: the input matrix is symmetric and cubic
     // This function calculate the 2-dimensional cosine similarity of the input matrix
@@ -222,7 +223,7 @@ main(int argc, char* argv[])
     }
 
 
-    int test_size = 500
+    int test_size = 500;
     adjacencyMatrix_t a(test_size, adjacencyVector_t(test_size,4));
     vector<double> tempVector(test_size, 0);
     vector<vector<double> > cosSimilarity2d(test_size, tempVector);
