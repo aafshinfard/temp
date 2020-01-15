@@ -227,9 +227,9 @@ main(int argc, char* argv[])
 
     calculate_cosine_similarity_2d_v2(a_small, cosSimilarity2d_small);
     vector<vector<double> >::iterator row = cosSimilarity2d_small.begin();
-    for ( ; row != cosSimilarity2d_small.end(); row++ )
+    for ( ; row != cosSimilarity2d_small.end(); ++row )
     {
-        for (vector<double>::iterator col = row->begin(); col != row->end(); col++){
+        for (vector<double>::iterator col = row->begin(); col != row->end(); ++col){
             cout<<" "<<*col;
         }
         cout<<endl;
