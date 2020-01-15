@@ -238,7 +238,7 @@ main(int argc, char* argv[])
         cout<<endl;
     }
 
-    int test_size = 500;
+    int test_size = 50;
     adjacencyMatrix_t a(test_size, adjacencyVector_t(test_size,4));
     vector<double> tempVector(test_size, 0);
     vector<vector<double> > cosSimilarity2d(test_size, tempVector);
