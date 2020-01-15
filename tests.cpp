@@ -181,17 +181,19 @@ calculate_cosine_similarity_2d_v2(adjacencyMatrix_t adj_mat, vector<vector<doubl
     adjacencyMatrix_t::iterator row_j;
     int i = 0;
     int j = 0;
-    for (row_i = adj_mat.begin(); row_i != adj_mat.end(); row_i++)
+    for (row_i = adj_mat.begin(); row_i != adj_mat.end(); ++row_i)
     {
-        for (row_j = adj_mat.begin(); row_j != adj_mat.end(); row_j++)
+        for (row_j = adj_mat.begin(); row_j != adj_mat.end(); ++row_j)
         {
             if (j < i)
             {
                 cosimilarity[i][j] = cosimilarity[j][i];
+                cout<<" "<<i<<" "<<j<<" copied!"<<endl;
             }
             else
             {
                 cosimilarity[i][j] = 0.7; // cosine_similarity_vectors(row_i, row_j);
+                cout<<" "<<i<<" "<<j<<" done!"<<endl;
             }
             j += 1;
         }
@@ -209,18 +211,18 @@ main(int argc, char* argv[])
 	//cout<<b[1][1];
     //func(b);
     adjacencyMatrix_t a_small(3, adjacencyVector_t(3,4));
-    vector<double> tempVector_small(3, 0);
+    vector<double> tempVector_small(3, 0.0);
     vector<vector<double> > cosSimilarity2d_small(3, tempVector_small);
 
     calculate_cosine_similarity_2d_v2(a_small, cosSimilarity2d_small);
-    vector<vector<double> >::iterator row = cosSimilarity2d_small.begin();
-    for ( ; row != cosSimilarity2d_small.end(); row++ )
-    {
-        for (vector<double>::iterator col = row->begin(); col != row->end(); col++){
-            cout<<" "<<*col;
-        }
-        cout<<endl;
-    }
+//    vector<vector<double> >::iterator row = cosSimilarity2d_small.begin();
+//    for ( ; row != cosSimilarity2d_small.end(); row++ )
+//    {
+//        for (vector<double>::iterator col = row->begin(); col != row->end(); col++){
+//            cout<<" "<<*col;
+//        }
+//        cout<<endl;
+//    }
 
 //    int test_size = 500;
 //    adjacencyMatrix_t a(test_size, adjacencyVector_t(test_size,4));
