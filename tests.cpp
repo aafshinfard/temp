@@ -186,15 +186,14 @@ calculate_cosine_similarity_2d_v2(adjacencyMatrix_t adj_mat, vector<vector<doubl
         j = 0;
         for (row_j = adj_mat.begin(); row_j != adj_mat.end(); ++row_j)
         {
+            cout<<" "<<i<<" "<<j<<" started!"<<endl;
             if (j < i)
             {
-                cout<<" "<<i<<" "<<j<<" started!"<<endl;
                 cosimilarity[i][j] = cosimilarity[j][i];
                 cout<<" "<<i<<" "<<j<<" copied!"<<endl;
             }
             else
             {
-                cout<<" "<<i<<" "<<j<<" started!"<<endl;
                 cosimilarity[i][j] = 0.7; // cosine_similarity_vectors(row_i, row_j);
                 cout<<" "<<i<<" "<<j<<" done!"<<endl;
             }
