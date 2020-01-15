@@ -191,7 +191,7 @@ calculate_cosine_similarity_2d_v2(adjacencyMatrix_t& adj_mat, vector<vector<doub
             }
             else
             {
-                cosimilarity[i][j] = 0.7 // cosine_similarity_vectors(row_i, row_j);
+                cosimilarity[i][j] = 0.7; // cosine_similarity_vectors(row_i, row_j);
             }
             j += 1;
         }
