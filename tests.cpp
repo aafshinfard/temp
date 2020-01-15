@@ -191,7 +191,7 @@ calculate_cosine_similarity_2d_v2(adjacencyMatrix_t& adj_mat, vector<vector<doub
             }
             else
             {
-                cosimilarity[i][j] = cosine_similarity_vectors(row_i, row_j);
+                cosimilarity[i][j] = 0.7 // cosine_similarity_vectors(row_i, row_j);
             }
             j += 1;
         }
@@ -212,7 +212,7 @@ main(int argc, char* argv[])
     vector<double> tempVector_small(3, 0);
     vector<vector<double> > cosSimilarity2d_small(3, tempVector_small);
 
-    calculate_cosine_similarity_2d_v2(a_small,cosSimilarity2d_small);
+    calculate_cosine_similarity_2d_v2(a_small, cosSimilarity2d_small);
     vector<vector<double> >::iterator row = cosSimilarity2d_small.begin();
     for ( ; row != cosSimilarity2d_small.end(); row++ )
     {
