@@ -153,6 +153,7 @@ inline double cosine_similarity_vectors(adjacencyMatrix_t::iterator& row_i, adja
         mul += *i_iter * *j_iter;
         d_i += *i_iter * *i_iter;
         d_j += *j_iter * *j_iter;
+        cout<<"\nDebug - mul:"<<mul<<" - d_i:"<<d_i<<" - d_j:"<<d_j<<endl;
     }
     if (mul == 0.0f)
     {
