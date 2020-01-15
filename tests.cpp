@@ -184,8 +184,12 @@ calculate_cosine_similarity_2d_v2(adjacencyMatrix_t adj_mat, vector<vector<doubl
     for (row_i = adj_mat.begin(); row_i != adj_mat.end(); ++row_i)
     {
         j = 0;
+        if ( i>2 )
+            break;
         for (row_j = adj_mat.begin(); row_j != adj_mat.end(); ++row_j)
         {
+            if ( i>2 || j>2 )
+                break;
             cout<<" "<<i<<" "<<j<<" started!"<<endl;
             if (j < i)
             {
