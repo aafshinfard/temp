@@ -191,11 +191,11 @@ calculate_cosine_similarity_2d_v2(
     int i = 0;
     int j = 0;
     //cosimilarity[0][0] = 4;
-    for (row_i = adj_mat.begin(); row_i != adj_mat.end(); ++row_i)
+    for (row_i = adj_mat.begin(); row_i != adj_mat.end(); ++row_i, ++out_row)
 //    for (int row_i = 0; row_i 4; row_i++)
     {
         j = 0;
-        for (row_j = adj_mat.begin(); row_j != adj_mat.end(); ++row_j)
+        for (row_j = adj_mat.begin(); row_j != adj_mat.end(); ++row_j, ++out_col)
 //        for (int row_j = 0; row_j 4; row_j++)
         {
 //            cout<<" "<<i<<" "<<j<<" started!"<<endl;
@@ -206,15 +206,15 @@ calculate_cosine_similarity_2d_v2(
             }
             else
             {
-//                *out_col = cosine_similarity_vectors(row_i, row_j);
-                cosimilarity[i][j] = cosine_similarity_vectors(row_i, row_j);
+                *out_col = cosine_similarity_vectors(row_i, row_j);
+//                cosimilarity[i][j] = cosine_similarity_vectors(row_i, row_j);
 //                cout<<" "<<i<<" "<<j<<" done!"<<endl;
             }
             j += 1;
-            out_col++;
+//            out_col++;
         }
         i += 1;
-        out_row++;
+//        out_row++;
     }
 }
 
