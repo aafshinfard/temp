@@ -125,7 +125,7 @@ square_matrix_ikj( // Might be faster than ijk, benchmark it
 //{
 //    return boost::numeric::ublas::prod(M, M);
 //}
-inline double cosine_similarity_vectors(adjacencyMatrix_t::iterator& row_i, adjacencyMatrix_t::iterator& row_j)
+inline double cosine_similarity_vectors(const adjacencyMatrix_t::iterator& row_i, const adjacencyMatrix_t::iterator& row_j)
 {
     // Input: 2 vectors (1D) as rows and columns of a Matrix
     // Output: Cosine similarity of the two vectors
@@ -172,7 +172,7 @@ inline double cosine_similarity_vectors(adjacencyMatrix_t::iterator& row_i, adja
 
 inline
 void
-calculate_cosine_similarity_2d_v2(adjacencyMatrix_t& adj_mat, vector<vector<double> >& cosimilarity)
+calculate_cosine_similarity_2d_v2(const adjacencyMatrix_t& adj_mat, vector<vector<double> >& cosimilarity)
 {
     // Assumptions: the input matrix is symmetric and cubic
     // This function calculate the 2-dimensional cosine similarity of the input matrix
@@ -180,6 +180,12 @@ calculate_cosine_similarity_2d_v2(adjacencyMatrix_t& adj_mat, vector<vector<doub
     // for the input matrix (as adj matrix)
     adjacencyMatrix_t::iterator row_i;
     adjacencyMatrix_t::iterator row_j;
+    vector<vector<double> >::iterator out_row = cosimilarity.begin();
+    vector<double>::iterator out_col = out_row->begin();
+    if (false/* inputs are not of same size*/)
+        //Throw error
+        ;
+
     int i = 0;
     int j = 0;
     //cosimilarity[0][0] = 4;
@@ -193,17 +199,20 @@ calculate_cosine_similarity_2d_v2(adjacencyMatrix_t& adj_mat, vector<vector<doub
 //            cout<<" "<<i<<" "<<j<<" started!"<<endl;
             if (j < i)
             {
-                cosimilarity[i][j] = cosimilarity[j][i];
+//                cosimilarity[i][j] = cosimilarity[j][i];
 //                cout<<" "<<i<<" "<<j<<" copied!"<<endl;
             }
             else
             {
-                cosimilarity[i][j] = cosine_similarity_vectors(row_i, row_j);
+                *col = cosine_similarity_vectors(row_i, row_j);
+//                cosimilarity[i][j] = cosine_similarity_vectors(row_i, row_j);
 //                cout<<" "<<i<<" "<<j<<" done!"<<endl;
             }
             j += 1;
+            out_col++;
         }
         i += 1;
+        out_row++;
     }
 }
 
