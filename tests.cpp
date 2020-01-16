@@ -254,7 +254,7 @@ main(int argc, char* argv[])
     vector<double> tempVector(test_size, 0);
     vector<vector<double> > cosSimilarity2d(test_size, tempVector);
     auto start = high_resolution_clock::now();
-    for( int i=0 ; i < 10000 ; i++){
+    for( int i=0 ; i < 1000 ; i++){
         cout<<i<<endl;
         a[0][0] = a[0][0] + 1;
         adjacencyMatrix_t temp(square_matrix_ijk(a));
