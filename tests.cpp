@@ -125,11 +125,14 @@ square_matrix_ikj( // Might be faster than ijk, benchmark it
 //{
 //    return boost::numeric::ublas::prod(M, M);
 //}
-inline double cosine_similarity_vectors(adjacencyMatrix_t::iterator& row_i, adjacencyMatrix_t::iterator& row_j)
+inline double
+cosine_similarity_vectors(
+    adjacencyMatrix_t::iterator& row_i,
+    adjacencyMatrix_t::iterator& row_j)
 {
     // Input: 2 vectors (1D) as rows and columns of a Matrix
     // Output: Cosine similarity of the two vectors
-    // (Cosine Simiarity between 2 corresponding vertices)
+    // (Cosine Similarity between 2 corresponding vertices)
 
     float mul = 0.0; // also test double
     float d_i = 0.0;
@@ -191,11 +194,11 @@ calculate_cosine_similarity_2d_v2(
     int i = 0;
     int j = 0;
     //cosimilarity[0][0] = 4;
-    for (row_i = adj_mat.begin(); row_i != adj_mat.end(); ++row_i, ++out_row)
+    for (row_i = adj_mat.begin(); row_i != adj_mat.end(); ++row_i)
 //    for (int row_i = 0; row_i 4; row_i++)
     {
         j = 0;
-        for (row_j = adj_mat.begin(); row_j != adj_mat.end(); ++row_j, ++out_col)
+        for (row_j = adj_mat.begin(); row_j != adj_mat.end(); ++row_j)
 //        for (int row_j = 0; row_j 4; row_j++)
         {
 //            cout<<" "<<i<<" "<<j<<" started!"<<endl;
