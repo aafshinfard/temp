@@ -206,8 +206,8 @@ calculate_cosine_similarity_2d_v2(
             }
             else
             {
-                *out_col = cosine_similarity_vectors(row_i, row_j);
-//                cosimilarity[i][j] = cosine_similarity_vectors(row_i, row_j);
+//                *out_col = cosine_similarity_vectors(row_i, row_j);
+                cosimilarity[i][j] = cosine_similarity_vectors(row_i, row_j);
 //                cout<<" "<<i<<" "<<j<<" done!"<<endl;
             }
             j += 1;
