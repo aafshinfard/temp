@@ -232,11 +232,11 @@ main(int argc, char* argv[])
 	//cout<<b[1][1];
     //func(b);
 
-    int a = 5;
-    int b = 3;
-    int c;
-    c = a & b;
-    cout<<"\n answer:"<<c<<endl;
+    int aaa = 5;
+    int bbbb = 3;
+    int cccc;
+    c = aaa & bbb;
+    cout<<"\n answer:"<<ccc<<endl;
     return 0;
 
     //adjacencyMatrix_t a_small(3, adjacencyVector_t(3,4));
