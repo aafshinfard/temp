@@ -140,13 +140,13 @@ cosine_similarity_vectors(
 
     if (row_i->size() != row_j->size())
     {
-        throw std::logic_error("Vector A and Vector B are not the same size");
+        throw logic_error("Vector A and Vector B are not the same size");
     }
 
     // Prevent Division by zero
     if (row_i->size() < 1)
     {
-        throw std::logic_error("Input vectors for multiplication are empty");
+        throw logic_error("Input vectors for multiplication are empty");
     }
 
     adjacencyVector_t::iterator i_iter = row_i->begin();
