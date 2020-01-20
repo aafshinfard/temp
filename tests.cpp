@@ -9,6 +9,7 @@
 #include <stdint.h>
 #include <chrono>
 #include <tgmath.h>
+#include <stdexcept>
 //#include <boost/graph/adjacency_list.hpp>
 //#include <boost/graph/biconnected_components.hpp>
 //#include <boost/graph/graph_utility.hpp>
