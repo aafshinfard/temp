@@ -235,7 +235,7 @@ main(int argc, char* argv[])
     int aaa = 5;
     int bbb = 3;
     int ccc;
-    c = aaa & bbb;
+    ccc = aaa & bbb;
     cout<<"\n answer:"<<ccc<<endl;
     return 0;
 
