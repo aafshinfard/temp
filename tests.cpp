@@ -8,6 +8,7 @@
 #include <vector>
 #include <stdint.h>
 #include <chrono>
+#include <utility>
 #include <tgmath.h>
 #include <stdexcept>
 #include <algorithm>
@@ -26,7 +27,14 @@ using namespace std::chrono;
 
 using adjacencyMatrix_t = vector<vector<uint_fast32_t>>;
 using adjacencyVector_t = std::vector<uint_fast32_t>;
+typedef std::chrono::high_resolution_clock::time_point TimeVar;
 
+
+#define duration(a) std::chrono::duration_cast<std::chrono::microseconds>(a).count()
+#define timeNow() std::chrono::high_resolution_clock::now()
+
+TimeVar time_start;
+long long total_duration=0;
 
 void func(adjacencyMatrix_t& temp){
     cout<<temp[1][1]<<endl;
@@ -128,6 +136,32 @@ square_matrix_ikj( // Might be faster than ijk, benchmark it
     return M2;
 }
 
+vector<vector<double> >
+square_matrix_ikj_d( // Might be faster than ijk, benchmark it
+    vector<vector<double> > M,
+    bool symmetric = true)
+{
+    // Fast initialization:
+    int n = M.size();
+    vector<double> tmp(n, 0);
+    vector<vector<double> > M2(n, tmp);
+    // Multiplication
+    for (int i = 0; i < n; i++) {
+        for (int k = 0; k < n; k++) {
+//            if ( !M[i][k] )
+//                continue;
+            for (int j = 0; j < n; j++) {
+                if ( j < i && symmetric ) {
+                    M2[i][j] = M2[j][i];
+                    continue;
+                }
+                M2[i][j] += M[i][k] * M[k][j];
+            }
+        }
+    }
+    return M2;
+}
+
 //boost::numeric::ublas::matrix<int>
 //square_matrix_boost(
 //    adjacencyMatrix_t M,
@@ -191,19 +225,41 @@ calculate_cosine_similarity_2d(
 {
     // NOT COMPLETE YET:
     // STRATEGY: NORMALIZE THEN SQUARE (instead of normalizing per vector while multip
-
+    time_start = timeNow();
     int n = adj_mat.size();
     vector<double> temp(n, 0.0);
-    vector<vector<double> > normalized(n .temp);
-    uint_fast32_t row_sum = 0;
+    vector<vector<double> > normalized(n, temp);
+    double row_sum = 0;
+    uint_fast32_t init = 0;
 
     adjacencyMatrix_t::iterator row_i;
-    vector<vector<double> >::iterator normalized_row_i;
-    for (row_i = adj_mat.begin(); row_i != adj_mat.end(); ++row_i)
+    vector<vector<double> >::iterator normalized_row_i = normalized.begin();
+    for (row_i = adj_mat.begin(); row_i != adj_mat.end(); ++row_i, ++normalized_row_i)
     {
-        row_sum = accumulate(row_i->begin(), row_i->end());
+        row_sum = 0;
+        vector<uint_fast32_t>::iterator first = row_i->begin();
+        vector<uint_fast32_t>::iterator last = row_i->end();
+        while(first!=last){
+            row_sum += *first * *first;
+            ++first;
+        }
+        row_sum = sqrt(row_sum);
+        //row_sum = accumulate(row_i->begin(), row_i->end(), init);
 
+        first = row_i->begin();
+        vector<double>::iterator first_normalized = normalized_row_i->begin();
+        vector<double>::iterator last_normalized = normalized_row_i->end();
+        while(first!=last){
+            *first_normalized= (double)*first / row_sum;
+            ++first;
+            ++first_normalized;
+        }
     }
+//    time_duration = duration(timeNow() - time_start );
+    total_duration += std::chrono::duration_cast<std::chrono::microseconds>( timeNow() - time_start ).count();
+    time_start = timeNow();
+    cosimilarity = square_matrix_ikj_d(normalized);
+    total_duration += std::chrono::duration_cast<std::chrono::microseconds>( timeNow() - time_start ).count();
 }
 
 inline
@@ -272,37 +328,100 @@ main(int argc, char* argv[])
 //    return 0;
 
     //adjacencyMatrix_t a_small(3, adjacencyVector_t(3,4));
+//    adjacencyMatrix_t a_small {
+//				{ 0, 12, 4, 1 },
+//				{ 12, 0, 1, 0 },
+//				{ 4, 1, 0, 0 },
+//				{ 1, 0, 0, 0 }
+//			};
     adjacencyMatrix_t a_small {
-				{ 0, 12, 4, 1 },
-				{ 12, 0, 1, 0 },
-				{ 4, 1, 0, 0 },
-				{ 1, 0, 0, 0 }
+				{ 0, 1, 1, 0 },
+				{ 1, 0, 0, 1 },
+				{ 1, 0, 0, 1 },
+				{ 0, 1, 1, 0 }
 			};
-    adjacencyMatrix_t::iterator row_i;
-    for (row_i = adj_mat.begin(); row_i != adj_mat.end(); ++row_i)
-    {
-        cout<<" sum is:"<<accumulate(row_i->begin(), row_i->end())<<endl;
-    }
-    return 0;
+
+	int test_size = 50;
+    adjacencyMatrix_t a(test_size, adjacencyVector_t(test_size,4));
+    vector<double> tempVector(test_size, 0);
+    vector<vector<double> > cosSimilarity2d(test_size, tempVector);
+    vector<vector<double> > cos1(cosSimilarity2d);
 
     vector<double> tempVector_small(4, 0.0);
     vector<vector<double> > cosSimilarity2d_small(4, tempVector_small);
 
-    calculate_cosine_similarity_2d_v2(a_small, cosSimilarity2d_small);
-    vector<vector<double> >::iterator row = cosSimilarity2d_small.begin();
-    for ( ; row != cosSimilarity2d_small.end(); ++row )
-    {
-        for (vector<double>::iterator col = row->begin(); col != row->end(); ++col){
-            cout<<" "<<*col;
-        }
-        cout<<endl;
-    }
 
-    int test_size = 50;
-    adjacencyMatrix_t a(test_size, adjacencyVector_t(test_size,4));
-    vector<double> tempVector(test_size, 0);
-    vector<vector<double> > cosSimilarity2d(test_size, tempVector);
-    auto start = high_resolution_clock::now();
+    calculate_cosine_similarity_2d_v2(a_small, cosSimilarity2d_small);
+    calculate_cosine_similarity_2d(a_small, cos1);
+
+    vector<vector<double> >::iterator rowrow1 = cosSimilarity2d_small.begin();
+
+//    for ( ; rowrow1 != cosSimilarity2d_small.end(); ++rowrow1 )
+//    {
+//        for (vector<double>::iterator col = rowrow1->begin(); col != rowrow1->end(); ++col){
+//            cout<<" "<<*col;
+//        }
+//        cout<<endl;
+//    }
+//    cout<<"NEXT:"<<endl;
+//    vector<vector<double> >::iterator rowrow2 = cos1.begin();
+//    for ( ; rowrow2!= cos1.end(); ++rowrow2 )
+//    {
+//        for (vector<double>::iterator col = rowrow2->begin(); col != rowrow2->end(); ++col){
+//            cout<<" "<<*col;
+//        }
+//        cout<<endl;
+//    }
+//    return 0;
+//
+//    vector<vector<double> >::iterator row_d;
+//    vector<double>::iterator col_d;
+//    for (row_d = normalized.begin(); row_d != normalized.end(); ++row_d)
+//    {
+//        for (col_d = row_d->begin(); col_d != row_d->end(); ++col_d)
+//        {
+//            cout<<" "<<*col_d;
+//        }
+//        cout<<endl;
+//    }
+//    return 0;
+//    adjacencyMatrix_t::iterator row_i;
+//    uint_fast32_t ada = 0;
+//    uint_fast32_t init = 0;
+//
+////    for (row_i = a_small.begin(); row_i != a_small.end(); ++row_i)
+//    auto start = high_resolution_clock::now();
+//    for (row_i = a.begin(); row_i != a.end(); ++row_i)
+//    {
+//        ada = accumulate(row_i->begin(), row_i->end(), init);
+////        cout<<" sum is:"<<ada<<endl;
+////        ada = 0;
+////        for (vector<uint_fast32_t>::iterator col = row_i->begin(); col != row_i->end(); ++col){
+////            ada += *col;
+////        }
+////        cout<<" sum is:"<<ada<<endl;
+//    }
+//    auto stop = high_resolution_clock::now();
+//    auto duration = duration_cast<microseconds>(stop - start);
+//    cout<<"duration:"<<duration.count()<<endl;
+//    return 0;
+//
+//
+//
+//    calculate_cosine_similarity_2d_v2(a_small, cosSimilarity2d_small);
+//    vector<vector<double> >::iterator row = cosSimilarity2d_small.begin();
+//    for ( ; row != cosSimilarity2d_small.end(); ++row )
+//    {
+//        for (vector<double>::iterator col = row->begin(); col != row->end(); ++col){
+//            cout<<" "<<*col;
+//        }
+//        cout<<endl;
+//    }
+
+
+
+
+//    start = timeNow();
     for( int i=0 ; i < 1000 ; i++){
         cout<<i<<endl;
         a[0][0] = a[0][0] + 1;
@@ -311,16 +430,18 @@ main(int argc, char* argv[])
             cout<<"Failed";
             return 0;
         }
-        calculate_cosine_similarity_2d_v2(a,cosSimilarity2d);
-
+        calculate_cosine_similarity_2d(a,cosSimilarity2d);
+//        calculate_cosine_similarity_2d(a,cosSimilarity2d);
 //        if(! test_fast_initialization1() ){
 //            cout<<"Failed";
 //            return 0;
 //        }
     }
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<microseconds>(stop - start);
-    cout << "\nElapsed time: "<<duration.count() << endl;
-
+//    auto stop = high_resolution_clock::now();
+//    auto duration = duration_cast<microseconds>(stop - start);
+//    duration = duration_cast<microseconds>(stop - start);
+//    cout << "\nElapsed time: "<<duration.count() << endl;
+//    cout << "\nElapsed time: "<<duration(timeNow() - start) << endl;
+    cout << "\nElapsed time: "<<total_duration << endl;
 	return 0;
 }
