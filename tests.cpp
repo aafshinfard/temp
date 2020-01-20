@@ -231,9 +231,10 @@ main(int argc, char* argv[])
 	//cout<<b[1][1];
     //func(b);
 
-    int a = 5
-    int b = 3
-    int c = a & b;
+    int a = 5;
+    int b = 3;
+    int c;
+    c = a & b;
     cout<<"\n answer:"<<c<<endl;
     return 0;
 
