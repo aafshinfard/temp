@@ -233,8 +233,8 @@ main(int argc, char* argv[])
     //func(b);
 
     int aaa = 5;
-    int bbbb = 3;
-    int cccc;
+    int bbb = 3;
+    int ccc;
     c = aaa & bbb;
     cout<<"\n answer:"<<ccc<<endl;
     return 0;
