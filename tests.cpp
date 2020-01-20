@@ -10,6 +10,7 @@
 #include <chrono>
 #include <tgmath.h>
 #include <stdexcept>
+#include <algorithm>
 //#include <boost/graph/adjacency_list.hpp>
 //#include <boost/graph/biconnected_components.hpp>
 //#include <boost/graph/graph_utility.hpp>
@@ -66,6 +67,16 @@ square_matrix_ijk(
 }
 
 adjacencyMatrix_t
+square_matrix_bitwise(
+    adjacencyMatrix_t M,
+    bool symmetric=true)
+{
+    // transform the input matrix into a vector of integers
+    // traverse over and apply bitwise and to achieve multiplication in a faster manner
+    // transform the resulting vecot to adjacency matrix if needed ?! or continue using it with the same structure
+}
+
+adjacencyMatrix_t
 square_matrix_ijk2(
     adjacencyMatrix_t M,
     bool symmetric=true)
@@ -89,8 +100,6 @@ square_matrix_ijk2(
     }
     return M2;
 }
-
-
 
 
 adjacencyMatrix_t
@@ -176,6 +185,29 @@ cosine_similarity_vectors(
 
 inline
 void
+calculate_cosine_similarity_2d(
+    adjacencyMatrix_t& adj_mat,
+    vector<vector<double> >& cosimilarity)
+{
+    // NOT COMPLETE YET:
+    // STRATEGY: NORMALIZE THEN SQUARE (instead of normalizing per vector while multip
+
+    int n = adj_mat.size();
+    vector<double> temp(n, 0.0);
+    vector<vector<double> > normalized(n .temp);
+    uint_fast32_t row_sum = 0;
+
+    adjacencyMatrix_t::iterator row_i;
+    vector<vector<double> >::iterator normalized_row_i;
+    for (row_i = adj_mat.begin(); row_i != adj_mat.end(); ++row_i)
+    {
+        row_sum = accumulate(row_i->begin(), row_i->end());
+
+    }
+}
+
+inline
+void
 calculate_cosine_similarity_2d_v2(
     adjacencyMatrix_t& adj_mat,
     vector<vector<double> >& cosimilarity)
@@ -232,12 +264,12 @@ main(int argc, char* argv[])
 	//cout<<b[1][1];
     //func(b);
 
-    int aaa = 5;
-    int bbb = 3;
-    int ccc;
-    ccc = aaa & bbb;
-    cout<<"\n answer:"<<ccc<<endl;
-    return 0;
+//    int aaa = 5;
+//    int bbb = 3;
+//    int ccc;
+//    ccc = aaa & bbb;
+//    cout<<"\n answer:"<<ccc<<endl;
+//    return 0;
 
     //adjacencyMatrix_t a_small(3, adjacencyVector_t(3,4));
     adjacencyMatrix_t a_small {
@@ -246,6 +278,13 @@ main(int argc, char* argv[])
 				{ 4, 1, 0, 0 },
 				{ 1, 0, 0, 0 }
 			};
+    adjacencyMatrix_t::iterator row_i;
+    for (row_i = adj_mat.begin(); row_i != adj_mat.end(); ++row_i)
+    {
+        cout<<" sum is:"<<accumulate(row_i->begin(), row_i->end())<<endl;
+    }
+    return 0;
+
     vector<double> tempVector_small(4, 0.0);
     vector<vector<double> > cosSimilarity2d_small(4, tempVector_small);
 
