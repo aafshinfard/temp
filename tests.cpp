@@ -547,11 +547,20 @@ main(int argc, char* argv[])
     for( int i=0 ; i < (10000*50) ; i++){
         //cout<<i<<endl;
 
-        uint_fast32_t num1 = rand()%32;
-        uint_fast32_t num2 = rand()%32;
-        uint_fast32_t res = num1 & num2;
+//        uint_fast32_t num1 = rand()%32;
+//        uint_fast32_t num2 = rand()%32;
+//        uint_fast32_t res = num1 & num2;
+//        if( i%100 != 0 )
+//            cout<<res<<endl;
+
+        vector <uint_fast32_t> vec1(50, num1);
+        vector <uint_fast32_t> vec2(50, num2);
+        vecsize = vec1.size();
+        for( int i = 0 ; i < vecsize; i++){
+            vec1[i] = (vec1[i] !=0 && vec2[i] !=0 ? 1 : 0);
+        }
         if( i%100 != 0 )
-            cout<<res;
+            cout<<vec1[0]<<endl;
 
 //        a[0][0] = a[0][0] + 1;
 //        adjacencyMatrix_t temp(square_matrix_ijk(a));
