@@ -540,19 +540,18 @@ main(int argc, char* argv[])
 
     auto start = timeNow();
 
-    uint_fast32_t num1;
-    uint_fast32_t num2;
-    uint_fast32_t res;
+//    uint_fast32_t num1;
+//    uint_fast32_t num2;
+//    uint_fast32_t res;
 
     for( int i=0 ; i < 10000*50 ; i++){
-        cout<<i<<endl;
+        //cout<<i<<endl;
 
-        num1 = rand()%32;
-        num2 = rand()%32;
-        res = num1 & num2;
-
-
-
+        uint_fast32_t num1 = rand()%32;
+        uint_fast32_t num2 = rand()%32;
+        uint_fast32_t res = num1 & num2;
+        if( ! i%100 )
+            cout<<res;
 
 //        a[0][0] = a[0][0] + 1;
 //        adjacencyMatrix_t temp(square_matrix_ijk(a));
