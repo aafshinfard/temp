@@ -547,8 +547,8 @@ main(int argc, char* argv[])
     for( int i=0 ; i < (10000*50) ; i++){
         //cout<<i<<endl;
 
-//        uint_fast32_t num1 = rand()%32;
-//        uint_fast32_t num2 = rand()%32;
+        uint_fast32_t num1 = rand()%32;
+        uint_fast32_t num2 = rand()%32;
 //        uint_fast32_t res = num1 & num2;
 //        if( i%100 != 0 )
 //            cout<<res<<endl;
