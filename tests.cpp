@@ -433,6 +433,7 @@ main(int argc, char* argv[])
 
     uint_fast32_t num = rand()%32;
     cout<<num<<endl;
+    return 0;
     //adjacencyMatrix_t a_small(3, adjacencyVector_t(3,4));
 //    adjacencyMatrix_t a_small {
 //				{ 0, 12, 4, 1 },
