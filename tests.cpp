@@ -431,9 +431,7 @@ main(int argc, char* argv[])
 	//cout<<b[1][1];
     //func(b);
 
-    uint_fast32_t num = rand()%32;
-    cout<<num<<endl;
-    return 0;
+
     //adjacencyMatrix_t a_small(3, adjacencyVector_t(3,4));
 //    adjacencyMatrix_t a_small {
 //				{ 0, 12, 4, 1 },
@@ -541,20 +539,33 @@ main(int argc, char* argv[])
 
 
     auto start = timeNow();
-    for( int i=0 ; i < 10000 ; i++){
+
+    uint_fast32_t num1;
+    uint_fast32_t num2;
+    uint_fast32_t res;
+
+    for( int i=0 ; i < 10000*50 ; i++){
         cout<<i<<endl;
-        a[0][0] = a[0][0] + 1;
-        adjacencyMatrix_t temp(square_matrix_ijk(a));
-        if(temp[0][0]<0){
-            cout<<"Failed";
-            return 0;
-        }
-        calculate_cosine_similarity_2d(a,cosSimilarity2d);
-//        calculate_cosine_similarity_2d_v2(a,cosSimilarity2d);
-        if(! test_fast_initialization1() ){
-            cout<<"Failed";
-            return 0;
-        }
+
+        num1 = rand()%32;
+        num2 = rand()%32;
+        res = num1 & num2;
+
+
+
+
+//        a[0][0] = a[0][0] + 1;
+//        adjacencyMatrix_t temp(square_matrix_ijk(a));
+//        if(temp[0][0]<0){
+//            cout<<"Failed";
+//            return 0;
+//        }
+//        calculate_cosine_similarity_2d(a,cosSimilarity2d);
+////        calculate_cosine_similarity_2d_v2(a,cosSimilarity2d);
+//        if(! test_fast_initialization1() ){
+//            cout<<"Failed";
+//            return 0;
+//        }
     }
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
