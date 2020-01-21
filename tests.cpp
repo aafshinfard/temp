@@ -556,9 +556,10 @@ main(int argc, char* argv[])
         vector <uint_fast32_t> vec1(50, num1);
         vector <uint_fast32_t> vec2(50, num2);
         int vecsize = vec1.size();
-        for( int i = 0 ; i < vecsize; i++){
-            vec1[i] = (vec1[i] !=0 && vec2[i] !=0 ? 1 : 0);
-        }
+//        for( int i = 0 ; i < vecsize; i++){
+//            vec1[i] = (vec1[i] !=0 && vec2[i] !=0 ? 1 : 0);
+//        }
+        vec1[0] = vec2[0] = 4;
         if( i%100 != 0 )
             cout<<vec1[0]<<endl;
 
