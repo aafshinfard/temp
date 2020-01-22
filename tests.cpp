@@ -375,7 +375,7 @@ Community_detection_cosine_similarity(
                                 adj_mat,
                         cosSimilarity2d);
     // 2- Determine the threshold:
-    // not implemented yet; use a predefined universal threshold.
+    // not implemented yet; so use a predefined universal threshold.
     threshold = threshold;
 
     // 3- Filter out edges:
@@ -399,7 +399,7 @@ Community_detection_cosine_similarity(
     //unordered_map<int, int>;
     vector<int> zeros(adj_mat.size(),0);
     vector<int> isDetected(zeros);
-    vector<int> isVisited(zeros);
+    //vector<int> isVisited(zeros);
     bool isSingleton = true;
 
     for (int i = 0 ; i < adj_mat.size(); i++)
@@ -421,14 +421,12 @@ Community_detection_cosine_similarity(
             {
                 if (isDetected[j])
                     continue; // this node is included in a community already.
-//                if (isVisited[j])
-//                    continue; // this node is included in this community already.
+                //if (isVisited[j])
+                //    continue; // this node is included in this community already.
                 if (adj_mat[ii][j] > 0){
                     toCheck.push(j);
                     isDetected[j]=1;
                     isSingleton = false;
-//                    isVisited[ii]=1;
-//                    isDetected[ii]=1;
                 }
             }
         }
@@ -437,8 +435,6 @@ Community_detection_cosine_similarity(
         else
             community_id++;
     }
-
-
 }
 
 void
