@@ -391,7 +391,9 @@ Community_detection_cosine_similarity(
             }
     }
     // Detect Communities (find connected components - DFS)
-    vector<vector<uint_fast32_t>> communities(30,vector<uint_fast32_t>(adj_mat.size(),0));
+    // / use .reserve to set the capacity of the below 2d vector instead of initialization
+    vector<vector<uint_fast32_t>> communities(30,vector<uint_fast32_t>(adj_mat.size(),-1));
+
     int community_id = 0;
     stack<int> toCheck;
     //unordered_map<int, int>;
@@ -402,27 +404,38 @@ Community_detection_cosine_similarity(
 
     for (int i = 0 ; i < adj_mat.size(); i++)
     {
-        //isVisited = zeros;
+        isVisited = zeros;
         if (isDetected[i])
             continue; // this node is included in a community already.
         toCheck.push(i);
+        isDetected[i] = 1;
         isSingleton = true;
+
         while(!toCheck.empty()){
+
             ii = toCheck.top();
             toCheck.pop();
-            for (int j = i+1 ; j < adj_mat.size(); j++)
+            communities[community_id].push_back(ii);
+
+            for (int j = 0 ; j < adj_mat.size(); j++)
             {
                 if (isDetected[j])
                     continue; // this node is included in a community already.
-                if (isVisited[j])
-                    continue; // this node is included in this community already.
-                if (adj_mat[i][j] > 0){
+//                if (isVisited[j])
+//                    continue; // this node is included in this community already.
+                if (adj_mat[ii][j] > 0){
                     toCheck.push(j);
-                    isVisited[i]=0;
+                    isDetected[j]=1;
+                    isSingleton = false;
+//                    isVisited[ii]=1;
+//                    isDetected[ii]=1;
                 }
             }
         }
-        community_id++;
+        if (isSingleton)
+            communities[community_id].pop_back();
+        else
+            community_id++;
     }
 
 
