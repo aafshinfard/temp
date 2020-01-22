@@ -12,10 +12,10 @@
 #include <tgmath.h>
 #include <stdexcept>
 #include <algorithm>
-//#include <boost/graph/adjacency_list.hpp>
-//#include <boost/graph/biconnected_components.hpp>
-//#include <boost/graph/graph_utility.hpp>
-//#include <boost/graph/subgraph.hpp>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/biconnected_components.hpp>
+#include <boost/graph/graph_utility.hpp>
+#include <boost/graph/subgraph.hpp>
 
 #if _OPENMP
 #include <omp.h>
@@ -663,14 +663,14 @@ calculate_cosine_similarity_2d_v2(
 }
 
 void
-Community_detection_cosine_similarity(
+community_detection_cosine_similarity(
     graph_t& subgraph, vertexToComponent_t& vertexToComponent,
     bool squaring = true, double threshold=0.7)
 {
     // Detect communities using cosine similarity of vertices
 
     // 1- Calculate the cosine similarity:
-    vertexToIndex_t vertexToIndex(num_vertices(subgraph))
+    vertexToIndex_t vertexToIndex(num_vertices(subgraph));
     adjacencyMatrix_t adj_mat(convert_adj_list_adj_mat(subgraph, vertexToIndex));
     indexToVertex_t indexToVertex = inverse_map(vertexToIndex);
 
@@ -701,11 +701,13 @@ Community_detection_cosine_similarity(
             }
     }
     // 4- Detect Communities (find connected components - DFS)
+    //      Alternative implementation: convert to adjacency list and use boost to find cc
+
     // / use .reserve to set the capacity of the below 2d vector instead of initialization
     int max_communities = 30;
     vector<vector<uint_fast32_t>> communities(max_communities,vector<uint_fast32_t>(adj_mat.size(),-1));
 
-    int community_id = 0;
+    size_t community_id = 0;
     stack<int> toCheck;
     //unordered_map<int, int>;
     vector<int> zeros(adj_mat.size(),0);
