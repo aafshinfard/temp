@@ -354,73 +354,105 @@ calculate_cosine_similarity_2d_v2(
     }
 }
 
-//void
-//Community_detection_cosine_similarity(
-//    graph_t& subgraph, vertexToComponent_t& vertexToComponent,
-//    bool squaring = true, double threshold=0.7)
-//{
-//    vertexToIndex_t vertexToIndex(num_vertices(subgraph))
-//    adjacencyMatrix_t adj_mat(convert_adj_list_adj_mat(subgraph, vertexToIndex));
-//    size_t size_adj_mat = adj_mat.size();
-//    vector<double> tempVector(size_adj_mat, 0);
-//    vector<vector<double> > cosSimilarity2d(size_adj_mat, tempVector);
-//    calculate_cosine_similarity_2d(squaring ?
-//                                square_matrix_ikj(adj_mat, true) // may need some change
-////                                new_adj_mat = square_matrix_ijk(adj_mat, true)
-////                                new_adj_mat = square_matrix_boost(adj_mat)
-//                                :
-//                                adj_mat,
-//                        cosSimilarity2d);
-//
-//    for (int i = 0; i < adj_mat.size() ; i++)
-//    {
-//        for (int j = i+1; j < adj_mat.size() ; j++)
-//            {
-//                if (cosSimilarity2d[i][j] < threshold)
-//                {
-//                    adj_mat[i][j] = 0;
-//                    adj_mat[j][i] = 0;
-//                }
-//            }
-//    }
-//
-////    vector<vector<double> >::iterator cos_row = cosSimilarity2d.begin();
-////    for ( ; cos_row != cosSimilarity2d.end(); ++cos_row)
-////    {
-////        for (vector<double>::iterator col = cos_row->begin(); col != cos_row->end(); ++col){
-////            if (*col)
-////            {
-////
-////            }
-////        }
-////    }
-//}
-//
-//void
-//Community_detection_k3_cliques(
-//    graph_t& subgraph, vertexToComponent_t& vertexToComponent,
-//    int k = 3)
-//{
-//    // k-cliques community detection in case of k=3
-//    // based on matrix multiplication
-//    if (k != 3)
-//    {
-//        cout<<" This implementation of k-cliques does not support any k other than 3."
-//        exit (EXIT_FAILURE);
-//    }
-//    vertexToIndex_t vertexToIndex(num_vertices(subgraph))
-//    adjacencyMatrix_t adj_mat(convert_adj_list_adj_mat(subgraph, vertexToIndex));
-//    size_t size_adj_mat = adj_mat.size();
-//    adjacencyMatrix_t adj_mat2(square_matrix_ijk(adj_mat));
-//
-//    /// TEST WHICH IS FASTER:
-//    /// 1-MATRIX MULTIPLICATION TO FIND TRIANGLES?
-//    /// 2-MATRIX TO VECTOR CONVERSION + BITWISE AND ON INTEGERS (compacted vectors)?
-//
-//    /// 3-NORMAL K-CLIQUE DETECTION
-//
-//
-//}
+void
+Community_detection_cosine_similarity(
+    graph_t& subgraph, vertexToComponent_t& vertexToComponent,
+    bool squaring = true, double threshold=0.7)
+{
+    // Detect communities using cosine similarity of vertices
+
+    // 1- Calculate the cosine similarity:
+    vertexToIndex_t vertexToIndex(num_vertices(subgraph))
+    adjacencyMatrix_t adj_mat(convert_adj_list_adj_mat(subgraph, vertexToIndex));
+    size_t size_adj_mat = adj_mat.size();
+    vector<double> tempVector(size_adj_mat, 0);
+    vector<vector<double>> cosSimilarity2d(size_adj_mat, tempVector);
+    calculate_cosine_similarity_2d(squaring ?
+                                square_matrix_ikj(adj_mat, true) // may need some change
+//                                new_adj_mat = square_matrix_ijk(adj_mat, true)
+//                                new_adj_mat = square_matrix_boost(adj_mat)
+                                :
+                                adj_mat,
+                        cosSimilarity2d);
+    // 2- Determine the threshold:
+    // not implemented yet; use a predefined universal threshold.
+    threshold = threshold;
+
+    // 3- Filter out edges:
+    for (int i = 0; i < adj_mat.size() ; i++)
+    {
+        for (int j = i+1; j < adj_mat.size() ; j++)
+            {
+                if (cosSimilarity2d[i][j] < threshold)
+                {
+                    adj_mat[i][j] = 0;
+                    adj_mat[j][i] = 0;
+                }
+            }
+    }
+    // Detect Communities (find connected components - DFS)
+    vector<vector<uint_fast32_t>> communities(30,vector<uint_fast32_t>(adj_mat.size(),0));
+    int community_id = 0;
+    stack<int> toCheck;
+    //unordered_map<int, int>;
+    vector<int> zeros(adj_mat.size(),0);
+    vector<int> isDetected(zeros);
+    vector<int> isVisited(zeros);
+    bool isSingleton = true;
+
+    for (int i = 0 ; i < adj_mat.size(); i++)
+    {
+        //isVisited = zeros;
+        if (isDetected[i])
+            continue; // this node is included in a community already.
+        toCheck.push(i);
+        isSingleton = true;
+        while(!toCheck.empty()){
+            ii = toCheck.top();
+            toCheck.pop();
+            for (int j = i+1 ; j < adj_mat.size(); j++)
+            {
+                if (isDetected[j])
+                    continue; // this node is included in a community already.
+                if (isVisited[j])
+                    continue; // this node is included in this community already.
+                if (adj_mat[i][j] > 0){
+                    toCheck.push(j);
+                    isVisited[i]=0;
+                }
+            }
+        }
+        community_id++;
+    }
+
+
+}
+
+void
+Community_detection_k3_cliques(
+    graph_t& subgraph, vertexToComponent_t& vertexToComponent,
+    int k = 3)
+{
+    // k-cliques community detection in case of k=3
+    // based on matrix multiplication
+    if (k != 3)
+    {
+        cout<<" This implementation of k-cliques does not support any k other than 3."
+        exit (EXIT_FAILURE);
+    }
+    vertexToIndex_t vertexToIndex(num_vertices(subgraph))
+    adjacencyMatrix_t adj_mat(convert_adj_list_adj_mat(subgraph, vertexToIndex));
+    size_t size_adj_mat = adj_mat.size();
+    adjacencyMatrix_t adj_mat2(square_matrix_ijk(adj_mat));
+
+    /// TEST WHICH IS FASTER:
+    /// 1-MATRIX MULTIPLICATION TO FIND TRIANGLES?
+    /// 2-MATRIX TO VECTOR CONVERSION + BITWISE AND ON INTEGERS (compacted vectors)?
+
+    /// 3-NORMAL K-CLIQUE DETECTION
+
+
+}
 
 int
 main(int argc, char* argv[])
