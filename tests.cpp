@@ -21,12 +21,69 @@
 #include <omp.h>
 #endif
 
+
+memory_usage()
+{
+	int mem = 0;
+	std::ifstream proc("/proc/self/status");
+	for (std::string s; std::getline(proc, s);) {
+		if (s.substr(0, 6) == "VmSize") {
+			std::stringstream convert(s.substr(s.find_last_of('\t'), s.find_last_of('k') - 1));
+			if (!(convert >> mem)) {
+				return 0;
+			}
+			return mem;
+		}
+	}
+	return mem;
+}
+
+struct vertexProperties
+{
+	std::string name = "";
+	int weight = 0;
+	size_t indexOriginal = 0;
+};
+
+struct edgeProperties
+{
+	int weight = 0;
+};
+
+struct edgeComponent_t
+{
+	enum
+	{
+		num = INT_MAX
+	};
+	using kind = boost::edge_property_tag;
+} edgeComponent;
+
 //static uint64_t
 using namespace std;
 using namespace std::chrono;
-
-using adjacencyMatrix_t = vector<vector<uint_fast32_t>>;
+using graph_t = boost::subgraph<boost::adjacency_list<
+    boost::vecS,
+    boost::vecS,
+    boost::undirectedS,
+    vertexProperties,
+    boost::property<
+        boost::edge_index_t,
+        int,
+        boost::property<edgeComponent_t, std::size_t, edgeProperties>>>>;
+using vertex_t = graph_t::vertex_descriptor;
+using edge_t = graph_t::edge_descriptor;
+using barcodeToIndex_t = std::unordered_map<std::string, vertex_t>;
+using indexToBarcode_t = std::unordered_map<vertex_t, std::string>;
+using vertexSet_t = std::unordered_set<vertex_t>;
+using componentToVertexSet_t = std::vector<vertexSet_t>;
+using vertexToComponent_t = std::unordered_map<vertex_t, size_t>;
+using vecVertexToComponent_t = std::vector<vertexToComponent_t>;
+using vertexToIndex_t = std::unordered_map<vertex_t, size_t>; // wanna improve this? checkout boost::bimap
+using indexToVertex_t = std::unordered_map<size_t, vertex_t>; // wanna improve this? checkout boost::bimap
+using adjacencyMatrix_t = std::vector<vector<uint_fast32_t>>;
 using adjacencyVector_t = std::vector<uint_fast32_t>;
+
 typedef std::chrono::high_resolution_clock::time_point TimeVar;
 
 
@@ -51,6 +108,257 @@ int test_fast_initialization2(){
     return mat[0][0]+1;
 }
 
+
+static void
+printVersion()
+{
+	const char VERSION_MESSAGE[] =
+	    PROGRAM " (" PACKAGE_NAME ") " GIT_REVISION "\n"
+	            "Written by Johnathan Wong.\n"
+	            "\n"
+	            "Copyright 2019 Canada's Michael Smith Genome Science Centre\n";
+	std::cerr << VERSION_MESSAGE << std::endl;
+	exit(EXIT_SUCCESS);
+}
+
+static void
+printErrorMsg(const std::string& progname, const std::string& msg)
+{
+	std::cerr << progname << ": " << msg
+	          << "\nTry 'physlr-molecules --help' for more information.\n";
+}
+
+static void
+printUsage(const std::string& progname)
+{
+	std::cout << "Usage:  " << progname
+	          << "  [-s SEPARATION-STRATEGY] [-v] FILE...\n\n"
+	             "  -v         enable verbose output\n"
+	             "  -s --separation-strategy   \n"
+	             "  SEPARATION-STRATEGY      `+` separated list of molecule separation strategies "
+	             "[bc]\n"
+	             "  --help     display this help and exit\n";
+}
+
+void
+printGraph(const graph_t& g)
+{
+	std::cout << "U\tn" << std::endl;
+	auto vertexItRange = boost::vertices(g);
+	for (auto vertexIt = vertexItRange.first; vertexIt != vertexItRange.second; ++vertexIt) {
+		auto& node1 = g[*vertexIt].name;
+		auto& weight = g[*vertexIt].weight;
+		std::cout << node1 << "\t" << weight << "\n";
+	}
+	std::cout << "\nU\tV\tn" << std::endl;
+	auto edgeItRange = boost::edges(g);
+	for (auto edgeIt = edgeItRange.first; edgeIt != edgeItRange.second; ++edgeIt) {
+		auto& weight = g[*edgeIt].weight;
+		auto& node1 = g[boost::source(*edgeIt, g)].name;
+		auto& node2 = g[boost::target(*edgeIt, g)].name;
+		std::cout << node1 << "\t" << node2 << "\t" << weight << "\n";
+	}
+}
+
+void
+readTSV(graph_t& g, const std::vector<std::string>& infiles, bool verbose)
+{
+	auto progname = "physlr-molecules";
+	std::cerr << "Loading graph" << std::endl;
+#if _OPENMP
+	double sTime = omp_get_wtime();
+#endif
+	barcodeToIndex_t barcodeToIndex;
+	indexToBarcode_t indexToBarcode;
+	for (auto& infile : infiles) {
+		infile == "-" ? "/dev/stdin" : infile;
+		std::ifstream infileStream(infile);
+		for (std::string line; std::getline(infileStream, line);) {
+			if (line == "U\tn") {
+				continue;
+			}
+			if (line.empty()) {
+				break;
+			}
+			std::string node1;
+			int weight;
+			std::istringstream ss(line);
+			if (ss >> node1 >> weight) {
+				auto u = boost::add_vertex(g);
+				g[u].name = node1;
+				g[u].weight = weight;
+				g[u].indexOriginal = u;
+				barcodeToIndex[node1] = u;
+				indexToBarcode[u] = node1;
+			} else {
+				printErrorMsg(progname, "unknown graph format");
+				exit(EXIT_FAILURE);
+			}
+		}
+
+		if (verbose) {
+			std::cerr << "Loaded vertices to graph ";
+#if _OPENMP
+			std::cerr << "in sec: " << omp_get_wtime() - sTime << std::endl;
+			sTime = omp_get_wtime();
+#endif
+		}
+		for (std::string line; std::getline(infileStream, line);) {
+			if (line == "U\tV\tn") {
+				continue;
+			}
+			if (line.empty()) {
+				printErrorMsg(progname, "unknown graph format");
+				exit(EXIT_FAILURE);
+			}
+			std::string node1, node2;
+			int weight;
+			std::istringstream ss(line);
+			if (ss >> node1 >> node2 >> weight) {
+				auto E = boost::add_edge(barcodeToIndex[node1], barcodeToIndex[node2], g).first;
+				g[E].weight = weight;
+			} else {
+				printErrorMsg(progname, "unknown graph format");
+				exit(EXIT_FAILURE);
+			}
+		}
+
+		if (verbose) {
+			std::cerr << "Loaded edges to graph ";
+		} else {
+			std::cerr << "Loaded graph ";
+		}
+#if _OPENMP
+		std::cerr << "in sec: " << omp_get_wtime() - sTime << std::endl;
+		sTime = omp_get_wtime();
+#endif
+		std::cerr << "Memory usage: " << double(memory_usage()) / double(1048576) << "GB"
+		          << std::endl;
+	}
+}
+
+/* Generate a molecule separated graph (molSepG) using component/community information from
+molecule separation (vecVertexToComponent). The input graph (inG) is the barcode overlap graph
+or a molecule separated graph from the previous round of molecule separation.*/
+void
+componentsToNewGraph(
+    const graph_t& inG,
+    graph_t& molSepG,
+    vecVertexToComponent_t& vecVertexToComponent)
+{
+	barcodeToIndex_t molSepGBarcodeToIndex;
+#if _OPENMP
+	double sTime = omp_get_wtime();
+#endif
+	for (size_t i = 0; i < vecVertexToComponent.size(); ++i) {
+
+		size_t maxVal = 0;
+		if (!vecVertexToComponent[i].empty()) {
+			maxVal =
+			    std::max_element(
+			        vecVertexToComponent[i].begin(),
+			        vecVertexToComponent[i].end(),
+			        [](const vertexToComponent_t::value_type& p1,
+			           const vertexToComponent_t::value_type& p2) { return p1.second < p2.second; })
+			        ->second;
+		}
+
+		for (size_t j = 0; j < maxVal + 1; ++j) {
+			auto u = boost::add_vertex(molSepG);
+			molSepG[u].name = inG[i].name + "_" + std::to_string(j);
+			molSepG[u].weight = inG[i].weight;
+			molSepG[u].indexOriginal = u;
+			molSepGBarcodeToIndex[molSepG[u].name] = u;
+		}
+	}
+
+	auto edgeItRange = boost::edges(inG);
+	for (auto edgeIt = edgeItRange.first; edgeIt != edgeItRange.second; ++edgeIt) {
+		auto& u = inG[boost::source(*edgeIt, inG)].indexOriginal;
+		auto& v = inG[boost::target(*edgeIt, inG)].indexOriginal;
+
+		if (vecVertexToComponent[u].find(v) == vecVertexToComponent[u].end() ||
+		    vecVertexToComponent[v].find(u) == vecVertexToComponent[v].end()) {
+			continue;
+		}
+
+		auto& uMolecule = vecVertexToComponent[u][v];
+		auto& vMolecule = vecVertexToComponent[v][u];
+		auto uName = inG[u].name + "_" + std::to_string(uMolecule);
+		auto vName = inG[v].name + "_" + std::to_string(vMolecule);
+		auto e =
+		    boost::add_edge(molSepGBarcodeToIndex[uName], molSepGBarcodeToIndex[vName], molSepG)
+		        .first;
+		molSepG[e].weight = inG[*edgeIt].weight;
+	}
+
+	std::cerr << "Generated new graph ";
+#if _OPENMP
+	std::cerr << "in sec: " << omp_get_wtime() - sTime << std::endl;
+	sTime = omp_get_wtime();
+#endif
+
+	std::cerr << "Memory usage: " << double(memory_usage()) / double(1048576) << "GB" << std::endl;
+}
+
+void
+biconnectedComponents(graph_t& subgraph, vertexToComponent_t& vertexToComponent)
+{
+	// Find biconnected components
+	boost::property_map<graph_t, edgeComponent_t>::type component =
+	    boost::get(edgeComponent, subgraph);
+
+	std::vector<vertex_t> artPointsVec;
+	boost::biconnected_components(subgraph, component, std::back_inserter(artPointsVec));
+
+	vertexSet_t artPoints(artPointsVec.begin(), artPointsVec.end());
+
+	// Remove articulation points from biconnected components
+	boost::graph_traits<graph_t>::edge_iterator ei, ei_end;
+	componentToVertexSet_t componentToVertexSet;
+
+	for (boost::tie(ei, ei_end) = boost::edges(subgraph); ei != ei_end; ++ei) {
+		size_t componentNum = component[*ei];
+		if (componentNum + 1 > componentToVertexSet.size()) {
+			componentToVertexSet.resize(componentNum + 1);
+		}
+
+		auto node1 = source(*ei, subgraph);
+		auto node2 = target(*ei, subgraph);
+
+		if (artPoints.find(node1) == artPoints.end()) {
+			componentToVertexSet[componentNum].insert(subgraph[node1].indexOriginal);
+		}
+		if (artPoints.find(node2) == artPoints.end()) {
+			componentToVertexSet[componentNum].insert(subgraph[node2].indexOriginal);
+		}
+	}
+
+	size_t moleculeNum = 0;
+
+	// Remove components with size less than 1
+	for (auto&& vertexSet : componentToVertexSet) {
+		if (vertexSet.size() <= 1) {
+			continue;
+		}
+		for (auto&& vertex : vertexSet) {
+			vertexToComponent[vertex] = moleculeNum;
+		}
+		++moleculeNum;
+	}
+}
+
+
+
+template<typename K, typename V>
+std::unordered_map<V,K> inverse_map(std::unordered_map<K,V> &map)
+{
+	std::unordered_map<V,K> inverse;
+	for (const auto &p: map) {
+		inverse.insert(std::make_pair(p.second, p.first));
+	}
+	return inverse;
+}
 
 vector<vector<double> >
 square_matrix_ijk(
@@ -364,6 +672,8 @@ Community_detection_cosine_similarity(
     // 1- Calculate the cosine similarity:
     vertexToIndex_t vertexToIndex(num_vertices(subgraph))
     adjacencyMatrix_t adj_mat(convert_adj_list_adj_mat(subgraph, vertexToIndex));
+    indexToVertex_t indexToVertex = inverse_map(vertexToIndex);
+
     size_t size_adj_mat = adj_mat.size();
     vector<double> tempVector(size_adj_mat, 0);
     vector<vector<double>> cosSimilarity2d(size_adj_mat, tempVector);
@@ -392,7 +702,8 @@ Community_detection_cosine_similarity(
     }
     // 4- Detect Communities (find connected components - DFS)
     // / use .reserve to set the capacity of the below 2d vector instead of initialization
-    vector<vector<uint_fast32_t>> communities(30,vector<uint_fast32_t>(adj_mat.size(),-1));
+    int max_communities = 30;
+    vector<vector<uint_fast32_t>> communities(max_communities,vector<uint_fast32_t>(adj_mat.size(),-1));
 
     int community_id = 0;
     stack<int> toCheck;
@@ -404,6 +715,7 @@ Community_detection_cosine_similarity(
 
     for (int i = 0 ; i < adj_mat.size(); i++)
     {
+        // DFS traversal
         isVisited = zeros;
         if (isDetected[i])
             continue; // this node is included in a community already.
@@ -415,7 +727,9 @@ Community_detection_cosine_similarity(
 
             ii = toCheck.top();
             toCheck.pop();
-            communities[community_id].push_back(ii);
+            // /communities[community_id].push_back(ii);
+            vertex_t vertex = indexToVertex_t.find(ii);
+            vertexToComponent.insert (std::pair<vertex_t, size_t>(vertex, community_id));
 
             for (int j = 0 ; j < adj_mat.size(); j++)
             {
@@ -431,7 +745,10 @@ Community_detection_cosine_similarity(
             }
         }
         if (isSingleton)
-            communities[community_id].pop_back();
+        {
+            // /communities[community_id].pop_back();
+            vertexToComponent.erase ( indexToVertex_t.find(i) );
+        }
         else
             community_id++;
     }
@@ -451,6 +768,7 @@ Community_detection_k3_cliques(
     }
     vertexToIndex_t vertexToIndex(num_vertices(subgraph))
     adjacencyMatrix_t adj_mat(convert_adj_list_adj_mat(subgraph, vertexToIndex));
+    indexTo = inverse_map();
     size_t size_adj_mat = adj_mat.size();
     adjacencyMatrix_t adj_mat2(square_matrix_ijk(adj_mat));
 
