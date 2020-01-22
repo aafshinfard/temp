@@ -390,7 +390,7 @@ Community_detection_cosine_similarity(
                 }
             }
     }
-    // 3- Detect Communities (find connected components - DFS)
+    // 4- Detect Communities (find connected components - DFS)
     // / use .reserve to set the capacity of the below 2d vector instead of initialization
     vector<vector<uint_fast32_t>> communities(30,vector<uint_fast32_t>(adj_mat.size(),-1));
 
