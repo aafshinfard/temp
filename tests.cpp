@@ -749,7 +749,7 @@ community_detection_cosine_similarity(
         if (isSingleton)
         {
             // /communities[community_id].pop_back();
-            vertexToComponent.erase ( indexToVertex_t.find(i) );
+            vertexToComponent.erase ( indexToVertex.find(i) );
         }
         else
             community_id++;
