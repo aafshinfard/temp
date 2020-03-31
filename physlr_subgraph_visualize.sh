@@ -8,7 +8,8 @@ grep '_10\s' vertices_hg004.k40-w32.n100-5000.c2-x.physlr.overlap.m85.mol.tsv | 
 grep '_10\s' vertices_hg004.k40-w32.n100-5000.c2-x.physlr.overlap.m85.mol.tsv > molecules_10_raw.tsv
 cat molecules_10_raw.tsv | awk '{print $1}' > molecules_10_raw2.tsv
 mv  molecules_10_raw2.tsv  molecules_10_raw.tsv
-paste -d, -s molecules_10_raw.tsv
+make hg004.k40-w32.n100-5000.c2-x.physlr.overlap.m85.mol.subgraphs d=10 v="$(paste -d, -s molecules_10_raw.tsv)"
+
 
 
 
