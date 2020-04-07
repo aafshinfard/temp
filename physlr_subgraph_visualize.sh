@@ -49,21 +49,32 @@ bin=${physlr_path}bin
 python_executable=/projects/btl/aafshinfard/virtuEnv/pypy3/bin/pypy3
 # Python interpreter.
 python="env PYTHONPATH=${physlr_path} ${python_executable}"
-subir=hg004.k40-w32.n100-5000.c2-x.physlr.overlap.m85.mol.subgraphs/
+subdir=hg004.k40-w32.n100-5000.c2-x.physlr.overlap.m85.mol.subgraphs/
 
 
 # Find barcodes/molecules of interest
 
-# Make subgraphs using barcodes/molecules
-make hg004.k40-w32.n100-5000.c2-x.physlr.overlap.subgraphs d=10 v="$(paste -d, -s molecules_10_barcode.tsv)"
-make hg004.k40-w32.n100-5000.c2-x.physlr.overlap.m85.subgraphs d=10 v="$(paste -d, -s molecules_10_barcode.tsv)"
-make hg004.k40-w32.n100-5000.c2-x.physlr.overlap.m85.mol.subgraphs d=10 v="$(paste -d, -s molecules_10_raw.tsv)"
+# Make unfiltered subgraphs using barcodes
+make hg004.k40-w32.n100-5000.c2-x.physlr.overlap.subgraphs-d1 d=1 v="$(paste -d, -s molecules_10_barcode.tsv)"
+
+# Make subgraphs using barcodes
+make hg004.k40-w32.n100-5000.c2-x.physlr.overlap.m85.subgraphs-d1 d=1 v="$(paste -d, -s molecules_10_barcode.tsv)"
+make hg004.k40-w32.n100-5000.c2-x.physlr.overlap.m85.subgraphs-d2 d=2 v="$(paste -d, -s molecules_10_barcode.tsv)"
+# make hg004.k40-w32.n100-5000.c2-x.physlr.overlap.m85.subgraphs-d5 d=5 v="$(paste -d, -s molecules_10_raw.tsv)"
+# Make subgraphs using barcodes_mol
+make hg004.k40-w32.n100-5000.c2-x.physlr.overlap.m85.mol.subgraphs-d1 d=1 v="$(paste -d, -s molecules_10_barcode.tsv)"
+make hg004.k40-w32.n100-5000.c2-x.physlr.overlap.m85.mol.subgraphs-d2 d=2 v="$(paste -d, -s molecules_10_barcode.tsv)"
+make hg004.k40-w32.n100-5000.c2-x.physlr.overlap.m85.mol.subgraphs-d3 d=3 v="$(paste -d, -s molecules_10_barcode.tsv)"
+make hg004.k40-w32.n100-5000.c2-x.physlr.overlap.m85.mol.subgraphs-d5 d=5 v="$(paste -d, -s molecules_10_barcode.tsv)"
+make hg004.k40-w32.n100-5000.c2-x.physlr.overlap.m85.mol.subgraphs-d10 d=10 v="$(paste -d, -s molecules_10_barcode.tsv)"
+
 
 # fix naming (.mol)
 for i in ${subdir}*[0-9].tsv; do echo $i | sed -e "s/$*.tsv$//" | cp ${i} "$(cat).mol.tsv"; done
 
 # make gv file from tsv file
-for i in ${subdir}*[0-9].tsv; do echo $i | sed -e "s/$*.tsv$//" | $python ${bin}/physlr filter --min-component-size=0 -Ogv -V1 $i > "${subdir}$(cat).gv"; done
+for i in ${subdir}*[0-9].tsv; do echo $i | sed -e "s/$*.tsv$//" | $python ${bin}/physlr filter --min-component-size=0 -Ogv -V1 $i > "$(cat).gv"; done
+for i in ${subdir}*[0-9].mol.tsv; do echo $i | sed -e "s/$*.tsv$//" | $python ${bin}/physlr filter --min-component-size=0 -Ogv -V1 $i > "$(cat).gv"; done
 #/projects/btl_scratch/aafshinfard/projects/physlr/publication/jowong/hg004/physlr/bin/physlr
 
 #make backbone file from tsv file
