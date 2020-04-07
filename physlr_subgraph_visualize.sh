@@ -77,6 +77,12 @@ for i in ${subdir}*[0-9].tsv; do echo $i | sed -e "s/$*.tsv$//" | $python ${bin}
 for i in ${subdir}*[0-9].mol.tsv; do echo $i | sed -e "s/$*.tsv$//" | $python ${bin}/physlr filter --min-component-size=0 -Ogv -V1 $i > "$(cat).gv"; done
 #/projects/btl_scratch/aafshinfard/projects/physlr/publication/jowong/hg004/physlr/bin/physlr
 
+# Visualize un-annotated gv files
+for i in ${subdir}*[0-9].mol.gv; do /gsc/btl/linuxbrew/bin/sfdp -Gsize=100 -Goverlap_scaling=200 -Teps -o "$i.sfdp.eps" $i; done
+
+# Convert eps to pdf
+for i in ${subdir}*[0-9].mol.gv.sfdp.eps; do convert $i "$i.pdf"; done
+
 #make backbone file from tsv file
 for i in ${subdir}*[0-9].mol.tsv; do echo $i | sed -e "s/$*.tsv$//" | $python ${bin}/physlr backbone-graph --prune-branches=10 --prune-bridges=0 --prune-junctions=0 -s0 -V1 ${i} >"$(cat).backbone.tsv"; done
 for i in ${subdir}*[0-9].mol.backbone.tsv; do echo $i | sed -e "s/$*.tsv$//" | $python ${bin}/physlr backbone --prune-branches=0 -s0 -V1 ${i} >"$(cat).path"; done
