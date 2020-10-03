@@ -22,9 +22,9 @@ def read_read_mapping(files):
             for line in Lines:
                 map_tuple = line.split()
                 if len(map_tuple)==2:
-                    if map_tuple[1] not in barcodict.keys():
-                        barcodict[map_tuple[1]] = list()
-                    barcodict[map_tuple[1]].append(map_tuple[2])
+                    if map_tuple[0] not in barcodict.keys():
+                        barcodict[map_tuple[0]] = list()
+                    barcodict[map_tuple[0]].append(map_tuple[1])
                 else:
                     print(maptuple, file=stderr)
     return barcodict           
