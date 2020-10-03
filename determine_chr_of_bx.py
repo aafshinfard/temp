@@ -35,7 +35,7 @@ def main():
     barcodict = read_read_mapping(args.files)
     final_dict = mapBarcodes(barcodict)
     for key in final_dict.keys():
-        print(key,"\t", final_dict[key],sep="")
+        print(key, final_dict[key], sep="\t")
 
 if __name__ == "__main__":
         main()
