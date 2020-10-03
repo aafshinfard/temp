@@ -21,7 +21,7 @@ def read_read_mapping(files):
             Lines = fp.readlines() 
             for line in Lines:
                 map_tuple = line.split()
-                if len(map_tuple)==2
+                if len(map_tuple)==2:
                     if map_tuple[1] not in barcodict.keys():
                         barcodict[map_tuple[1]] = list()
                     barcodict[map_tuple[1]].append(map_tuple[2])
