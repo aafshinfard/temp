@@ -20,7 +20,7 @@ def read_read_mapping(files):
         with open(file) as fp:
             Lines = fp.readlines() 
             for line in Lines:
-                map_tuple = line.split("\t")
+                map_tuple = line.split()
                 if map_tuple[1] not in barcodict.keys():
                     barcodict[map_tuple[1]] = list()
                 barcodict[map_tuple[1]].append(map_tuple[2])
