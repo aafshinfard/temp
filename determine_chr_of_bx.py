@@ -7,7 +7,7 @@ Amirhossein aafshinfard@bcgsc.ca
 def mapBarcodes(barcodict):
     final_dict = dict()
     for key in barcodict.keys():
-        final_dict[key] = most_frequent(bardict[key])
+        final_dict[key] = most_frequent(barcodict[key])
     return final_dict
 
 def most_frequent(List): 
