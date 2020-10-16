@@ -1,3 +1,4 @@
+#!/bin/sh
 export PATH="/projects/btl/lcoombe/miniconda3/envs/jupiter/bin:$PATH"
 
 ./jupiter ng=95 maxScaff=40 t=16 name=ref.VS.na12878.ONT.shasta.ng95.maxScaff40 ref=grch38.fa fa=na12878.ONT.shasta.fa
